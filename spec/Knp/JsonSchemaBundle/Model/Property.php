@@ -47,12 +47,26 @@ class Property extends ObjectBehavior
         $this->getPattern()->shouldBe('the pattern');
     }
 
+    function it_should_have_an_enumeration()
+    {
+        $this->setEnumeration(['foo', 'bar', 'baz']);
+        $this->getEnumeration()->shouldBe(['foo', 'bar', 'baz']);
+    }
+
     function it_should_only_serialize_non_null_properties()
     {
         $this
             ->setType('some type')
         ;
         $this->jsonSerialize()->shouldBe(['required' => false, 'type' => 'some type']);
+    }
+
+    function it_should_serialize_enumeration_if_there_is_one()
+    {
+        $this
+            ->setEnumeration(['a','simple','list','of','choice'])
+        ;
+        $this->jsonSerialize()->shouldBe(['required' => false, 'enum' => ['a','simple','list','of','choice']]);
     }
 
     /**
@@ -100,6 +114,6 @@ class Property extends ObjectBehavior
     {
         $constraint->choices = ['foo', 'bar', 'fu fuz'];
         $this->addConstraint($constraint);
-        $this->getPattern()->shouldBe('/^(foo|bar|fu fuz)$/');
+        $this->getEnumeration()->shouldBe(['foo', 'bar', 'fu fuz']);
     }
 }

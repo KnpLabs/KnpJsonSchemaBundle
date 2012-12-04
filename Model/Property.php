@@ -10,6 +10,7 @@ class Property implements \JsonSerializable
     protected $required = false;
     protected $type;
     protected $pattern;
+    protected $enumeration = array();
 
     public function setName($name)
     {
@@ -59,6 +60,18 @@ class Property implements \JsonSerializable
         return $this->pattern;
     }
 
+    public function setEnumeration(array $enumeration)
+    {
+        $this->enumeration = $enumeration;
+
+        return $this;
+    }
+
+    public function getEnumeration()
+    {
+        return $this->enumeration;
+    }
+
     public function jsonSerialize()
     {
         $serialized['required'] =  $this->required;
@@ -69,6 +82,10 @@ class Property implements \JsonSerializable
 
         if ($this->pattern) {
             $serialized['pattern'] = $this->pattern;
+        }
+
+        if (count($this->enumeration)) {
+            $serialized['enum'] = $this->enumeration;
         }
 
         return $serialized;
@@ -93,8 +110,7 @@ class Property implements \JsonSerializable
         }
 
         else if (is_a($constraint, 'Symfony\Component\Validator\Constraints\Choice')) {
-            $pattern = implode('|', $constraint->choices);
-            $this->setPattern(sprintf('/^(%s)$/', $pattern));
+            $this->setEnumeration($constraint->choices);
         }
     }
 }
