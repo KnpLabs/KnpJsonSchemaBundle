@@ -4,25 +4,25 @@ namespace Knp\JsonSchemaBundle\Model;
 
 class Schema implements \JsonSerializable
 {
-    private $name;
+    private $title;
     private $properties;
 
-    public function __construct($name = null, array $properties = array())
+    public function __construct($title = null, array $properties = array())
     {
-        $this->setName($name);
+        $this->setTitle($title);
         foreach ($properties as $property) {
             $this->addProperty($property);
         }
     }
 
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function setName($name)
+    public function setTitle($title)
     {
-        $this->name = $name;
+        $this->title = $title;
     }
 
     public function getProperties()
@@ -38,7 +38,7 @@ class Schema implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'name' => $this->name,
+            'title' => $this->title,
             'properties' => $this->properties,
         ];
     }

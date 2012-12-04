@@ -9,20 +9,20 @@ class Schema extends ObjectBehavior
     /**
      * @param Knp\JsonSchemaBundle\Model\Property $property
      */
-    function it_should_be_constructed_with_a_name_and_properties($property)
+    function it_should_be_constructed_with_a_title_and_properties($property)
     {
         $property->getName()->willReturn('first property');
 
         $this->beConstructedWith('an awesome schema', [$property]);
 
-        $this->getName()->shouldBe('an awesome schema');
+        $this->getTitle()->shouldBe('an awesome schema');
         $this->getProperties()->shouldBe(['first property' => $property]);
     }
 
-    function it_should_have_a_name()
+    function it_should_have_a_title()
     {
-        $this->setName('some schema');
-        $this->getName()->shouldBe('some schema');
+        $this->setTitle('some schema');
+        $this->getTitle()->shouldBe('some schema');
     }
 
     /**
@@ -48,12 +48,12 @@ class Schema extends ObjectBehavior
         $property1->getName()->willReturn('prop1');
         $property1->jsonSerialize()->willReturn([]);
 
-        $this->setName('some schema');
+        $this->setTitle('some schema');
         $this->addProperty($property1);
 
         $this->jsonSerialize()->shouldBe(
             [
-                'name' => 'some schema',
+                'title' => 'some schema',
                 'properties' => [
                     'prop1' => $property1
                 ]
