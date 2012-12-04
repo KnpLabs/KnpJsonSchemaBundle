@@ -21,7 +21,7 @@ class SchemaGenerator
 
     public function generate($className)
     {
-        $classMetadata = $this->getClassMetadata($className);
+        $classMetadata = $this->classMetadataFactory->getClassMetadata($className);
 
         $this->schemaBuilder->setName(strtolower($classMetadata->getReflectionClass()->getShortName()));
 
@@ -34,15 +34,11 @@ class SchemaGenerator
             foreach ($this->jsonValidator->getErrors() as $error) {
                 $message .= sprintf("[%s] %s\n", $error['property'], $error['message']);
             }
+            $message .= sprintf("Json schema:\n%s", json_encode($schema, JSON_PRETTY_PRINT));
             throw new \Exception($message);
         }
 
         return $schema;
-    }
-
-    private function getClassMetadata($className)
-    {
-        return $this->classMetadataFactory->getClassMetadata($className);
     }
 
     /**
