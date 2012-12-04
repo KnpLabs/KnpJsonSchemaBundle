@@ -1,4 +1,5 @@
 **This bundle is in development stage!!! Do not use it in production.**
+[![Build Status](https://secure.travis-ci.org/KnpLabs/KnpJsonSchemaBundle.png)](https://travis-ci.org/KnpLabs/KnpJsonSchemaBundle)
 
 The JsonSchema Bundle
 =====================
