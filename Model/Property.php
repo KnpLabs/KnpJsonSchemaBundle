@@ -80,11 +80,15 @@ class Property implements \JsonSerializable
             $this->setRequired(true);
         }
 
-        if (is_a($constraint, 'Symfony\Component\Validator\Constraints\Type')) {
+        else if (is_a($constraint, 'Symfony\Component\Validator\Constraints\Blank')) {
+            $this->setPattern('/^$/');
+        }
+
+        else if (is_a($constraint, 'Symfony\Component\Validator\Constraints\Type')) {
             $this->setType($constraint->type);
         }
 
-        if (is_a($constraint, 'Symfony\Component\Validator\Constraints\Regex')) {
+        else if (is_a($constraint, 'Symfony\Component\Validator\Constraints\Regex')) {
             $this->setPattern($constraint->pattern);
         }
     }

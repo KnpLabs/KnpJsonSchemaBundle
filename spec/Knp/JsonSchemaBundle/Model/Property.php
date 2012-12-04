@@ -83,4 +83,13 @@ class Property extends ObjectBehavior
         $this->addConstraint($constraint);
         $this->getPattern()->shouldBe('/^[a-z]{3}$/');
     }
+
+    /**
+     * @param Symfony\Component\Validator\Constraints\Blank $constraint
+     */
+    function it_should_add_empty_pattern_constraint_if_property_must_be_blank($constraint)
+    {
+        $this->addConstraint($constraint);
+        $this->getPattern()->shouldBe('/^$/');
+    }
 }
