@@ -92,4 +92,14 @@ class Property extends ObjectBehavior
         $this->addConstraint($constraint);
         $this->getPattern()->shouldBe('/^$/');
     }
+
+    /**
+     * @param Symfony\Component\Validator\Constraints\Choice $constraint
+     */
+    function it_should_add_choice_pattern_constraint_if_property_must_be_within_a_set_of_choices($constraint)
+    {
+        $constraint->choices = ['foo', 'bar', 'fu fuz'];
+        $this->addConstraint($constraint);
+        $this->getPattern()->shouldBe('/^(foo|bar|fu fuz)$/');
+    }
 }

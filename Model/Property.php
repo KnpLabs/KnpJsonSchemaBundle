@@ -91,5 +91,10 @@ class Property implements \JsonSerializable
         else if (is_a($constraint, 'Symfony\Component\Validator\Constraints\Regex')) {
             $this->setPattern($constraint->pattern);
         }
+
+        else if (is_a($constraint, 'Symfony\Component\Validator\Constraints\Choice')) {
+            $pattern = implode('|', $constraint->choices);
+            $this->setPattern(sprintf('/^(%s)$/', $pattern));
+        }
     }
 }
