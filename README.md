@@ -33,6 +33,13 @@ public function indexAction()
 }
 ```
 
+Support
+-------
+It currently supports the following constraints:
+ - `Symfony\Component\Validator\Constraints\NotBlank`
+ - `Symfony\Component\Validator\Constraints\Type`
+ - `Symfony\Component\Validator\Constraints\Regex`
+
 Contributors
 ------------
  - Gildas Quéméner [gquemener](https://github.com/gquemener)
