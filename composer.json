@@ -10,7 +10,7 @@
     ],
     "require": {
         "php":                       ">=5.4",
-        "symfony/validator":         ">=2.1",
+        "symfony/validator":         ">=2.1,<2.3-dev",
         "justinrainbow/json-schema": ">=1.2.2"
     },
     "require-dev": {
