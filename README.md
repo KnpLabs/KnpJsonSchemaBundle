@@ -13,7 +13,7 @@ Add the following to your composer.json:
 ``` json
 {
     "mininmum-stability": "dev",
-    require: {
+    "require": {
         "knplabs/json-schema-bundle": "dev-master"
     }
 }
