@@ -1,6 +1,6 @@
 <?php
 
-namespace Knp\JsonSchemaBundle\Generator;
+namespace Knp\JsonSchemaBundle\Schema;
 
 use Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface;
 use Symfony\Component\Validator\Mapping\PropertyMetadata;
@@ -12,24 +12,24 @@ class SchemaGenerator
     private $classMetadataFactory;
     private $jsonValidator;
 
-    public function __construct(ClassMetadataFactoryInterface $classMetadataFactory, \JsonSchema\Validator $jsonValidator)
+    public function __construct(ClassMetadataFactoryInterface $classMetadataFactory, \JsonSchema\Validator $jsonValidator, SchemaBuilder $schemaBuilder)
     {
         $this->classMetadataFactory = $classMetadataFactory;
         $this->jsonValidator        = $jsonValidator;
+        $this->schemaBuilder        = $schemaBuilder;
     }
 
     public function generate($className)
     {
         $classMetadata = $this->getClassMetadata($className);
 
-        $schema = new Schema();
-        $schema->setName(strtolower($classMetadata->getReflectionClass()->getShortName()));
+        $this->schemaBuilder->setName(strtolower($classMetadata->getReflectionClass()->getShortName()));
 
         foreach ($classMetadata->properties as $property) {
-            $schema->addProperty($this->createProperty($property));
+            $this->schemaBuilder->addProperty($property);
         }
 
-        if (false === $this->validateSchema($schema)) {
+        if (false === $this->validateSchema($schema = $this->schemaBuilder->getSchema())) {
             $message = "Generated schema is invalid. The following problem(s) were detected:\n";
             foreach ($this->jsonValidator->getErrors() as $error) {
                 $message .= sprintf("[%s] %s\n", $error['property'], $error['message']);
@@ -38,18 +38,6 @@ class SchemaGenerator
         }
 
         return $schema;
-    }
-
-    private function createProperty(PropertyMetadata $propertyMetadata)
-    {
-        $property = new Property();
-        $property->setName($propertyMetadata->name);
-
-        foreach ($propertyMetadata->constraints as $constraint) {
-            $property->addConstraint($constraint);
-        }
-
-        return $property;
     }
 
     private function getClassMetadata($className)

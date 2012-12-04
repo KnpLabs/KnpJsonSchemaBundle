@@ -7,6 +7,14 @@ class Schema implements \JsonSerializable
     private $name;
     private $properties;
 
+    public function __construct($name = null, array $properties = array())
+    {
+        $this->setName($name);
+        foreach ($properties as $property) {
+            $this->addProperty($property);
+        }
+    }
+
     public function getName()
     {
         return $this->name;

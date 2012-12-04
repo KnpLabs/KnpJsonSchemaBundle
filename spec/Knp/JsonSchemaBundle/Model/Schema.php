@@ -6,6 +6,19 @@ use PHPSpec2\ObjectBehavior;
 
 class Schema extends ObjectBehavior
 {
+    /**
+     * @param Knp\JsonSchemaBundle\Model\Property $property
+     */
+    function it_should_be_constructed_with_a_name_and_properties($property)
+    {
+        $property->getName()->willReturn('first property');
+
+        $this->beConstructedWith('an awesome schema', [$property]);
+
+        $this->getName()->shouldBe('an awesome schema');
+        $this->getProperties()->shouldBe(['first property' => $property]);
+    }
+
     function it_should_have_a_name()
     {
         $this->setName('some schema');
