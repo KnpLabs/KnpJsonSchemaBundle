@@ -1,0 +1,11 @@
+parameters:
+    json_schema.generator.class: "Knp\\JsonSchemaBundle\\Generator\\SchemaGenerator"
+    json_schema.validator.class: "JsonSchema\\Validator"
+
+services:
+    json_schema.generator:
+        class: %json_schema.generator.class%
+        arguments: [@validator.mapping.class_metadata_factory, @json_schema.validator]
+
+    json_schema.validator:
+        class: %json_schema.validator.class%

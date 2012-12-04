@@ -1,0 +1,27 @@
+{
+    "name": "knplabs/json-schema-bundle",
+    "description": "A bundle to generate json schema based on validation metadata",
+    "license":     "MIT",
+    "authors": [
+        {
+            "name":     "Knplabs",
+            "homepage": "http://knplabs.com"
+        }
+    ],
+    "require": {
+        "php":                       ">=5.3.3",
+        "symfony/validator":         ">=2.1",
+        "justinrainbow/json-schema": ">=1.2.2"
+    },
+    "require-dev": {
+        "phpspec/phpspec2": "dev-develop"
+    },
+    "minimum-stability": "dev",
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-0": { "Knp\\JsonSchemaBundle": "" }
+    },
+    "target-dir": "Knp/JsonSchemaBundle"
+}
