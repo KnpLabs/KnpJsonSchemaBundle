@@ -43,7 +43,7 @@ class Schema extends ObjectBehavior
     /**
      * @param Knp\JsonSchemaBundle\Model\Property $property1
      */
-    function it_should_serialze_its_name_and_its_properties($property1)
+    function it_should_serialize_its_name_and_its_properties($property1)
     {
         $property1->getName()->willReturn('prop1');
         $property1->jsonSerialize()->willReturn([]);

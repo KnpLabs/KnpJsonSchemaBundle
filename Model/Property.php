@@ -90,27 +90,4 @@ class Property implements \JsonSerializable
 
         return $serialized;
     }
-
-    public function addConstraint(Constraint $constraint)
-    {
-        if (is_a($constraint, 'Symfony\Component\Validator\Constraints\NotBlank')) {
-            $this->setRequired(true);
-        }
-
-        else if (is_a($constraint, 'Symfony\Component\Validator\Constraints\Blank')) {
-            $this->setPattern('/^$/');
-        }
-
-        else if (is_a($constraint, 'Symfony\Component\Validator\Constraints\Type')) {
-            $this->setType($constraint->type);
-        }
-
-        else if (is_a($constraint, 'Symfony\Component\Validator\Constraints\Regex')) {
-            $this->setPattern($constraint->pattern);
-        }
-
-        else if (is_a($constraint, 'Symfony\Component\Validator\Constraints\Choice')) {
-            $this->setEnumeration($constraint->choices);
-        }
-    }
 }
