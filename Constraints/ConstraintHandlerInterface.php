@@ -2,11 +2,10 @@
 
 namespace Knp\JsonSchemaBundle\Constraints;
 
-use Symfony\Component\Validator\Constraint;
 use Knp\JsonSchemaBundle\Model\Property;
 
 interface ConstraintHandlerInterface
 {
-    public function supports(Constraint $constraint);
-    public function handle(Property $property, Constraint $constraint);
+    public function supports($className, Property $property);
+    public function handle($className, Property $property);
 }

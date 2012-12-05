@@ -2,8 +2,6 @@
 
 namespace Knp\JsonSchemaBundle\Schema;
 
-use Symfony\Component\Validator\Mapping\PropertyMetadata;
-use Symfony\Component\Validator\Constraint;
 use Knp\JsonSchemaBundle\Model\Schema;
 use Knp\JsonSchemaBundle\Model\Property;
 use Knp\JsonSchemaBundle\Constraints\ConstraintHandlerInterface;
@@ -25,14 +23,12 @@ class SchemaBuilder
         return $this;
     }
 
-    public function addProperty(PropertyMetadata $propertyMetadata)
+    public function addProperty($className, $propertyName)
     {
         $property = new Property();
-        $property->setName($propertyMetadata->name);
+        $property->setName($propertyName);
 
-        foreach ($propertyMetadata->constraints as $constraint) {
-            $this->applyConstraintHandlers($property, $constraint);
-        }
+        $this->applyConstraintHandlers($className, $property);
 
         $this->properties[] = $property;
 
@@ -54,11 +50,11 @@ class SchemaBuilder
         return array_values(iterator_to_array(clone $this->constraintHandlers));
     }
 
-    private function applyConstraintHandlers(Property $property, Constraint $constraint)
+    private function applyConstraintHandlers($className, Property $property)
     {
         foreach ($this->getConstraintHandlers() as $handler) {
-            if ($handler->supports($constraint)) {
-                $handler->handle($property, $constraint);
+            if ($handler->supports($className, $property)) {
+                $handler->handle($className, $property);
             }
         }
     }

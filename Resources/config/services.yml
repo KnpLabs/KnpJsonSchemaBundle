@@ -2,11 +2,7 @@ parameters:
     json_schema.generator.class:                "Knp\\JsonSchemaBundle\\Schema\\SchemaGenerator"
     json_schema.builder.class:                  "Knp\\JsonSchemaBundle\\Schema\\SchemaBuilder"
     json_schema.validator.class:                "JsonSchema\\Validator"
-    json_schema.builder.handler.blank.class:    "Knp\\JsonSchemaBundle\\Constraints\\BlankConstraintHandler"
-    json_schema.builder.handler.choice.class:   "Knp\\JsonSchemaBundle\\Constraints\\ChoiceConstraintHandler"
-    json_schema.builder.handler.notblank.class: "Knp\\JsonSchemaBundle\\Constraints\\NotBlankConstraintHandler"
-    json_schema.builder.handler.regex.class:    "Knp\\JsonSchemaBundle\\Constraints\\RegexConstraintHandler"
-    json_schema.builder.handler.type.class:     "Knp\\JsonSchemaBundle\\Constraints\\TypeConstraintHandler"
+    json_schema.builder.handler.validator_type_guesser_handler.class:     "Knp\\JsonSchemaBundle\\Constraints\\ValidatorTypeGuesserHandler"
 
 services:
     json_schema.generator:
@@ -24,32 +20,10 @@ services:
         public: false
         class: %json_schema.validator.class%
 
-    json_schema.builder.handler.blank:
+    json_schema.builder.handler.validator_type_guesser:
         public: false
-        class: %json_schema.builder.handler.blank.class%
-        tags:
-            - { name: json_schema.builder.handler, priority: 1 }
-
-    json_schema.builder.handler.choice:
-        public: false
-        class: %json_schema.builder.handler.choice.class%
-        tags:
-            - { name: json_schema.builder.handler, priority: 2 }
-
-    json_schema.builder.handler.notblank:
-        public: false
-        class: %json_schema.builder.handler.notblank.class%
-        tags:
-            - { name: json_schema.builder.handler, priority: 3 }
-
-    json_schema.builder.handler.regex:
-        public: false
-        class: %json_schema.builder.handler.regex.class%
-        tags:
-            - { name: json_schema.builder.handler, priority: 4 }
-
-    json_schema.builder.handler.type:
-        public: false
-        class: %json_schema.builder.handler.type.class%
+        class: %json_schema.builder.handler.validator_type_guesser_handler.class%
+        arguments:
+            - @form.type_guesser.validator
         tags:
             - { name: json_schema.builder.handler, priority: 5 }
