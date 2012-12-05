@@ -4,7 +4,7 @@ namespace Knp\JsonSchemaBundle\Schema;
 
 use Knp\JsonSchemaBundle\Model\Schema;
 use Knp\JsonSchemaBundle\Model\Property;
-use Knp\JsonSchemaBundle\Constraints\ConstraintHandlerInterface;
+use Knp\JsonSchemaBundle\Constraints\PropertyHandlerInterface;
 
 class SchemaBuilder
 {
@@ -40,7 +40,7 @@ class SchemaBuilder
         return new Schema($this->name, $this->properties);
     }
 
-    public function registerConstraintHandler(ConstraintHandlerInterface $handler, $priority)
+    public function registerConstraintHandler(PropertyHandlerInterface $handler, $priority)
     {
         $this->constraintHandlers->insert($handler, $priority);
     }

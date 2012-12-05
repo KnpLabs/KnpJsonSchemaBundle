@@ -1,29 +1,40 @@
 parameters:
-    json_schema.generator.class:                "Knp\\JsonSchemaBundle\\Schema\\SchemaGenerator"
-    json_schema.builder.class:                  "Knp\\JsonSchemaBundle\\Schema\\SchemaBuilder"
-    json_schema.validator.class:                "JsonSchema\\Validator"
-    json_schema.builder.handler.validator_type_guesser_handler.class:     "Knp\\JsonSchemaBundle\\Constraints\\ValidatorTypeGuesserHandler"
+    json_schema.generator.class:                                  "Knp\\JsonSchemaBundle\\Schema\\SchemaGenerator"
+    json_schema.builder.class:                                    "Knp\\JsonSchemaBundle\\Schema\\SchemaBuilder"
+    json_schema.reflection_factory.class:                         "Knp\\JsonSchemaBundle\\Schema\\ReflectionFactory"
+    json_schema.validator.class:                                  "JsonSchema\\Validator"
+    json_schema.builder.handler.form_type_guesser_handler.class:  "Knp\\JsonSchemaBundle\\Constraints\\FormTypeGuesserHandler"
 
 services:
     json_schema.generator:
         class: %json_schema.generator.class%
         arguments:
-            - @validator.mapping.class_metadata_factory
             - @json_schema.validator
             - @json_schema.builder
+            - @json_schema.reflection_factory
 
     json_schema.builder:
         public: false
         class: %json_schema.builder.class%
 
+    json_schema.reflection_factory:
+        public: false
+        class: %json_schema.reflection_factory.class%
+
     json_schema.validator:
         public: false
         class: %json_schema.validator.class%
 
-    json_schema.builder.handler.validator_type_guesser:
+    json_schema.builder.handler.chained_guesser:
         public: false
-        class: %json_schema.builder.handler.validator_type_guesser_handler.class%
+        class: %json_schema.builder.handler.form_type_guesser_handler.class%
         arguments:
-            - @form.type_guesser.validator
+            - @form.chain.guesser
         tags:
             - { name: json_schema.builder.handler, priority: 5 }
+
+    form.chain.guesser:
+        public: false
+        class: "Symfony\\Component\\Form\\FormTypeGuesserChain"
+        arguments:
+            - [@form.type_guesser.validator, @form.type_guesser.doctrine]

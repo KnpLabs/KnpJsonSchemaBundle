@@ -24,7 +24,7 @@ class SchemaGenerator
         $this->schemaBuilder->setName(strtolower($refl->getShortName()));
 
         foreach ($refl->getProperties() as $property) {
-            $this->schemaBuilder->addProperty($className, $property);
+            $this->schemaBuilder->addProperty($className, $property->name);
         }
 
         if (false === $this->validateSchema($schema = $this->schemaBuilder->getSchema())) {
