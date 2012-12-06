@@ -18,7 +18,7 @@ class FormTypeGuesserHandler implements PropertyHandlerInterface
     public function handle($className, Property $property)
     {
         if ($type = $this->guesser->guessType($className, $property->getName())) {
-            $property->setType($this->getJsonSchemaType($type));
+            $property->setType($this->getPropertyType($type));
         }
 
         if ($required = $this->guesser->guessRequired($className, $property->getName())) {
@@ -30,19 +30,19 @@ class FormTypeGuesserHandler implements PropertyHandlerInterface
         }
     }
 
-    private function getJsonSchemaType(TypeGuess $type)
+    private function getPropertyType(TypeGuess $type)
     {
         switch ($type->getType()) {
             case 'entity':
-                return 'object';
+                return Property::TYPE_OBJECT;
             case 'collection':
-                return 'array';
+                return Property::TYPE_ARRAY;
             case 'checkbox':
-                return 'boolean';
+                return Property::TYPE_BOOLEAN;
             case 'number':
-                return 'number';
+                return Property::TYPE_NUMBER;
             case 'integer':
-                return 'integer';
+                return Property::TYPE_INTEGER;
             case 'date':
             case 'datetime':
             case 'text':
@@ -53,7 +53,7 @@ class FormTypeGuesserHandler implements PropertyHandlerInterface
             case 'locale':
             case 'time':
             case 'url':
-                return 'string';
+                return Property::TYPE_STRING;
         }
     }
 }

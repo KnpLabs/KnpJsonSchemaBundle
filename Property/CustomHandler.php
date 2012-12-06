@@ -20,6 +20,10 @@ class CustomHandler implements PropertyHandlerInterface
             if ($constraint instanceof \Symfony\Component\Validator\Constraints\Choice) {
                 $property->setEnumeration($constraint->choices);
             }
+            if ($constraint instanceof \Symfony\Component\Validator\Constraints\Length) {
+                $property->setMinimum($constraint->min);
+                $property->setMaximum($constraint->max);
+            }
         }
     }
 
