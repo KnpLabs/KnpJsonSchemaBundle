@@ -3,7 +3,8 @@ parameters:
     json_schema.builder.class:                                    "Knp\\JsonSchemaBundle\\Schema\\SchemaBuilder"
     json_schema.reflection_factory.class:                         "Knp\\JsonSchemaBundle\\Schema\\ReflectionFactory"
     json_schema.validator.class:                                  "JsonSchema\\Validator"
-    json_schema.builder.handler.form_type_guesser_handler.class:  "Knp\\JsonSchemaBundle\\Constraints\\FormTypeGuesserHandler"
+    json_schema.builder.handler.form_type_guesser_handler.class:  "Knp\\JsonSchemaBundle\\Property\\FormTypeGuesserHandler"
+    json_schema.builder.handler.custom_handler.class:             "Knp\\JsonSchemaBundle\\Property\\CustomHandler"
 
 services:
     json_schema.generator:
@@ -27,11 +28,19 @@ services:
 
     json_schema.builder.handler.chained_guesser:
         public: false
-        class: %json_schema.builder.handler.form_type_guesser_handler.class%
+        class: "Knp\\JsonSchemaBundle\\Property\\FormTypeGuesserHandler"
         arguments:
             - @form.chain.guesser
         tags:
-            - { name: json_schema.builder.handler, priority: 5 }
+            - { name: json_schema.builder.handler, priority: 10 }
+
+    json_schema.builder.handler.custom:
+        public: false
+        class: %json_schema.builder.handler.custom_handler.class%
+        arguments:
+            - @validator.mapping.class_metadata_factory
+        tags:
+            - { name: json_schema.builder.handler, priority: 0 }
 
     form.chain.guesser:
         public: false
