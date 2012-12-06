@@ -45,3 +45,4 @@ It currently supports the following constraints:
 Contributors
 ------------
  - Gildas Quéméner [gquemener](https://github.com/gquemener)
+ - Florian Klein [docteurklein](https://github.com/docteurklein)
