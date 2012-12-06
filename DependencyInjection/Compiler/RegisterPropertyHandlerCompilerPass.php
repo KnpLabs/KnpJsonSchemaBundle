@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class RegisterConstraintHandlerCompilerPass implements CompilerPassInterface
+class RegisterPropertyHandlerCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
@@ -24,7 +24,7 @@ class RegisterConstraintHandlerCompilerPass implements CompilerPassInterface
 
         foreach ($taggedServices as $id => $attributes) {
             $definition->addMethodCall(
-                'registerConstraintHandler',
+                'registerPropertyHandler',
                 array(new Reference($id), $this->getPriority($attributes))
             );
         }

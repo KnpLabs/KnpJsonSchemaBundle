@@ -2,8 +2,6 @@
 
 namespace Knp\JsonSchemaBundle\Schema;
 
-use Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface;
-use Symfony\Component\Validator\Mapping\PropertyMetadata;
 use Knp\JsonSchemaBundle\Model\Schema;
 use Knp\JsonSchemaBundle\Model\Property;
 
@@ -11,22 +9,22 @@ class SchemaGenerator
 {
     private $classMetadataFactory;
     private $jsonValidator;
+    private $reflectionFactory;
 
-    public function __construct(ClassMetadataFactoryInterface $classMetadataFactory, \JsonSchema\Validator $jsonValidator, SchemaBuilder $schemaBuilder)
+    public function __construct(\JsonSchema\Validator $jsonValidator, SchemaBuilder $schemaBuilder, ReflectionFactory $reflectionFactory)
     {
-        $this->classMetadataFactory = $classMetadataFactory;
         $this->jsonValidator        = $jsonValidator;
         $this->schemaBuilder        = $schemaBuilder;
+        $this->reflectionFactory    = $reflectionFactory;
     }
 
     public function generate($className)
     {
-        $classMetadata = $this->classMetadataFactory->getClassMetadata($className);
+        $refl = $this->reflectionFactory->create($className);
+        $this->schemaBuilder->setName(strtolower($refl->getShortName()));
 
-        $this->schemaBuilder->setName(strtolower($classMetadata->getReflectionClass()->getShortName()));
-
-        foreach ($classMetadata->properties as $property) {
-            $this->schemaBuilder->addProperty($property);
+        foreach ($refl->getProperties() as $property) {
+            $this->schemaBuilder->addProperty($className, $property->name);
         }
 
         if (false === $this->validateSchema($schema = $this->schemaBuilder->getSchema())) {

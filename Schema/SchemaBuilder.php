@@ -2,20 +2,19 @@
 
 namespace Knp\JsonSchemaBundle\Schema;
 
-use Symfony\Component\Validator\Mapping\PropertyMetadata;
-use Symfony\Component\Validator\Constraint;
 use Knp\JsonSchemaBundle\Model\Schema;
 use Knp\JsonSchemaBundle\Model\Property;
-use Knp\JsonSchemaBundle\Constraints\ConstraintHandlerInterface;
+use Knp\JsonSchemaBundle\Property\PropertyHandlerInterface;
 
 class SchemaBuilder
 {
     private $name;
     private $properties;
+    private $propertyHandlers;
 
     public function __construct()
     {
-        $this->constraintHandlers = new \SplPriorityQueue;
+        $this->propertyHandlers = new \SplPriorityQueue;
     }
 
     public function setName($name)
@@ -25,14 +24,12 @@ class SchemaBuilder
         return $this;
     }
 
-    public function addProperty(PropertyMetadata $propertyMetadata)
+    public function addProperty($className, $propertyName)
     {
         $property = new Property();
-        $property->setName($propertyMetadata->name);
+        $property->setName($propertyName);
 
-        foreach ($propertyMetadata->constraints as $constraint) {
-            $this->applyConstraintHandlers($property, $constraint);
-        }
+        $this->applyPropertyHandlers($className, $property);
 
         $this->properties[] = $property;
 
@@ -44,22 +41,20 @@ class SchemaBuilder
         return new Schema($this->name, $this->properties);
     }
 
-    public function registerConstraintHandler(ConstraintHandlerInterface $handler, $priority)
+    public function registerPropertyHandler(PropertyHandlerInterface $handler, $priority)
     {
-        $this->constraintHandlers->insert($handler, $priority);
+        $this->propertyHandlers->insert($handler, $priority);
     }
 
-    public function getConstraintHandlers()
+    public function getPropertyHandlers()
     {
-        return array_values(iterator_to_array(clone $this->constraintHandlers));
+        return array_values(iterator_to_array(clone $this->propertyHandlers));
     }
 
-    private function applyConstraintHandlers(Property $property, Constraint $constraint)
+    private function applyPropertyHandlers($className, Property $property)
     {
-        foreach ($this->getConstraintHandlers() as $handler) {
-            if ($handler->supports($constraint)) {
-                $handler->handle($property, $constraint);
-            }
+        foreach ($this->getPropertyHandlers() as $handler) {
+            $handler->handle($className, $property);
         }
     }
 }

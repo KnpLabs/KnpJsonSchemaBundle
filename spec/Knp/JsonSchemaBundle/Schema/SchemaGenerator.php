@@ -7,31 +7,25 @@ use PHPSpec2\ObjectBehavior;
 class SchemaGenerator extends ObjectBehavior
 {
     /**
-     * @param Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface $classMetadataFactory
      * @param JsonSchema\Validator $jsonValidator
      * @param Knp\JsonSchemaBundle\Schema\SchemaBuilder $schemaBuilder
+     * @param Knp\JsonSchemaBundle\Schema\ReflectionFactory $reflectionFactory
      */
-    function let($classMetadataFactory, $jsonValidator, $schemaBuilder)
+    function let($jsonValidator, $schemaBuilder, $reflectionFactory)
     {
-        $this->beConstructedWith($classMetadataFactory, $jsonValidator, $schemaBuilder);
+        $this->beConstructedWith($jsonValidator, $schemaBuilder, $reflectionFactory);
     }
 
     /**
      * @param Knp\JsonSchemaBundle\Model\Schema $schema
-     * @param Symfony\Component\Validator\Mapping\ClassMetadata $classMetadata
-     * @param Symfony\Component\Validator\Mapping\PropertyMetadata $propertyMetadata
-     * @param Symfony\Component\Validator\Constraints\NotBlank $constraint
      * @param \ReflectionClass $refClass
      */
-    function it_should_generate_a_valid_json_schema_with_required_properties($classMetadataFactory, $jsonValidator, $schemaBuilder, $schema, $classMetadata, $propertyMetadata, $constraint, $refClass)
+    function it_should_generate_a_valid_json_schema_with_required_properties($classMetadataFactory, $jsonValidator, $schemaBuilder, $schema, $reflectionFactory, $refClass)
     {
         $jsonValidator->isValid()->willReturn(true);
         $schemaBuilder->getSchema()->willReturn($schema);
 
-        $classMetadataFactory->getClassMetadata('App\\Entity\\User')->willReturn($classMetadata);
-        $classMetadata->getReflectionClass()->willReturn($refClass);
-        $classMetadata->properties = [$propertyMetadata];
-        $propertyMetadata->constraints = [$constraint];
+        $reflectionFactory->create('App\\Entity\\User')->willReturn($refClass);
         $refClass->getShortName()->willReturn('User');
 
         $this->generate('App\\Entity\\User')->shouldBe($schema);
