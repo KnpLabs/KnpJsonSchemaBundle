@@ -25,7 +25,9 @@ class Property implements \JsonSerializable
 
     public function setName($name)
     {
-        $this->name = $name;
+        if (!$this->name) {
+            $this->name = $name;
+        }
 
         return $this;
     }
@@ -37,7 +39,9 @@ class Property implements \JsonSerializable
 
     public function setRequired($required)
     {
-        $this->required = $required;
+        if (!$this->required) {
+            $this->required = $required;
+        }
 
         return $this;
     }
@@ -49,7 +53,9 @@ class Property implements \JsonSerializable
 
     public function setType($type)
     {
-        $this->type = $type;
+        if (!$this->type) {
+            $this->type = $type;
+        }
 
         return $this;
     }
@@ -61,7 +67,9 @@ class Property implements \JsonSerializable
 
     public function setPattern($pattern)
     {
-        $this->pattern = $pattern;
+        if (!$this->pattern) {
+            $this->pattern = $pattern;
+        }
 
         return $this;
     }
@@ -73,7 +81,9 @@ class Property implements \JsonSerializable
 
     public function setEnumeration(array $enumeration)
     {
-        $this->enumeration = $enumeration;
+        if (!$this->enumeration) {
+            $this->enumeration = $enumeration;
+        }
 
         return $this;
     }
@@ -85,7 +95,9 @@ class Property implements \JsonSerializable
 
     public function setMinimum($minimum)
     {
-        $this->minimum = $minimum;
+        if (!$this->minimum) {
+            $this->minimum = $minimum;
+        }
 
         return $this;
     }
@@ -97,7 +109,9 @@ class Property implements \JsonSerializable
 
     public function setMaximum($maximum)
     {
-        $this->maximum = $maximum;
+        if (!$this->maximum) {
+            $this->maximum = $maximum;
+        }
 
         return $this;
     }

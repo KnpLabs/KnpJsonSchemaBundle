@@ -11,9 +11,10 @@ class Property extends ObjectBehavior
         $this->shouldHaveType('JsonSerializable');
     }
 
-    function it_should_have_a_name()
+    function it_should_have_a_write_once_name_property()
     {
         $this->setName('a name');
+        $this->setName('another name');
         $this->getName()->shouldBe('a name');
     }
 
@@ -22,46 +23,51 @@ class Property extends ObjectBehavior
         $this->isRequired()->shouldBe(false);
     }
 
-    function it_should_be_required_if_I_say_so()
+    function it_should_have_a_write_once_required_property()
     {
         $this->setRequired(true);
+        $this->setRequired(false);
         $this->isRequired()->shouldBe(true);
     }
 
     function it_should_not_be_required_if_I_say_so()
     {
-        $this->setRequired(true);
         $this->setRequired(false);
         $this->isRequired()->shouldBe(false);
     }
 
-    function it_should_have_a_type()
+    function it_should_have_a_write_once_type_property()
     {
         $this->setType('the type');
+        $this->setType('another type');
         $this->getType()->shouldBe('the type');
     }
 
-    function it_should_have_a_pattern()
+    function it_should_have_a_write_once_pattern_property()
     {
         $this->setPattern('the pattern');
+        $this->setPattern('another pattern');
         $this->getPattern()->shouldBe('the pattern');
     }
 
-    function it_should_have_an_enumeration()
+    function it_should_have_a_write_once_enumeration_property()
     {
         $this->setEnumeration(['foo', 'bar', 'baz']);
+        $this->setEnumeration(['a', 'lo', 'ha']);
         $this->getEnumeration()->shouldBe(['foo', 'bar', 'baz']);
     }
 
-    function it_should_have_a_minimum()
+    function it_should_have_a_write_once_minimum_property()
     {
         $this->setMinimum(2);
+        $this->setMinimum(5);
         $this->getMinimum()->shouldBe(2);
     }
 
-    function it_should_have_a_maximum()
+    function it_should_have_a_write_once_maximum_property()
     {
         $this->setMaximum(5);
+        $this->setMaximum(2);
         $this->getMaximum()->shouldBe(5);
     }
 
