@@ -12,13 +12,17 @@ class FormTypeGuesserHandler extends ObjectBehavior
      * @param Symfony\Component\Form\Guess\TypeGuess $typeGuess
      * @param Symfony\Component\Form\Guess\ValueGuess $requiredGuess
      * @param Symfony\Component\Form\Guess\ValueGuess $patternGuess
+     * @param Symfony\Component\Form\Guess\ValueGuess $minLengthGuess
+     * @param Symfony\Component\Form\Guess\ValueGuess $maxLengthGuess
      */
-    function let($guesser, $property, $typeGuess, $requiredGuess, $patternGuess)
+    function let($guesser, $property, $typeGuess, $requiredGuess, $patternGuess, $minLengthGuess, $maxLengthGuess)
     {
         $this->beConstructedWith($guesser);
         $guesser->guessType(ANY_ARGUMENTS)->shouldBeCalled()->willReturn($typeGuess);
         $guesser->guessRequired(ANY_ARGUMENTS)->shouldBeCalled()->willReturn($requiredGuess);
         $guesser->guessPattern(ANY_ARGUMENTS)->shouldBeCalled()->willReturn($patternGuess);
+        $guesser->guessMinLength(ANY_ARGUMENTS)->shouldBeCalled()->willReturn($minLengthGuess);
+        $guesser->guessMaxLength(ANY_ARGUMENTS)->shouldBeCalled()->willReturn($maxLengthGuess);
     }
 
     function it_should_set_json_type_object_if_guessed_type_is_entity($guesser, $property, $typeGuess)
@@ -161,6 +165,22 @@ class FormTypeGuesserHandler extends ObjectBehavior
     {
         $patternGuess->getValue()->willReturn('/^[a-z]{5}$/');
         $property->setPattern('/^[a-z]{5}$/')->shouldBeCalled();
+
+        $this->handle('my\class\namespace', $property);
+    }
+
+    function it_should_set_a_minimum_if_guessed_minimum_length_is_not_null($guesser, $property, $minLengthGuess)
+    {
+        $minLengthGuess->getValue()->willReturn(10);
+        $property->setMinimum(10)->shouldBeCalled();
+
+        $this->handle('my\class\namespace', $property);
+    }
+
+    function it_should_set_a_maximum_if_guessed_maximum_length_is_not_null($guesser, $property, $maxLengthGuess)
+    {
+        $maxLengthGuess->getValue()->willReturn(10);
+        $property->setMaximum(10)->shouldBeCalled();
 
         $this->handle('my\class\namespace', $property);
     }
