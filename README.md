@@ -45,7 +45,7 @@ Currently, this property constraints are also supported:
 
 Examples
 --------
-``` gerhkin
+``` gherhin
     Feature: Generate a json schema from an object metada
         As a hatoas lover
         In order to acquire the power of json schema
