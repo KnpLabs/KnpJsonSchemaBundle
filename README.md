@@ -45,134 +45,124 @@ Currently, this property constraints are also supported:
 
 Examples
 --------
-``` gherhin
-    Feature: Generate a json schema from an object metada
-        As a hatoas lover
-        In order to acquire the power of json schema
-        I need to generate it from an object metadata
+Given the following class:
+```php
+<?php
 
-        Scenario: Do all the stuff!!
-            Given the following class:
-                """
-                <?php
+namespace App\Entity;
 
-                namespace App\Entity;
+use Symfony\Component\Validator\Constraints as Assert;
 
-                use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
 
-                use Doctrine\ORM\Mapping as ORM;
+/**
+ * @ORM\Entity
+ **/
+class User
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
 
-                /**
-                 * @ORM\Entity
-                 **/
-                class User
-                {
-                    /**
-                     * @ORM\Id
-                     * @ORM\Column(type="integer")
-                     * @ORM\GeneratedValue(strategy="AUTO")
-                     */
-                    protected $id;
+    /**
+     * @ORM\Column(type="string", nullable=false)
+     */
+    protected $name;
 
-                    /**
-                     * @ORM\Column(type="string", nullable=false)
-                     */
-                    protected $name;
+    /**
+     * @Assert\Type(type="string")
+     * @Assert\Email()
+     * @Assert\NotBlank()
+     */
+    protected $email;
 
-                    /**
-                     * @Assert\Type(type="string")
-                     * @Assert\Email()
-                     * @Assert\NotBlank()
-                     */
-                    protected $email;
+    /**
+     * @Assert\Regex(pattern="/^[0-9]{5}$/")
+     */
+    protected $zipCode;
 
-                    /**
-                     * @Assert\Regex(pattern="/^[0-9]{5}$/")
-                     */
-                    protected $zipCode;
+    /**
+     * @Assert\Length(min="2", max="50")
+     */
+    protected $address;
 
-                    /**
-                     * @Assert\Length(min="2", max="50")
-                     */
-                    protected $address;
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\Length(min="21")
+     */
+    protected $age;
 
-                    /**
-                     * @ORM\Column(type="integer")
-                     * @Assert\Length(min="21")
-                     */
-                    protected $age;
+    /**
+     * @Assert\Blank()
+     */
+    protected $file;
 
-                    /**
-                     * @Assert\Blank()
-                     */
-                    protected $file;
+    /**
+     * @Assert\Choice(choices={"toto","tutu","tata"})
+     */
+    protected $type;
 
-                    /**
-                     * @Assert\Choice(choices={"toto","tutu","tata"})
-                     */
-                    protected $type;
-
-                    /**
-                     * @ORM\Column(type="decimal", nullable=true)
-                     */
-                    protected $balance;
-                }
-                """
-            When I generate the json schema
-            Then I WILL get the following json:
-                """
-                {
-                    "title": "user",
-                        "properties": {
-                            "id": {
-                                "required": true,
-                                "type": "integer"
-                            },
-                            "name": {
-                                "required": true,
-                                "type": "string"
-                            },
-                            "email": {
-                                "required": true,
-                                "type": "string"
-                            },
-                            "zipCode": {
-                                "required": false,
-                                "type": "string",
-                                "pattern": "[0-9]{5
-                            }"
-                            },
-                            "address": {
-                                "required": false,
-                                "type": "string",
-                                "minLength": "2",
-                                "maxLength": "50"
-                            },
-                            "age": {
-                                "required": true,
-                                "type": "integer",
-                                "minimum": "21"
-                            },
-                            "file": {
-                                "required": false,
-                                "type": "string"
-                            },
-                            "type": {
-                                "required": false,
-                                "type": "string",
-                                "enum": [
-                                    "toto",
-                                    "tutu",
-                                    "tata"
-                                ]
-                            },
-                            "balance": {
-                                "required": false,
-                                "type": "number"
-                            }
-                        }
-                }
-                """
+    /**
+     * @ORM\Column(type="decimal", nullable=true)
+     */
+    protected $balance;
+}
+```
+Then I WILL get the following json:
+```json
+{
+    "title": "user",
+        "properties": {
+            "id": {
+                "required": true,
+                "type": "integer"
+            },
+            "name": {
+                "required": true,
+                "type": "string"
+            },
+            "email": {
+                "required": true,
+                "type": "string"
+            },
+            "zipCode": {
+                "required": false,
+                "type": "string",
+                "pattern": "[0-9]{5}"
+            },
+            "address": {
+                "required": false,
+                "type": "string",
+                "minLength": "2",
+                "maxLength": "50"
+            },
+            "age": {
+                "required": true,
+                "type": "integer",
+                "minimum": "21"
+            },
+            "file": {
+                "required": false,
+                "type": "string"
+            },
+            "type": {
+                "required": false,
+                "type": "string",
+                "enum": [
+                    "toto",
+                    "tutu",
+                    "tata"
+                ]
+            },
+            "balance": {
+                "required": false,
+                "type": "number"
+            }
+        }
+}
 ```
 
 Contributors
