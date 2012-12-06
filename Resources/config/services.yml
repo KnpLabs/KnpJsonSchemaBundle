@@ -1,55 +1,49 @@
 parameters:
-    json_schema.generator.class:                "Knp\\JsonSchemaBundle\\Schema\\SchemaGenerator"
-    json_schema.builder.class:                  "Knp\\JsonSchemaBundle\\Schema\\SchemaBuilder"
-    json_schema.validator.class:                "JsonSchema\\Validator"
-    json_schema.builder.handler.blank.class:    "Knp\\JsonSchemaBundle\\Constraints\\BlankConstraintHandler"
-    json_schema.builder.handler.choice.class:   "Knp\\JsonSchemaBundle\\Constraints\\ChoiceConstraintHandler"
-    json_schema.builder.handler.notblank.class: "Knp\\JsonSchemaBundle\\Constraints\\NotBlankConstraintHandler"
-    json_schema.builder.handler.regex.class:    "Knp\\JsonSchemaBundle\\Constraints\\RegexConstraintHandler"
-    json_schema.builder.handler.type.class:     "Knp\\JsonSchemaBundle\\Constraints\\TypeConstraintHandler"
+    json_schema.generator.class:                                  "Knp\\JsonSchemaBundle\\Schema\\SchemaGenerator"
+    json_schema.builder.class:                                    "Knp\\JsonSchemaBundle\\Schema\\SchemaBuilder"
+    json_schema.reflection_factory.class:                         "Knp\\JsonSchemaBundle\\Schema\\ReflectionFactory"
+    json_schema.validator.class:                                  "JsonSchema\\Validator"
+    json_schema.builder.handler.form_type_guesser_handler.class:  "Knp\\JsonSchemaBundle\\Property\\FormTypeGuesserHandler"
+    json_schema.builder.handler.custom_handler.class:             "Knp\\JsonSchemaBundle\\Property\\CustomHandler"
 
 services:
     json_schema.generator:
         class: %json_schema.generator.class%
         arguments:
-            - @validator.mapping.class_metadata_factory
             - @json_schema.validator
             - @json_schema.builder
+            - @json_schema.reflection_factory
 
     json_schema.builder:
         public: false
         class: %json_schema.builder.class%
 
+    json_schema.reflection_factory:
+        public: false
+        class: %json_schema.reflection_factory.class%
+
     json_schema.validator:
         public: false
         class: %json_schema.validator.class%
 
-    json_schema.builder.handler.blank:
+    json_schema.builder.handler.chained_guesser:
         public: false
-        class: %json_schema.builder.handler.blank.class%
+        class: "Knp\\JsonSchemaBundle\\Property\\FormTypeGuesserHandler"
+        arguments:
+            - @form.chain.guesser
         tags:
-            - { name: json_schema.builder.handler, priority: 1 }
+            - { name: json_schema.builder.handler, priority: 10 }
 
-    json_schema.builder.handler.choice:
+    json_schema.builder.handler.custom:
         public: false
-        class: %json_schema.builder.handler.choice.class%
+        class: %json_schema.builder.handler.custom_handler.class%
+        arguments:
+            - @validator.mapping.class_metadata_factory
         tags:
-            - { name: json_schema.builder.handler, priority: 2 }
+            - { name: json_schema.builder.handler, priority: 0 }
 
-    json_schema.builder.handler.notblank:
+    form.chain.guesser:
         public: false
-        class: %json_schema.builder.handler.notblank.class%
-        tags:
-            - { name: json_schema.builder.handler, priority: 3 }
-
-    json_schema.builder.handler.regex:
-        public: false
-        class: %json_schema.builder.handler.regex.class%
-        tags:
-            - { name: json_schema.builder.handler, priority: 4 }
-
-    json_schema.builder.handler.type:
-        public: false
-        class: %json_schema.builder.handler.type.class%
-        tags:
-            - { name: json_schema.builder.handler, priority: 5 }
+        class: "Symfony\\Component\\Form\\FormTypeGuesserChain"
+        arguments:
+            - [@form.type_guesser.validator, @form.type_guesser.doctrine]
