@@ -1,6 +1,6 @@
 <?php
 
-namespace Knp\JsonSchemaBundle\Constraints;
+namespace Knp\JsonSchemaBundle\Property;
 
 use Knp\JsonSchemaBundle\Model\Property;
 

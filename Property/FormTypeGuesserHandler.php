@@ -1,6 +1,6 @@
 <?php
 
-namespace Knp\JsonSchemaBundle\Constraints;
+namespace Knp\JsonSchemaBundle\Property;
 
 use Knp\JsonSchemaBundle\Model\Property;
 use Symfony\Component\Form\Guess\TypeGuess;
@@ -43,21 +43,19 @@ class FormTypeGuesserHandler implements PropertyHandlerInterface
             case 'checkbox':
                 return 'boolean';
             case 'number':
-                return 'float';
+                return 'number';
             case 'integer':
                 return 'integer';
             case 'date':
+            case 'datetime':
             case 'text':
             case 'country':
-            case 'date':
-            case 'datetime':
             case 'email':
             case 'file':
             case 'language':
             case 'locale':
             case 'time':
             case 'url':
-            case 'text':
                 return 'string';
         }
     }
