@@ -19,6 +19,7 @@ class FormTypeGuesserHandler implements PropertyHandlerInterface
     {
         if ($type = $this->guesser->guessType($className, $property->getName())) {
             $property->addType($this->getPropertyType($type));
+            $property->setFormat($this->getPropertyFormat($type));
         }
 
         if ($required = $this->guesser->guessRequired($className, $property->getName())) {
@@ -62,6 +63,32 @@ class FormTypeGuesserHandler implements PropertyHandlerInterface
             case 'time':
             case 'url':
                 return Property::TYPE_STRING;
+        }
+    }
+
+    private function getPropertyFormat(TypeGuess $type)
+    {
+        switch ($type->getType()) {
+            case 'entity':
+            case 'collection':
+            case 'checkbox':
+            case 'number':
+            case 'integer':
+                break;
+            case 'date':
+                return Property::FORMAT_DATE;
+            case 'datetime':
+                return Property::FORMAT_DATETIME;
+            case 'text':
+            case 'country':
+            case 'email':
+            case 'file':
+            case 'language':
+            case 'locale':
+                break;
+            case 'time':
+                return Property::FORMAT_TIME;
+            case 'url':
         }
     }
 }

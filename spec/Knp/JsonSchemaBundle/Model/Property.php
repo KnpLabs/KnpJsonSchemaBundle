@@ -78,6 +78,13 @@ class Property extends ObjectBehavior
         $this->getMaximum()->shouldBe(5);
     }
 
+    function it_should_have_a_write_once_format_property()
+    {
+        $this->setFormat('date-time');
+        $this->setFormat('date');
+        $this->getFormat()->shouldBe('date-time');
+    }
+
     function it_should_serialize_type_as_string_if_it_has_single_value()
     {
         $this->addType('a type');

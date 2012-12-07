@@ -2,33 +2,35 @@
 
 namespace spec\Knp\JsonSchemaBundle\Property;
 
+use Knp\JsonSchemaBundle\Model\Property;
+
 use PHPSpec2\ObjectBehavior;
 
 class CustomHandler extends ObjectBehavior
 {
     /**
      * @param Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface $classMetadataFactory
+     * @param Symfony\Component\Validator\Mapping\ClassMetadata $classMetadata
+     * @param Symfony\Component\Validator\Mapping\PropertyMetadata $propertyMetadata
+     * @param Knp\JsonSchemaBundle\Model\Property $property
      */
-    function let($classMetadataFactory)
+    function let($classMetadataFactory, $classMetadata, $propertyMetadata, $property)
     {
         $this->beConstructedWith($classMetadataFactory);
+        $propertyMetadata->name    = 'some property';
+        $classMetadata->properties = [$propertyMetadata];
+        $classMetadataFactory->getClassMetadata(ANY_ARGUMENT)->willReturn($classMetadata);
+        $property->getName()->willReturn('some property');
     }
 
 
     /**
-     * @param Symfony\Component\Validator\Mapping\ClassMetadata $classMetadata
-     * @param Symfony\Component\Validator\Mapping\PropertyMetadata $propertyMetadata
      * @param Symfony\Component\Validator\Constraints\Choice $choiceConstraint
-     * @param Knp\JsonSchemaBundle\Model\Property $property
      */
-    function it_should_set_enumeration_if_property_as_a_choice_constraint($classMetadataFactory, $classMetadata, $propertyMetadata, $choiceConstraint, $property)
+    function it_should_set_enumeration_if_property_as_a_choice_constraint($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $choiceConstraint)
     {
-        $propertyMetadata->name        = 'some property';
-        $classMetadata->properties     = [$propertyMetadata];
         $propertyMetadata->constraints = [$choiceConstraint];
         $choiceConstraint->choices     = ['foo', 'bar'];
-        $classMetadataFactory->getClassMetadata('some class')->willReturn($classMetadata);
-        $property->getName()->willReturn('some property');
 
         $property->setEnumeration(['foo', 'bar'])->shouldBeCalled();
 
@@ -36,19 +38,12 @@ class CustomHandler extends ObjectBehavior
     }
 
     /**
-     * @param Symfony\Component\Validator\Mapping\ClassMetadata $classMetadata
-     * @param Symfony\Component\Validator\Mapping\PropertyMetadata $propertyMetadata
      * @param Symfony\Component\Validator\Constraints\Length $lengthConstraint
-     * @param Knp\JsonSchemaBundle\Model\Property $property
      */
-    function it_should_set_minimum_if_property_as_a_length_constraint_with_a_min_attribute($classMetadataFactory, $classMetadata, $propertyMetadata, $lengthConstraint, $property)
+    function it_should_set_minimum_if_property_as_a_length_constraint_with_a_min_attribute($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $lengthConstraint)
     {
-        $propertyMetadata->name        = 'some property';
-        $classMetadata->properties     = [$propertyMetadata];
         $propertyMetadata->constraints = [$lengthConstraint];
         $lengthConstraint->min         = 15;
-        $classMetadataFactory->getClassMetadata('some class')->willReturn($classMetadata);
-        $property->getName()->willReturn('some property');
 
         $property->setMinimum(15)->shouldBeCalled();
 
@@ -56,19 +51,12 @@ class CustomHandler extends ObjectBehavior
     }
 
     /**
-     * @param Symfony\Component\Validator\Mapping\ClassMetadata $classMetadata
-     * @param Symfony\Component\Validator\Mapping\PropertyMetadata $propertyMetadata
      * @param Symfony\Component\Validator\Constraints\Length $lengthConstraint
-     * @param Knp\JsonSchemaBundle\Model\Property $property
      */
-    function it_should_set_maximum_if_property_as_a_length_constraint_with_a_max_attribute($classMetadataFactory, $classMetadata, $propertyMetadata, $lengthConstraint, $property)
+    function it_should_set_maximum_if_property_as_a_length_constraint_with_a_max_attribute($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $lengthConstraint)
     {
-        $propertyMetadata->name        = 'some property';
-        $classMetadata->properties     = [$propertyMetadata];
         $propertyMetadata->constraints = [$lengthConstraint];
         $lengthConstraint->max         = 42;
-        $classMetadataFactory->getClassMetadata('some class')->willReturn($classMetadata);
-        $property->getName()->willReturn('some property');
 
         $property->setMaximum(42)->shouldBeCalled();
 
@@ -76,25 +64,85 @@ class CustomHandler extends ObjectBehavior
     }
 
     /**
-     * @param Symfony\Component\Validator\Mapping\ClassMetadata $classMetadata
-     * @param Symfony\Component\Validator\Mapping\PropertyMetadata $propertyMetadata
      * @param Symfony\Component\Validator\Constraints\Type $typeNumberConstraint
      * @param Symfony\Component\Validator\Constraints\Type $typeStringConstraint
-     * @param Knp\JsonSchemaBundle\Model\Property $property
      */
-    function it_should_add_type_if_property_as_a_type_constraint_that_is_not_already_added($classMetadataFactory, $classMetadata, $propertyMetadata, $typeNumberConstraint, $typeStringConstraint, $property)
+    function it_should_add_type_if_property_as_a_type_constraint_that_is_not_already_added($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $typeNumberConstraint, $typeStringConstraint)
     {
-        $propertyMetadata->name        = 'some property';
-        $classMetadata->properties     = [$propertyMetadata];
         $propertyMetadata->constraints = [$typeNumberConstraint];
         $typeNumberConstraint->type    = 'number';
 
-        $classMetadataFactory->getClassMetadata('some class')->willReturn($classMetadata);
-
-        $property->getName()->willReturn('some property');
         $property->getTypes()->willReturn(['string']);
 
         $property->addType('number')->shouldBeCalled();
+
+        $this->handle('some class', $property);
+    }
+
+    /**
+     * @param Symfony\Component\Validator\Constraints\Date $constraint
+     */
+    function it_should_add_date_format_if_property_as_a_date_constraint($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
+    {
+        $propertyMetadata->constraints = [$constraint];
+        $property->setFormat(Property::FORMAT_DATE)->shouldBeCalled();
+
+        $this->handle('some class', $property);
+    }
+
+    /**
+     * @param Symfony\Component\Validator\Constraints\DateTime $constraint
+     */
+    function it_should_add_date_time_format_if_property_as_a_datetime_constraint($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
+    {
+        $propertyMetadata->constraints = [$constraint];
+        $property->setFormat(Property::FORMAT_DATETIME)->shouldBeCalled();
+
+        $this->handle('some class', $property);
+    }
+
+    /**
+     * @param Symfony\Component\Validator\Constraints\Time $constraint
+     */
+    function it_should_add_time_format_if_property_as_a_time_constraint($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
+    {
+        $propertyMetadata->constraints = [$constraint];
+        $property->setFormat(Property::FORMAT_TIME)->shouldBeCalled();
+
+        $this->handle('some class', $property);
+    }
+
+    /**
+     * @param Symfony\Component\Validator\Constraints\Email $constraint
+     */
+    function it_should_add_email_format_if_property_as_an_email_constraint($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
+    {
+        $propertyMetadata->constraints = [$constraint];
+        $property->setFormat(Property::FORMAT_EMAIL)->shouldBeCalled();
+
+        $this->handle('some class', $property);
+    }
+
+    /**
+     * @param Symfony\Component\Validator\Constraints\Ip $constraint
+     */
+    function it_should_add_ipv6_format_if_property_as_an_ip_constraint_with_version_6($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
+    {
+        $propertyMetadata->constraints = [$constraint];
+        $constraint->version = '6';
+        $property->setFormat(Property::FORMAT_IPV6)->shouldBeCalled();
+
+        $this->handle('some class', $property);
+    }
+
+    /**
+     * @param Symfony\Component\Validator\Constraints\Ip $constraint
+     */
+    function it_should_add_ip_address_format_if_property_as_an_ip_constraint_with_version_4($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
+    {
+        $propertyMetadata->constraints = [$constraint];
+        $constraint->version = '4';
+        $property->setFormat(Property::FORMAT_IPADDRESS)->shouldBeCalled();
 
         $this->handle('some class', $property);
     }

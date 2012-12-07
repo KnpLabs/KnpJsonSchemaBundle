@@ -6,14 +6,27 @@ use Symfony\Component\Validator\Constraint;
 
 class Property implements \JsonSerializable
 {
-    const TYPE_STRING  = 'string';
-    const TYPE_NUMBER  = 'number';
-    const TYPE_INTEGER = 'integer';
-    const TYPE_BOOLEAN = 'boolean';
-    const TYPE_OBJECT  = 'object';
-    const TYPE_ARRAY   = 'array';
-    const TYPE_NULL    = 'null';
-    const TYPE_ANY     = 'any';
+    const TYPE_STRING        = 'string';
+    const TYPE_NUMBER        = 'number';
+    const TYPE_INTEGER       = 'integer';
+    const TYPE_BOOLEAN       = 'boolean';
+    const TYPE_OBJECT        = 'object';
+    const TYPE_ARRAY         = 'array';
+    const TYPE_NULL          = 'null';
+    const TYPE_ANY           = 'any';
+    const FORMAT_DATETIME    = 'date-time';
+    const FORMAT_DATE        = 'date';
+    const FORMAT_TIME        = 'time';
+    const FORMAT_UTCMILLISEC = 'utc-millisec';
+    const FORMAT_REGEX       = 'regex';
+    const FORMAT_COLOR       = 'color';
+    const FORMAT_STYLE       = 'style';
+    const FORMAT_PHONE       = 'phone';
+    const FORMAT_URI         = 'uri';
+    const FORMAT_EMAIL       = 'email';
+    const FORMAT_IPADDRESS   = 'ip-address';
+    const FORMAT_IPV6        = 'ipv6';
+    const FORMAT_HOSTNAME    = 'host-name';
 
     protected $name;
     protected $required = false;
@@ -22,6 +35,7 @@ class Property implements \JsonSerializable
     protected $enumeration = [];
     protected $minimum;
     protected $maximum;
+    protected $format;
 
     public function setName($name)
     {
@@ -121,6 +135,20 @@ class Property implements \JsonSerializable
         return $this->maximum;
     }
 
+    public function setFormat($format)
+    {
+        if (!$this->format) {
+            $this->format = $format;
+        }
+
+        return $this;
+    }
+
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
     public function jsonSerialize()
     {
         $serialized['required'] =  $this->required;
@@ -157,6 +185,10 @@ class Property implements \JsonSerializable
             if ($this->maximum) {
                 $serialized['maxLength'] = $this->maximum;
             }
+        }
+
+        if ($this->format) {
+            $serialized['format'] = $this->format;
         }
 
         return $serialized;

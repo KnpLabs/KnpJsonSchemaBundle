@@ -3,6 +3,7 @@
 namespace spec\Knp\JsonSchemaBundle\Property;
 
 use PHPSpec2\ObjectBehavior;
+use Knp\JsonSchemaBundle\Model\Property;
 
 class FormTypeGuesserHandler extends ObjectBehavior
 {
@@ -141,6 +142,30 @@ class FormTypeGuesserHandler extends ObjectBehavior
     {
         $typeGuess->getType()->willReturn('url');
         $property->addType('string')->shouldBeCalled();
+
+        $this->handle('my\class\namespace', $property);
+    }
+
+    function it_should_set_json_format_date_time_if_guessed_type_is_datetime($guesser, $property, $typeGuess)
+    {
+        $typeGuess->getType()->willReturn('datetime');
+        $property->setFormat(Property::FORMAT_DATETIME)->shouldBeCalled();
+
+        $this->handle('my\class\namespace', $property);
+    }
+
+    function it_should_set_json_format_date_if_guessed_type_is_date($guesser, $property, $typeGuess)
+    {
+        $typeGuess->getType()->willReturn('date');
+        $property->setFormat(Property::FORMAT_DATE)->shouldBeCalled();
+
+        $this->handle('my\class\namespace', $property);
+    }
+
+    function it_should_set_json_format_time_if_guessed_type_is_time($guesser, $property, $typeGuess)
+    {
+        $typeGuess->getType()->willReturn('time');
+        $property->setFormat(Property::FORMAT_TIME)->shouldBeCalled();
 
         $this->handle('my\class\namespace', $property);
     }

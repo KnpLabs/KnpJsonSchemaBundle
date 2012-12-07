@@ -27,6 +27,25 @@ class CustomHandler implements PropertyHandlerInterface
             if ($constraint instanceof \Symfony\Component\Validator\Constraints\Type) {
                 $property->addType($constraint->type);
             }
+            if ($constraint instanceof \Symfony\Component\Validator\Constraints\Date) {
+                $property->setFormat(Property::FORMAT_DATE);
+            }
+            if ($constraint instanceof \Symfony\Component\Validator\Constraints\DateTime) {
+                $property->setFormat(Property::FORMAT_DATETIME);
+            }
+            if ($constraint instanceof \Symfony\Component\Validator\Constraints\Time) {
+                $property->setFormat(Property::FORMAT_TIME);
+            }
+            if ($constraint instanceof \Symfony\Component\Validator\Constraints\Email) {
+                $property->setFormat(Property::FORMAT_EMAIL);
+            }
+            if ($constraint instanceof \Symfony\Component\Validator\Constraints\Ip) {
+                if ('4' === $constraint->version) {
+                    $property->setFormat(Property::FORMAT_IPADDRESS);
+                } elseif ('6' === $constraint->version) {
+                    $property->setFormat(Property::FORMAT_IPV6);
+                }
+            }
         }
     }
 
