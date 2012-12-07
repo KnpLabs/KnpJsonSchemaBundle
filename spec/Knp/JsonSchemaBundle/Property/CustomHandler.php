@@ -74,4 +74,28 @@ class CustomHandler extends ObjectBehavior
 
         $this->handle('some class', $property);
     }
+
+    /**
+     * @param Symfony\Component\Validator\Mapping\ClassMetadata $classMetadata
+     * @param Symfony\Component\Validator\Mapping\PropertyMetadata $propertyMetadata
+     * @param Symfony\Component\Validator\Constraints\Type $typeNumberConstraint
+     * @param Symfony\Component\Validator\Constraints\Type $typeStringConstraint
+     * @param Knp\JsonSchemaBundle\Model\Property $property
+     */
+    function it_should_add_type_if_property_as_a_type_constraint_that_is_not_already_added($classMetadataFactory, $classMetadata, $propertyMetadata, $typeNumberConstraint, $typeStringConstraint, $property)
+    {
+        $propertyMetadata->name        = 'some property';
+        $classMetadata->properties     = [$propertyMetadata];
+        $propertyMetadata->constraints = [$typeNumberConstraint];
+        $typeNumberConstraint->type    = 'number';
+
+        $classMetadataFactory->getClassMetadata('some class')->willReturn($classMetadata);
+
+        $property->getName()->willReturn('some property');
+        $property->getTypes()->willReturn(['string']);
+
+        $property->addType('number')->shouldBeCalled();
+
+        $this->handle('some class', $property);
+    }
 }

@@ -18,7 +18,7 @@ class FormTypeGuesserHandler implements PropertyHandlerInterface
     public function handle($className, Property $property)
     {
         if ($type = $this->guesser->guessType($className, $property->getName())) {
-            $property->setType($this->getPropertyType($type));
+            $property->addType($this->getPropertyType($type));
         }
 
         if ($required = $this->guesser->guessRequired($className, $property->getName())) {

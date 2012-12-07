@@ -45,7 +45,7 @@ Currently, this property constraints are also supported:
 
 Examples
 --------
-Given the following class:
+### Entity
 ```php
 <?php
 
@@ -109,59 +109,73 @@ class User
      * @ORM\Column(type="decimal", nullable=true)
      */
     protected $balance;
+
+    /**
+     * @Assert\Type(type="string")
+     * @Assert\Type(type="number")
+     */
+    protected $height;
 }
 ```
-Then I WILL get the following json:
+
+### Result
 ```json
 {
     "title": "user",
-        "properties": {
-            "id": {
-                "required": true,
-                "type": "integer"
-            },
-            "name": {
-                "required": true,
-                "type": "string"
-            },
-            "email": {
-                "required": true,
-                "type": "string"
-            },
-            "zipCode": {
-                "required": false,
-                "type": "string",
-                "pattern": "[0-9]{5}"
-            },
-            "address": {
-                "required": false,
-                "type": "string",
-                "minLength": "2",
-                "maxLength": "50"
-            },
-            "age": {
-                "required": true,
-                "type": "integer",
-                "minimum": "21"
-            },
-            "file": {
-                "required": false,
-                "type": "string"
-            },
-            "type": {
-                "required": false,
-                "type": "string",
-                "enum": [
-                    "toto",
-                    "tutu",
-                    "tata"
-                ]
-            },
-            "balance": {
-                "required": false,
-                "type": "number"
-            }
+    "properties": {
+        "id": {
+            "required": true,
+            "type": "integer"
+        },
+        "name": {
+            "required": true,
+            "type": "string"
+        },
+        "email": {
+            "required": true,
+            "type": "string"
+        },
+        "zipCode": {
+            "required": false,
+            "type": "string",
+            "pattern": "[0-9]{5}"
+        },
+        "address": {
+            "required": false,
+            "type": "string",
+            "minLength": "2",
+            "maxLength": "50"
+        },
+        "age": {
+            "required": true,
+            "type": "integer",
+            "minimum": "21"
+        },
+        "file": {
+            "required": false,
+            "type": "string"
+        },
+        "type": {
+            "required": false,
+            "type": "string",
+            "enum": [
+                "toto",
+                "tutu",
+                "tata"
+            ]
+        },
+        "balance": {
+            "required": false,
+            "type": "number"
+        },
+        "height": {
+            "required": false,
+            "type": [
+                "string",
+                "number"
+            ]
         }
+    }
 }
 ```
 

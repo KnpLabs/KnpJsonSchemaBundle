@@ -24,6 +24,9 @@ class CustomHandler implements PropertyHandlerInterface
                 $property->setMinimum($constraint->min);
                 $property->setMaximum($constraint->max);
             }
+            if ($constraint instanceof \Symfony\Component\Validator\Constraints\Type) {
+                $property->addType($constraint->type);
+            }
         }
     }
 

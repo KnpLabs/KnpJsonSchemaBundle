@@ -17,9 +17,9 @@ class Property implements \JsonSerializable
 
     protected $name;
     protected $required = false;
-    protected $type;
+    protected $types = [];
     protected $pattern;
-    protected $enumeration = array();
+    protected $enumeration = [];
     protected $minimum;
     protected $maximum;
 
@@ -51,18 +51,18 @@ class Property implements \JsonSerializable
         return $this->required;
     }
 
-    public function setType($type)
+    public function addType($type)
     {
-        if (!$this->type) {
-            $this->type = $type;
+        if (!in_array($type, $this->types)) {
+            $this->types[] = $type;
         }
 
         return $this;
     }
 
-    public function getType()
+    public function getTypes()
     {
-        return $this->type;
+        return $this->types;
     }
 
     public function setPattern($pattern)
@@ -125,8 +125,12 @@ class Property implements \JsonSerializable
     {
         $serialized['required'] =  $this->required;
 
-        if ($this->type) {
-            $serialized['type'] = $this->type;
+        if (count($this->types)) {
+            if (count($this->types) === 1) {
+                $serialized['type'] = $this->types[0];
+            } else {
+                $serialized['type'] = $this->types;
+            }
         }
 
         if ($this->pattern) {
@@ -137,7 +141,7 @@ class Property implements \JsonSerializable
             $serialized['enum'] = $this->enumeration;
         }
 
-        if (in_array($this->type, [self::TYPE_NUMBER, self::TYPE_INTEGER])) {
+        if (count(array_intersect($this->types, [self::TYPE_NUMBER, self::TYPE_INTEGER])) >= 1) {
             if ($this->minimum) {
                 $serialized['minimum'] = $this->minimum;
             }
@@ -146,7 +150,7 @@ class Property implements \JsonSerializable
             }
         }
 
-        if (self::TYPE_STRING === $this->type) {
+        if (count(array_intersect($this->types, [self::TYPE_STRING])) >= 1) {
             if ($this->minimum) {
                 $serialized['minLength'] = $this->minimum;
             }

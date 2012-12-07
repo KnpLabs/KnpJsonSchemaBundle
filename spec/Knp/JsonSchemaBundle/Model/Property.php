@@ -36,11 +36,18 @@ class Property extends ObjectBehavior
         $this->isRequired()->shouldBe(false);
     }
 
-    function it_should_have_a_write_once_type_property()
+    function it_should_have_a_types_property()
     {
-        $this->setType('the type');
-        $this->setType('another type');
-        $this->getType()->shouldBe('the type');
+        $this->addType('the type');
+        $this->addType('another type');
+        $this->getTypes()->shouldBe(['the type', 'another type']);
+    }
+
+    function its_addType_should_not_add_type_if_it_already_has_it()
+    {
+        $this->addType('the type');
+        $this->addType('the type');
+        $this->getTypes()->shouldBe(['the type']);
     }
 
     function it_should_have_a_write_once_pattern_property()
@@ -71,10 +78,22 @@ class Property extends ObjectBehavior
         $this->getMaximum()->shouldBe(5);
     }
 
-    function it_should_only_serialize_non_null_properties()
+    function it_should_serialize_type_as_string_if_it_has_single_value()
     {
-        $this->setType('some type');
-        $this->jsonSerialize()->shouldBe(['required' => false, 'type' => 'some type']);
+        $this->addType('a type');
+        $this->jsonSerialize()->shouldBe(['required' => false, 'type' => 'a type']);
+    }
+
+    function it_should_serialize_type_as_array_if_it_has_multiple_values()
+    {
+        $this->addType('a type');
+        $this->addType('another type');
+        $this->jsonSerialize()->shouldBe(['required' => false, 'type' => ['a type', 'another type']]);
+    }
+
+    function it_should_only_serialize_non_null_properties_only()
+    {
+        $this->jsonSerialize()->shouldBe(['required' => false]);
     }
 
     function it_should_serialize_enumeration_if_there_is_one()
@@ -86,7 +105,7 @@ class Property extends ObjectBehavior
     function it_should_serialize_minimum_and_maximum_if_type_is_number()
     {
         $this
-            ->setType('number')
+            ->addType('number')
             ->setMinimum(10)
             ->setMaximum(15)
         ;
@@ -101,7 +120,7 @@ class Property extends ObjectBehavior
     function it_should_serialize_minimum_and_maximum_if_type_is_integer()
     {
         $this
-            ->setType('integer')
+            ->addType('integer')
             ->setMinimum(10)
             ->setMaximum(15)
         ;
@@ -116,7 +135,7 @@ class Property extends ObjectBehavior
     function it_should_serialize_minLength_and_maxLength_if_type_is_string()
     {
         $this
-            ->setType('string')
+            ->addType('string')
             ->setMinimum(10)
             ->setMaximum(15)
         ;
