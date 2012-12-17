@@ -78,11 +78,18 @@ class Property extends ObjectBehavior
         $this->getMaximum()->shouldBe(5);
     }
 
-    function it_should_have_a_write_once_minimumExcluded_property()
+    function it_should_have_a_write_once_exclusiveMinimum_property()
     {
         $this->setExclusiveMinimum(true);
         $this->setExclusiveMinimum(false);
         $this->isExclusiveMinimum()->shouldBe(true);
+    }
+
+    function it_should_have_a_write_once_exclusiveMaximum_property()
+    {
+        $this->setExclusiveMaximum(true);
+        $this->setExclusiveMaximum(false);
+        $this->isExclusiveMaximum()->shouldBe(true);
     }
 
     function it_should_have_a_write_once_format_property()
@@ -129,6 +136,7 @@ class Property extends ObjectBehavior
             'minimum'          => 10,
             'exclusiveMinimum' => false,
             'maximum'          => 15,
+            'exclusiveMaximum' => false,
         ]);
     }
 
@@ -145,6 +153,7 @@ class Property extends ObjectBehavior
             'minimum'          => 10,
             'exclusiveMinimum' => false,
             'maximum'          => 15,
+            'exclusiveMaximum' => false,
         ]);
     }
 

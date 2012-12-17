@@ -36,6 +36,7 @@ class Property implements \JsonSerializable
     protected $minimum;
     protected $maximum;
     protected $exclusiveMinimum = false;
+    protected $exclusiveMaximum = false;
     protected $format;
 
     public function setName($name)
@@ -150,6 +151,20 @@ class Property implements \JsonSerializable
         return $this->exclusiveMinimum;
     }
 
+    public function setExclusiveMaximum($exclusiveMaximum)
+    {
+        if (!$this->exclusiveMaximum) {
+            $this->exclusiveMaximum = $exclusiveMaximum;
+        }
+
+        return $this;
+    }
+
+    public function isExclusiveMaximum()
+    {
+        return $this->exclusiveMaximum;
+    }
+
     public function setFormat($format)
     {
         if (!$this->format) {
@@ -190,7 +205,8 @@ class Property implements \JsonSerializable
                 $serialized['exclusiveMinimum'] = $this->exclusiveMinimum;
             }
             if ($this->maximum) {
-                $serialized['maximum'] = $this->maximum;
+                $serialized['maximum']          = $this->maximum;
+                $serialized['exclusiveMaximum'] = $this->exclusiveMaximum;
             }
         }
 
