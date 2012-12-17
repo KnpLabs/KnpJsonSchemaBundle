@@ -5,7 +5,7 @@ namespace Knp\JsonSchemaBundle\Property;
 use Knp\JsonSchemaBundle\Model\Property;
 use Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface;
 
-class CustomHandler implements PropertyHandlerInterface
+class ExtraValidatorConstraintsHandler implements PropertyHandlerInterface
 {
     private $classMetadataFactory;
 

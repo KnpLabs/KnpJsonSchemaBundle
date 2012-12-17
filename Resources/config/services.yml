@@ -1,13 +1,13 @@
 parameters:
-    json_schema.generator.class:                                 "Knp\\JsonSchemaBundle\\Schema\\SchemaGenerator"
-    json_schema.builder.class:                                   "Knp\\JsonSchemaBundle\\Schema\\SchemaBuilder"
-    json_schema.reflection_factory.class:                        "Knp\\JsonSchemaBundle\\Schema\\ReflectionFactory"
-    json_schema.builder.handler.form_type_guesser_handler.class: "Knp\\JsonSchemaBundle\\Property\\FormTypeGuesserHandler"
-    json_schema.builder.handler.custom_handler.class:            "Knp\\JsonSchemaBundle\\Property\\CustomHandler"
-    json_schema.builder.handler.annotation.class:                "Knp\\JsonSchemaBundle\\Property\\JsonSchemaAnnotationHandler"
-    doctrine.annotations.reader.class:                           "Doctrine\\Common\Annotations\\AnnotationReader"
-    json_schema.validator.class:                                 "JsonSchema\\Validator"
-    form.chain.guesser.class:                                    "Symfony\\Component\\Form\\FormTypeGuesserChain"
+    json_schema.generator.class:                                           "Knp\\JsonSchemaBundle\\Schema\\SchemaGenerator"
+    json_schema.builder.class:                                             "Knp\\JsonSchemaBundle\\Schema\\SchemaBuilder"
+    json_schema.reflection_factory.class:                                  "Knp\\JsonSchemaBundle\\Schema\\ReflectionFactory"
+    json_schema.builder.handler.form_type_guesser_handler.class:           "Knp\\JsonSchemaBundle\\Property\\FormTypeGuesserHandler"
+    json_schema.builder.handler.extra_validator_constraints_handler.class: "Knp\\JsonSchemaBundle\\Property\\ExtraValidatorConstraintsHandler"
+    json_schema.builder.handler.annotation.class:                          "Knp\\JsonSchemaBundle\\Property\\JsonSchemaAnnotationHandler"
+    doctrine.annotations.reader.class:                                     "Doctrine\\Common\Annotations\\AnnotationReader"
+    json_schema.validator.class:                                           "JsonSchema\\Validator"
+    form.chain.guesser.class:                                              "Symfony\\Component\\Form\\FormTypeGuesserChain"
 
 services:
     json_schema.generator:
@@ -46,9 +46,9 @@ services:
         tags:
             - { name: json_schema.builder.handler, priority: 10 }
 
-    json_schema.builder.handler.custom:
+    json_schema.builder.handler.extra_validator_constraints_handler:
         public: false
-        class: %json_schema.builder.handler.custom_handler.class%
+        class: %json_schema.builder.handler.extra_validator_constraints_handler.class%
         arguments:
             - @validator.mapping.class_metadata_factory
         tags:

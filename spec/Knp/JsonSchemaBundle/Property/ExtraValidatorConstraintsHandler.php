@@ -6,7 +6,7 @@ use Knp\JsonSchemaBundle\Model\Property;
 
 use PHPSpec2\ObjectBehavior;
 
-class CustomHandler extends ObjectBehavior
+class ExtraValidatorConstraintsHandler extends ObjectBehavior
 {
     /**
      * @param Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface $classMetadataFactory
