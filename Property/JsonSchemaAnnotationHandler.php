@@ -26,6 +26,9 @@ class JsonSchemaAnnotationHandler implements PropertyHandlerInterface
             if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\ExclusiveMaximum) {
                 $property->setExclusiveMaximum(true);
             }
+            if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\Disallow) {
+                $property->setDisallowed($constraint->disallowed);
+            }
         }
     }
 

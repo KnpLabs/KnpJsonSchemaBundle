@@ -99,6 +99,13 @@ class Property extends ObjectBehavior
         $this->getFormat()->shouldBe('date-time');
     }
 
+    function it_should_have_a_write_once_disallowed_property()
+    {
+        $this->setDisallowed(['boolean', 'string']);
+        $this->setDisallowed(['number']);
+        $this->getDisallowed()->shouldBe(['boolean', 'string']);
+    }
+
     function it_should_serialize_type_as_string_if_it_has_single_value()
     {
         $this->addType('a type');
@@ -169,6 +176,20 @@ class Property extends ObjectBehavior
             'type'      => 'string',
             'minLength' => 10,
             'maxLength' => 15,
+        ]);
+    }
+
+    function it_should_serialize_disallow_as_array_if_it_has_been_defined()
+    {
+        $this->setDisallowed(["boolean", "number", ["type" => "string", "format" => "email"]]);
+
+        $this->jsonSerialize()->shouldBe([
+            'required' => false,
+            'disallow' => [
+                'boolean',
+                'number',
+                ['type' => 'string', 'format' => 'email'],
+            ],
         ]);
     }
 }

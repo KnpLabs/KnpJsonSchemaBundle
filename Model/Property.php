@@ -38,6 +38,7 @@ class Property implements \JsonSerializable
     protected $exclusiveMinimum = false;
     protected $exclusiveMaximum = false;
     protected $format;
+    protected $disallowed = [];
 
     public function setName($name)
     {
@@ -179,6 +180,20 @@ class Property implements \JsonSerializable
         return $this->format;
     }
 
+    public function setDisallowed(array $disallowed)
+    {
+        if (!$this->disallowed) {
+            $this->disallowed = $disallowed;
+        }
+
+        return $this;
+    }
+
+    public function getDisallowed()
+    {
+        return $this->disallowed;
+    }
+
     public function jsonSerialize()
     {
         $serialized['required'] =  $this->required;
@@ -221,6 +236,10 @@ class Property implements \JsonSerializable
 
         if ($this->format) {
             $serialized['format'] = $this->format;
+        }
+
+        if ($this->disallowed) {
+            $serialized['disallow'] = $this->disallowed;
         }
 
         return $serialized;
