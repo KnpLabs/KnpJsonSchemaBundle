@@ -1,7 +1,7 @@
 {
     "name": "knplabs/json-schema-bundle",
-    "description": "A bundle to generate json schema based on doctrine and validation metadata",
-    "license":     "MIT",
+    "description": "A bundle to generate json schema based on various metadata",
+    "license": "MIT",
     "authors": [
         {
             "name":     "Knplabs",
