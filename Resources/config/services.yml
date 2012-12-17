@@ -5,7 +5,9 @@ parameters:
     json_schema.builder.handler.form_type_guesser_handler.class:           "Knp\\JsonSchemaBundle\\Property\\FormTypeGuesserHandler"
     json_schema.builder.handler.extra_validator_constraints_handler.class: "Knp\\JsonSchemaBundle\\Property\\ExtraValidatorConstraintsHandler"
     json_schema.builder.handler.annotation.class:                          "Knp\\JsonSchemaBundle\\Property\\JsonSchemaAnnotationHandler"
-    doctrine.annotations.reader.class:                                     "Doctrine\\Common\Annotations\\AnnotationReader"
+    doctrine.annotations.reader.class:                                     "Doctrine\\Common\\Annotations\\AnnotationReader"
+    doctrine.annotations.cached_reader.class:                              "Doctrine\\Common\\Annotations\\CachedReader"
+    doctrine.common.apc_cache.class:                                       "Doctrine\\Common\\Cache\\ApcCache"
     json_schema.validator.class:                                           "JsonSchema\\Validator"
     form.chain.guesser.class:                                              "Symfony\\Component\\Form\\FormTypeGuesserChain"
 
@@ -33,7 +35,7 @@ services:
         public: false
         class: %json_schema.builder.handler.annotation.class%
         arguments:
-            - @doctrine.annotations.reader
+            - @doctrine.annotations.cached_reader
             - @json_schema.reflection_factory
         tags:
             - { name: json_schema.builder.handler, priority: 20 }
@@ -60,6 +62,18 @@ services:
         arguments:
             - [@form.type_guesser.validator, @form.type_guesser.doctrine]
 
+    doctrine.annotations.cached_reader:
+        public: false
+        class: %doctrine.annotations.cached_reader.class%
+        arguments:
+            - @doctrine.annotations.reader
+            - @doctrine.common.apc_cache
+            - true
+
     doctrine.annotations.reader:
         public: false
         class: %doctrine.annotations.reader.class%
+
+    doctrine.common.apc_cache:
+        public: false
+        class: %doctrine.common.apc_cache.class%
