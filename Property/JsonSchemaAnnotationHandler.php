@@ -29,6 +29,11 @@ class JsonSchemaAnnotationHandler implements PropertyHandlerInterface
             if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\Disallow) {
                 $property->setDisallowed($constraint->disallowed);
             }
+            if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\Type) {
+                foreach ($constraint->types as $type) {
+                    $property->addType($type);
+                }
+            }
         }
     }
 
