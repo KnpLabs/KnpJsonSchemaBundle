@@ -3,13 +3,13 @@
 namespace Knp\JsonSchemaBundle\Property;
 
 use Knp\JsonSchemaBundle\Model\Property;
-use Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface;
+use Symfony\Component\Validator\MetadataFactoryInterface;
 
 class CustomHandler implements PropertyHandlerInterface
 {
     private $classMetadataFactory;
 
-    public function __construct(ClassMetadataFactoryInterface $classMetadataFactory)
+    public function __construct(MetadataFactoryInterface $classMetadataFactory)
     {
         $this->classMetadataFactory = $classMetadataFactory;
     }
@@ -51,7 +51,7 @@ class CustomHandler implements PropertyHandlerInterface
 
     private function getConstraintsForProperty($className, Property $property)
     {
-        $classMetadata = $this->classMetadataFactory->getClassMetadata($className);
+        $classMetadata = $this->classMetadataFactory->getMetadataFor($className);
 
         foreach ($classMetadata->properties as $propertyMetadata) {
             if ($propertyMetadata->name === $property->getName()) {
