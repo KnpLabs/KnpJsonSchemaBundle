@@ -1,10 +1,13 @@
 parameters:
-    json_schema.generator.class:                                  "Knp\\JsonSchemaBundle\\Schema\\SchemaGenerator"
-    json_schema.builder.class:                                    "Knp\\JsonSchemaBundle\\Schema\\SchemaBuilder"
-    json_schema.reflection_factory.class:                         "Knp\\JsonSchemaBundle\\Schema\\ReflectionFactory"
-    json_schema.validator.class:                                  "JsonSchema\\Validator"
-    json_schema.builder.handler.form_type_guesser_handler.class:  "Knp\\JsonSchemaBundle\\Property\\FormTypeGuesserHandler"
-    json_schema.builder.handler.custom_handler.class:             "Knp\\JsonSchemaBundle\\Property\\CustomHandler"
+    json_schema.generator.class:                                 "Knp\\JsonSchemaBundle\\Schema\\SchemaGenerator"
+    json_schema.builder.class:                                   "Knp\\JsonSchemaBundle\\Schema\\SchemaBuilder"
+    json_schema.reflection_factory.class:                        "Knp\\JsonSchemaBundle\\Schema\\ReflectionFactory"
+    json_schema.builder.handler.form_type_guesser_handler.class: "Knp\\JsonSchemaBundle\\Property\\FormTypeGuesserHandler"
+    json_schema.builder.handler.custom_handler.class:            "Knp\\JsonSchemaBundle\\Property\\CustomHandler"
+    json_schema.builder.handler.annotation.class:                "Knp\\JsonSchemaBundle\\Property\\JsonSchemaAnnotationHandler"
+    doctrine.annotations.reader.class:                           "Doctrine\\Common\Annotations\\AnnotationReader"
+    json_schema.validator.class:                                 "JsonSchema\\Validator"
+    form.chain.guesser.class:                                    "Symfony\\Component\\Form\\FormTypeGuesserChain"
 
 services:
     json_schema.generator:
@@ -26,9 +29,18 @@ services:
         public: false
         class: %json_schema.validator.class%
 
+    json_schema.builder.handler.annotation:
+        public: false
+        class: %json_schema.builder.handler.annotation.class%
+        arguments:
+            - @doctrine.annotations.reader
+            - @json_schema.reflection_factory
+        tags:
+            - { name: json_schema.builder.handler, priority: 20 }
+
     json_schema.builder.handler.chained_guesser:
         public: false
-        class: "Knp\\JsonSchemaBundle\\Property\\FormTypeGuesserHandler"
+        class: %json_schema.builder.handler.form_type_guesser_handler.class%
         arguments:
             - @form.chain.guesser
         tags:
@@ -44,6 +56,10 @@ services:
 
     form.chain.guesser:
         public: false
-        class: "Symfony\\Component\\Form\\FormTypeGuesserChain"
+        class: %form.chain.guesser.class%
         arguments:
             - [@form.type_guesser.validator, @form.type_guesser.doctrine]
+
+    doctrine.annotations.reader:
+        public: false
+        class: %doctrine.annotations.reader.class%

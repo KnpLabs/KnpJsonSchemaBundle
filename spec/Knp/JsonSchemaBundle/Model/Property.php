@@ -78,6 +78,13 @@ class Property extends ObjectBehavior
         $this->getMaximum()->shouldBe(5);
     }
 
+    function it_should_have_a_write_once_minimumExcluded_property()
+    {
+        $this->setExclusiveMinimum(true);
+        $this->setExclusiveMinimum(false);
+        $this->isExclusiveMinimum()->shouldBe(true);
+    }
+
     function it_should_have_a_write_once_format_property()
     {
         $this->setFormat('date-time');
@@ -109,7 +116,7 @@ class Property extends ObjectBehavior
         $this->jsonSerialize()->shouldBe(['required' => false, 'enum' => ['a','simple','list','of','choice']]);
     }
 
-    function it_should_serialize_minimum_and_maximum_if_type_is_number()
+    function it_should_serialize_minimum_maximum_and_exclusive_constraints_if_type_is_number()
     {
         $this
             ->addType('number')
@@ -117,14 +124,15 @@ class Property extends ObjectBehavior
             ->setMaximum(15)
         ;
         $this->jsonSerialize()->shouldBe([
-            'required' => false,
-            'type'     => 'number',
-            'minimum'  => 10,
-            'maximum'  => 15,
+            'required'         => false,
+            'type'             => 'number',
+            'minimum'          => 10,
+            'exclusiveMinimum' => false,
+            'maximum'          => 15,
         ]);
     }
 
-    function it_should_serialize_minimum_and_maximum_if_type_is_integer()
+    function it_should_serialize_minimum_maximum_exclusive_constraints_if_type_is_integer()
     {
         $this
             ->addType('integer')
@@ -132,10 +140,11 @@ class Property extends ObjectBehavior
             ->setMaximum(15)
         ;
         $this->jsonSerialize()->shouldBe([
-            'required' => false,
-            'type'     => 'integer',
-            'minimum'  => 10,
-            'maximum'  => 15,
+            'required'         => false,
+            'type'             => 'integer',
+            'minimum'          => 10,
+            'exclusiveMinimum' => false,
+            'maximum'          => 15,
         ]);
     }
 

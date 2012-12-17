@@ -35,6 +35,7 @@ class Property implements \JsonSerializable
     protected $enumeration = [];
     protected $minimum;
     protected $maximum;
+    protected $exclusiveMinimum = false;
     protected $format;
 
     public function setName($name)
@@ -135,6 +136,20 @@ class Property implements \JsonSerializable
         return $this->maximum;
     }
 
+    public function setExclusiveMinimum($exclusiveMinimum)
+    {
+        if (!$this->exclusiveMinimum) {
+            $this->exclusiveMinimum = $exclusiveMinimum;
+        }
+
+        return $this;
+    }
+
+    public function isExclusiveMinimum()
+    {
+        return $this->exclusiveMinimum;
+    }
+
     public function setFormat($format)
     {
         if (!$this->format) {
@@ -171,7 +186,8 @@ class Property implements \JsonSerializable
 
         if (count(array_intersect($this->types, [self::TYPE_NUMBER, self::TYPE_INTEGER])) >= 1) {
             if ($this->minimum) {
-                $serialized['minimum'] = $this->minimum;
+                $serialized['minimum']          = $this->minimum;
+                $serialized['exclusiveMinimum'] = $this->exclusiveMinimum;
             }
             if ($this->maximum) {
                 $serialized['maximum'] = $this->maximum;
