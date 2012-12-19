@@ -22,10 +22,10 @@ class SchemaController extends ObjectBehavior
         $schemaGenerator, $schema
     )
     {
-        $something->get('foo')->willReturn('App\\Entity\\Foo;');
-        $schemaGenerator->generate('App\\Entity\\Foo')->shouldBeCalled()->willReturn($schema);
+        $schemaGenerator->generate('foo')->shouldBeCalled()->willReturn($schema);
 
         $response = $this->showAction('foo');
-        $response->headers->get('Content-Type')->shouldReturn('application/json+schema');
+        $response->getContent()->shouldReturn($schema);
+        $response->shouldBeAnInstanceOf('Knp\JsonSchemaBundle\HttpFoundation\JsonSchemaResponse');
     }
 }
