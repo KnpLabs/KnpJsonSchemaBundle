@@ -23,7 +23,7 @@
         "bin-dir": "bin"
     },
     "autoload": {
-        "psr-0": { "Knp\\JsonSchemaBundle": "" }
+        "psr-0": { "Knp\\JsonSchemaBundle": "src/" }
     },
     "target-dir": "Knp/JsonSchemaBundle"
 }
