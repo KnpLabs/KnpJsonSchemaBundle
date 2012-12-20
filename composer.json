@@ -9,11 +9,15 @@
         }
     ],
     "require": {
-        "php":                       ">=5.4",
-        "symfony/validator":         ">=2.1,<2.3-dev",
-        "symfony/form":              ">=2.1,<2.3-dev",
-        "justinrainbow/json-schema": ">=1.2.2",
-        "doctrine/common":           ">=2.3,<2.4-dev"
+        "php":                          ">=5.4",
+        "symfony/validator":            ">=2.1,<2.3-dev",
+        "symfony/form":                 ">=2.1,<2.3-dev",
+        "symfony/dependency-injection": ">=2.1,<2.3-dev",
+        "symfony/config":               ">=2.1,<2.3-dev",
+        "symfony/filesystem":           ">=2.1,<2.3-dev",
+        "symfony/finder":               ">=2.1,<2.3-dev",
+        "justinrainbow/json-schema":    ">=1.2.2",
+        "doctrine/common":              ">=2.3,<2.4-dev"
     },
     "require-dev": {
         "phpspec/phpspec2": "dev-develop"

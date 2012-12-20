@@ -4,12 +4,13 @@ namespace Knp\JsonSchemaBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Knp\JsonSchemaBundle\DependencyInjection\Compiler\RegisterPropertyHandlerCompilerPass;
+use Knp\JsonSchemaBundle\DependencyInjection\Compiler;
 
 class KnpJsonSchemaBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new RegisterPropertyHandlerCompilerPass());
+        $container->addCompilerPass(new Compiler\RegisterPropertyHandlerCompilerPass());
+        $container->addCompilerPass(new Compiler\RegisterJsonSchemaCompilerPass());
     }
 }

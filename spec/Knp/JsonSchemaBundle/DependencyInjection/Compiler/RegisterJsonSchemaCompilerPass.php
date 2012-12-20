@@ -6,42 +6,36 @@ use PHPSpec2\ObjectBehavior;
 
 class RegisterJsonSchemaCompilerPass extends ObjectBehavior
 {
-    /**
-     * @param Doctrine\Common\Annotations\Reader                     $reader
-     * @param Knp/JsonSchemaBundle/Schema/SchemaRepository           $schemaRepository
-     * @param Knp/JsonSchemaBundle/Schema/ReflectionFactory          $reflectionFactory
-     * @param Symfony\Component\DependencyInjection\ContainerBuilder $container
-     */
-    function let($reader, $schemaRepository, $reflectionFactory, $container)
-    {
-        $this->beConstructedWith($reader, $schemaRepository, $reflectionFactory);
-    }
-
     function it_should_be_initializable()
     {
         $this->shouldHaveType('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
     }
 
     /**
-     * @param Knp\JsonSchemaBundle\Annotations\Schema $schema
-     * @param ReflectionClass                         $refClass
+     * @param Knp\JsonSchemaBundle\Annotations\Schema       $schema
+     * @param ReflectionClass                               $refClass
+     * @param Doctrine\Common\Annotations\Reader            $reader
+     * @param Knp\JsonSchemaBundle\Schema\SchemaRegistry    $registry
+     * @param Knp\JsonSchemaBundle\Schema\ReflectionFactory $factory
      */
-    function it_should_use_Schema_annotation_data_to_register_the_class_in_the_schema_repository(
-        $reader, $schemaRepository, $reflectionFactory, $container, $schema, $refClass
+    function it_should_use_Schema_annotation_data_to_register_the_class_in_the_schema_registry(
+        $reader, $registry, $factory, $container, $schema, $refClass
     )
     {
-        $container->has('json_schema.repository')->willReturn(true);
-        $container->get('json_schema.repository')->willReturn($schemaRepository);
+        $container->has('json_schema.registry')->willReturn(true);
+        $container->get('json_schema.registry')->willReturn($schemaRegistry);
+        $container->get('doctrine.annotations.cached_reader')->willReturn($reader);
+        $container->get('json_schema.registry')->willReturn($registry);
+        $container->get('json_schema.reflection_factory')->willReturn($factory);
 
-        /** It should look by default into Entity and Model directories, but should be configurable */
-        $reflectionFactory->createFromRepository(ANY_ARGUMENT)->willReturn([$refClass]);
+        $reflectionFactory->createFromDirectory(ANY_ARGUMENT)->willReturn([$refClass]);
 
         $schema->name = 'foo';
         $reader->getClassAnnotations($refClass)->willReturn([$schema]);
 
         $refClass->getName()->willReturn('App\\Entity\\Foo');
 
-        $schemaRepository->add('foo', 'App\\Entity\\Foo')->shouldBeCalled();
+        $schemaRegistry->add('foo', 'App\\Entity\\Foo')->shouldBeCalled();
 
         $this->process($container);
     }
