@@ -4,6 +4,7 @@ namespace Knp\JsonSchemaBundle\Annotations;
 
 /**
  * @Annotation
+ * @Target({"CLASS"})
  */
 class Schema
 {
