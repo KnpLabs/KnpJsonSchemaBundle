@@ -22,6 +22,54 @@ class RegisterJsonSchemaCompilerPass extends ObjectBehavior
     }
 
     /**
+     * @param Symfony\Component\DependencyInjection\ContainerBuilder $container
+     */
+    function it_should_do_nothing_if_schema_registry_is_unavailable(
+        $container
+    )
+    {
+        $container->has('json_schema.registry')->willReturn(false);
+        $container->has('json_schema.reflection_factory')->willReturn(true);
+        $container->has('doctrine.annotations.cached_reader')->willReturn(true);
+
+        $container->getDefinition('json_schema.registry')->shouldNotBeCalled();
+
+        $this->process($container);
+    }
+
+    /**
+     * @param Symfony\Component\DependencyInjection\ContainerBuilder $container
+     */
+    function it_should_do_nothing_if_reflection_factory_is_unavailable(
+        $container
+    )
+    {
+        $container->has('json_schema.registry')->willReturn(true);
+        $container->has('json_schema.reflection_factory')->willReturn(false);
+        $container->has('doctrine.annotations.cached_reader')->willReturn(true);
+
+        $container->getDefinition('json_schema.registry')->shouldNotBeCalled();
+
+        $this->process($container);
+    }
+
+    /**
+     * @param Symfony\Component\DependencyInjection\ContainerBuilder $container
+     */
+    function it_should_do_nothing_if_annotation_reader_is_unavailable(
+        $container
+    )
+    {
+        $container->has('json_schema.registry')->willReturn(true);
+        $container->has('json_schema.reflection_factory')->willReturn(true);
+        $container->has('doctrine.annotations.cached_reader')->willReturn(false);
+
+        $container->getDefinition('json_schema.registry')->shouldNotBeCalled();
+
+        $this->process($container);
+    }
+
+    /**
      * @param Knp\JsonSchemaBundle\Annotations\Schema                $schema
      * @param ReflectionClass                                        $refClass
      * @param Doctrine\Common\Annotations\Reader                     $reader
@@ -33,10 +81,9 @@ class RegisterJsonSchemaCompilerPass extends ObjectBehavior
         $reader, $registry, $factory, $container, $schema, $refClass
     )
     {
-        $container->has('json_schema.registry')->willReturn(true);
+        $container->has(ANY_ARGUMENT)->willReturn(true);
         $container->getDefinition('json_schema.registry')->willReturn($registry);
         $container->get('doctrine.annotations.cached_reader')->willReturn($reader);
-        $container->get('json_schema.registry')->willReturn($registry);
         $container->get('json_schema.reflection_factory')->willReturn($factory);
 
         $factory->createFromDirectory(ANY_ARGUMENTS)->willReturn([$refClass]);

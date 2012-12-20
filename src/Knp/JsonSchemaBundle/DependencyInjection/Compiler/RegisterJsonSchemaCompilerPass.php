@@ -20,21 +20,17 @@ class RegisterJsonSchemaCompilerPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has('json_schema.registry')) {
+        if (
+            !$container->has('json_schema.registry') ||
+            !$container->has('doctrine.annotations.cached_reader') ||
+            !$container->has('json_schema.reflection_factory')
+        ) {
             return;
         }
 
-        if (null === $registry = $container->getDefinition('json_schema.registry')) {
-            return;
-        }
-
-        if (null === $reader = $container->get('doctrine.annotations.cached_reader')) {
-            return;
-        }
-
-        if (null === $factory = $container->get('json_schema.reflection_factory')) {
-            return;
-        }
+        $registry = $container->getDefinition('json_schema.registry');
+        $reader   = $container->get('doctrine.annotations.cached_reader');
+        $factory  = $container->get('json_schema.reflection_factory');
 
         $refClasses = $factory->createFromDirectory(
             $this->bundle->getPath().'/Entity',
