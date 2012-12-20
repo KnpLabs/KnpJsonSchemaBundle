@@ -16,7 +16,6 @@ class JsonSchemaResponse extends ObjectBehavior
      */
     function its_content_type_should_be_the_json_schema_mimetype($headers)
     {
-        $this->headers = $headers;
-        $headers->set('Content-Type', 'application/json+schema')->shouldBeCalled();
+        $this->headers->get('Content-Type')->shouldReturn('application/json+schema');
     }
 }

@@ -3,7 +3,7 @@
 namespace Knp\JsonSchemaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Knp\JsonSchemaBundle\HttpFoundation\JsonSchemaResponse;
 
 class SchemaController extends Controller
 {
@@ -12,6 +12,6 @@ class SchemaController extends Controller
         $classname = $this->get('json_schema.registry')->get($alias);
         $schema    = $this->get('json_schema.generator')->generate($classname);
 
-        return new JsonResponse($schema);
+        return new JsonSchemaResponse($schema);
     }
 }

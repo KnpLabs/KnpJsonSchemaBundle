@@ -8,26 +8,28 @@ class SchemaController extends ObjectBehavior
 {
     /**
      * @param Symfony\Component\DependencyInjection\ContainerInterface $container
-     * @param Knp\JsonSchemaBundle\Schema\SchemaGenerator              $schemaGenerator
+     * @param Knp\JsonSchemaBundle\Schema\SchemaGenerator              $generator
+     * @param Knp\JsonSchemaBundle\Schema\SchemaRegistry               $registry
      */
-    function let($container, $schemaGenerator)
+    function let($container, $generator, $registry)
     {
-        $container->get('json_schema.generator')->willReturn($schemaGenerator);
+        $container->get('json_schema.generator')->willReturn($generator);
+        $container->get('json_schema.registry')->willReturn($registry);
+
+        $this->setContainer($container);
     }
 
     /**
      * @param Knp\JsonSchemaBundle\Model\Schema          $schema
-     * @param Knp\JsonSchemaBundle\Schema\SchemaRegistry $registry
      */
     function its_showAction_should_display_a_json_schema_with_according_content_type(
-        $schemaGenerator, $registry, $schema
+        $generator, $registry, $schema
     )
     {
         $registry->get('foo')->willReturn('App\\Entity\\User');
-        $schemaGenerator->generate('App\\Entity\\User')->willReturn($schema);
+        $generator->generate('App\\Entity\\User')->willReturn($schema);
 
         $response = $this->showAction('foo');
-        $response->getContent()->shouldReturn($schema);
         $response->shouldBeAnInstanceOf('Knp\JsonSchemaBundle\HttpFoundation\JsonSchemaResponse');
     }
 }
