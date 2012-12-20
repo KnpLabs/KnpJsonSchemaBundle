@@ -4,12 +4,7 @@ namespace Knp\JsonSchemaBundle\Schema;
 
 class SchemaRegistry
 {
-    protected $registry;
-
-    public function __construct()
-    {
-        $this->registry = [];
-    }
+    protected $registry = [];
 
     public function register($alias, $namespace)
     {

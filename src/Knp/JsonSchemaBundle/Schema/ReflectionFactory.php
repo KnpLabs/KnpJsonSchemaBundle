@@ -18,7 +18,7 @@ class ReflectionFactory
         return new \ReflectionClass($className);
     }
 
-    public function createFromDirectory($directory)
+    public function createFromDirectory($directory, $namespace)
     {
         if (false === $this->filesystem->exists($directory)) {
             return array();

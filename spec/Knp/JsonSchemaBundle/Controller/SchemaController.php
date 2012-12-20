@@ -16,13 +16,15 @@ class SchemaController extends ObjectBehavior
     }
 
     /**
-     * @param Knp\JsonSchemaBundle\Model\Schema $schema
+     * @param Knp\JsonSchemaBundle\Model\Schema          $schema
+     * @param Knp\JsonSchemaBundle\Schema\SchemaRegistry $registry
      */
     function its_showAction_should_display_a_json_schema_with_according_content_type(
-        $schemaGenerator, $schema
+        $schemaGenerator, $registry, $schema
     )
     {
-        $schemaGenerator->generate('foo')->shouldBeCalled()->willReturn($schema);
+        $registry->get('foo')->willReturn('App\\Entity\\User');
+        $schemaGenerator->generate('App\\Entity\\User')->willReturn($schema);
 
         $response = $this->showAction('foo');
         $response->getContent()->shouldReturn($schema);

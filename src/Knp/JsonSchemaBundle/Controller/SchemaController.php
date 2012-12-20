@@ -2,11 +2,16 @@
 
 namespace Knp\JsonSchemaBundle\Controller;
 
-class SchemaController
-{
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
-    public function showAction()
+class SchemaController extends Controller
+{
+    public function showAction($alias)
     {
-        // TODO: implement
+        $classname = $this->get('json_schema.registry')->get($alias);
+        $schema    = $this->get('json_schema.generator')->generate($classname);
+
+        return new JsonResponse($schema);
     }
 }

@@ -20,6 +20,9 @@ services:
             - @json_schema.builder
             - @json_schema.reflection_factory
 
+    json_schema.registry:
+        class: %json_schema.registry.class%
+
     json_schema.builder:
         public: false
         class: %json_schema.builder.class%
@@ -38,10 +41,6 @@ services:
     filesystem:
         public: false
         class: "Symfony\\Component\\Filesystem\\Filesystem"
-
-    json_schema.registry:
-        public: false
-        class: %json_schema.registry.class%
 
     json_schema.validator:
         public: false

@@ -16,6 +16,7 @@
         "symfony/config":               ">=2.1,<2.3-dev",
         "symfony/filesystem":           ">=2.1,<2.3-dev",
         "symfony/finder":               ">=2.1,<2.3-dev",
+        "symfony/framework-bundle":     ">=2.1,<2.3-dev",
         "justinrainbow/json-schema":    ">=1.2.2",
         "doctrine/common":              ">=2.3,<2.4-dev"
     },
