@@ -27,11 +27,10 @@ class SchemaGenerator extends ObjectBehavior
     {
         $jsonValidator->isValid()->willReturn(true);
         $schemaBuilder->getSchema()->willReturn($schema);
-        $schemaRepository->getSchema(ANY_ARGUMENT)->willReturn('some class namespace');
 
-        $reflectionFactory->create('some class namespace')->shouldBeCalled()->willReturn($refClass);
+        $reflectionFactory->create('App\\Foo\\Bar')->willReturn($refClass);
         $refClass->getShortName()->willReturn('User');
 
-        $this->generate('foo')->shouldBe($schema);
+        $this->generate('App\\Foo\\Bar')->shouldBe($schema);
     }
 }
