@@ -4,7 +4,10 @@ namespace Knp\JsonSchemaBundle\Annotations;
 
 /**
  * @Annotation
+ * @Target({"CLASS"})
  */
-class ExclusiveMinimum
+class Schema
 {
+    /** @var string */
+    public $name;
 }

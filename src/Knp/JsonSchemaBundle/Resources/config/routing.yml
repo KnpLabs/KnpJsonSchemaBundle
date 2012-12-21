@@ -1,0 +1,3 @@
+json_schema:
+    pattern: /schemas/{alias}.json
+    defaults: { _controller: KnpJsonSchemaBundle:Schema:show }
