@@ -10,6 +10,7 @@ parameters:
     doctrine.common.apc_cache.class:                                       "Doctrine\\Common\\Cache\\ApcCache"
     json_schema.validator.class:                                           "JsonSchema\\Validator"
     form.chain.guesser.class:                                              "Symfony\\Component\\Form\\FormTypeGuesserChain"
+    json_schema.registry.class:                                            "Knp\\JsonSchemaBundle\\Schema\\SchemaRegistry"
 
 services:
     json_schema.generator:
@@ -19,6 +20,9 @@ services:
             - @json_schema.builder
             - @json_schema.reflection_factory
 
+    json_schema.registry:
+        class: %json_schema.registry.class%
+
     json_schema.builder:
         public: false
         class: %json_schema.builder.class%
@@ -26,6 +30,17 @@ services:
     json_schema.reflection_factory:
         public: false
         class: %json_schema.reflection_factory.class%
+        arguments:
+            - @finder
+            - @filesystem
+
+    finder:
+        public: false
+        class: "Symfony\\Component\\Finder\\Finder"
+
+    filesystem:
+        public: false
+        class: "Symfony\\Component\\Filesystem\\Filesystem"
 
     json_schema.validator:
         public: false
