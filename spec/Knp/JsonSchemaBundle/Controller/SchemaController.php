@@ -26,7 +26,7 @@ class SchemaController extends ObjectBehavior
         $generator, $registry, $schema
     )
     {
-        $registry->get('foo')->willReturn('App\\Entity\\User');
+        $registry->getNamespace('foo')->willReturn('App\\Entity\\User');
         $generator->generate('App\\Entity\\User')->willReturn($schema);
 
         $response = $this->showAction('foo');

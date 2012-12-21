@@ -9,9 +9,9 @@ class SchemaController extends Controller
 {
     public function showAction($alias)
     {
-        $classname = $this->get('json_schema.registry')->get($alias);
-        $schema    = $this->get('json_schema.generator')->generate($classname);
+        $namespace = $this->get('json_schema.registry')->getNamespace($alias);
+        $schema    = $this->get('json_schema.generator')->generate($namespace);
 
-        return new JsonSchemaResponse($schema);
+        return new JsonSchemaResponse($schema, $alias, 'http://json-schema.org/schema');
     }
 }

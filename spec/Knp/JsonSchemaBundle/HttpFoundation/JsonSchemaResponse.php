@@ -11,7 +11,7 @@ class JsonSchemaResponse extends ObjectBehavior
      */
     public function let($schema)
     {
-        $this->beConstructedWith($schema);
+        $this->beConstructedWith($schema, 'palourde', 'the/schema/route');
     }
 
     function it_should_be_a_json_response()
@@ -19,11 +19,13 @@ class JsonSchemaResponse extends ObjectBehavior
         $this->shouldHaveType('Symfony\Component\HttpFoundation\JsonResponse');
     }
 
-    /**
-     * @param Symfony\Component\HttpFoundation\HeaderBar $headers
-     */
-    function its_content_type_should_be_the_json_schema_mimetype($headers)
+    function its_content_type_should_be_the_json_schema_mimetype()
     {
-        $this->headers->get('Content-Type')->shouldReturn('application/json+schema');
+        $this->headers->get('Content-Type')->shouldReturn('application/palourde+schema');
+    }
+
+    function its_should_be_described_by_the_core_json_schema()
+    {
+        $this->headers->get('Link')->shouldReturn('<the/schema/route>; rel="describedBy"');
     }
 }

@@ -11,6 +11,7 @@ parameters:
     json_schema.validator.class:                                           "JsonSchema\\Validator"
     form.chain.guesser.class:                                              "Symfony\\Component\\Form\\FormTypeGuesserChain"
     json_schema.registry.class:                                            "Knp\\JsonSchemaBundle\\Schema\\SchemaRegistry"
+    json_schema.response.factory.class:                                    "Knp\\JsonSchemaBundle\\HttpFoundation\\JsonResponseFactory"
 
 services:
     json_schema.generator:
@@ -45,6 +46,12 @@ services:
     json_schema.validator:
         public: false
         class: %json_schema.validator.class%
+
+    json_schema.response.factory:
+        class: %json_schema.response.factory.class%
+        arguments:
+            - @json_schema.registry
+            - @router
 
     json_schema.builder.handler.annotation:
         public: false

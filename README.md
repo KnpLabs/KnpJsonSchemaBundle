@@ -29,8 +29,8 @@ Add the following to your composer.json:
 
 and run `composer.phar update knplabs/json-schema-bundle`
 
-Usage
------
+Configuration
+-------------
 Register the compiler pass in your bundle like so :
 
 ```php
@@ -69,7 +69,27 @@ class Huitre
 }
 ```
 
-And access the json schema through `/schemas/huitre.json`
+Usage
+-----
+You may use the `json_schema.response.factory` to automatically link the generated schema to an object.
+```php
+class DefaultController extends Controller
+{
+    public function indexAction()
+    {
+        $user = new User();
+        $user->age = 10;
+
+        return $this->get('json_schema.response.factory')->create($user);
+    }
+}
+```
+
+Will generate the following response:
+
+
+You can also access the json schema through `/schemas/{name}.json`
+
 
 
 Internals
