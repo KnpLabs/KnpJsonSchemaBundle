@@ -31,14 +31,46 @@ and run `composer.phar update knplabs/json-schema-bundle`
 
 Usage
 -----
-``` php
-public function indexAction()
-{
-    $json = $this->get('json_schema.generator')->generate('App\\Entity\\User');
+Register the compiler pass in your bundle like so :
 
-    return new JsonResponse($json);
+```php
+//src/MyBundle/MyBundle.php
+
+public function build(ContainerBuilder $container)
+{
+    $container->addCompilerPass(new Knp\JsonSchemaBundle\DependencyInjection\Compiler\RegisterJsonSchemaCompilerPass($this));
 }
 ```
+
+You must also import some routing inforamtions:
+```yaml
+#app/config/routing.yml
+
+json_schema:
+    resource: "@KnpJsonSchemaBundle/Resources/config/routing.yml"
+
+```
+
+Then in your model/entity for which you want to provide a json schema:
+
+```php
+<?php
+
+namespace App\Entity;
+
+use Knp\JsonSchemaBundle\Annotations as Json;
+
+/**
+ * @Json/Schema("huitre")
+ */
+class Huitre
+{
+
+}
+```
+
+And access the json schema through `/schemas/huitre.json`
+
 
 Internals
 ---------
@@ -46,9 +78,10 @@ It uses the Validator and Doctrine FormTypeGuesser to guess values of 'required'
 
 For property that couldn't be guessed with these guessers, another handler take over from it.
 
-Currently, this property constraints are also supported:
-    - `Symfony\Component\Validator\Constraints\Choice`
-    - `Symfony\Component\Validator\Constraints\Length` (especially for the `min` constraint)
+You can see all constraints that are handled in the `ExtraValidatorConstraintsHandler` class.
+
+You can also hardly specified the json schema constraints you want by using the annotations provided with this bundle.
+
 
 Examples
 --------
