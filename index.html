@@ -1,0 +1,288 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>KnpJsonSchemaBundle by KnpLabs</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/KnpLabs/KnpJsonSchemaBundle">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/KnpLabs/KnpJsonSchemaBundle/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/KnpLabs/KnpJsonSchemaBundle/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>KnpJsonSchemaBundle</h1>
+          <p>A bundle to generate json schema based on various metadata</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/KnpLabs">KnpLabs</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>Disclaimer</h1>
+
+<p><strong>This bundle is in development stage!!! Do not use it in production.</strong></p>
+
+<p>Current buid status of master : <a href="https://travis-ci.org/KnpLabs/KnpJsonSchemaBundle"><img src="https://secure.travis-ci.org/KnpLabs/KnpJsonSchemaBundle.png" alt="Build Status"></a></p>
+
+<p>The generated json schema is based on <a href="http://tools.ietf.org/html/draft-zyp-json-schema-03">IETF Specification</a> which expired on May 26, 2011.
+Despite my search, I couldn't find any more up-to-date spec, so if you know one, please let me know.</p>
+
+<h1>The JsonSchema Bundle</h1>
+
+<p>The purpose of this bundle is to provide a service which allow you to generate json schema based on validation metadata.</p>
+
+<p>If the question is about the purpose of Json schema, well, I can only advise you to take a look at the official website: <a href="http://json-schema.org/">http://json-schema.org/</a></p>
+
+<h2>Installation</h2>
+
+<p>Add the following to your composer.json:</p>
+
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="nt">"mininmum-stability"</span><span class="p">:</span> <span class="s2">"dev"</span><span class="p">,</span>
+    <span class="nt">"require"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"knplabs/json-schema-bundle"</span><span class="p">:</span> <span class="s2">"dev-master"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>and run <code>composer.phar update knplabs/json-schema-bundle</code></p>
+
+<h2>Configuration</h2>
+
+<p>Register the compiler pass in your bundle like so :</p>
+
+<div class="highlight"><pre><span class="c1">//src/MyBundle/MyBundle.php</span>
+
+<span class="k">public</span> <span class="k">function</span> <span class="nf">build</span><span class="p">(</span><span class="nx">ContainerBuilder</span> <span class="nv">$container</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$container</span><span class="o">-&gt;</span><span class="na">addCompilerPass</span><span class="p">(</span><span class="k">new</span> <span class="nx">Knp\JsonSchemaBundle\DependencyInjection\Compiler\RegisterJsonSchemaCompilerPass</span><span class="p">(</span><span class="nv">$this</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>You must also import some routing inforamtions:</p>
+
+<div class="highlight"><pre><span class="c1">#app/config/routing.yml</span>
+
+<span class="l-Scalar-Plain">json_schema</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">resource</span><span class="p-Indicator">:</span> <span class="s">"@KnpJsonSchemaBundle/Resources/config/routing.yml"</span>
+
+</pre></div>
+
+<p>Then in your model/entity for which you want to provide a json schema:</p>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+
+<span class="k">namespace</span> <span class="nx">App\Entity</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Knp\JsonSchemaBundle\Annotations</span> <span class="k">as</span> <span class="nx">Json</span><span class="p">;</span>
+
+<span class="sd">/**</span>
+<span class="sd"> * @Json/Schema("huitre")</span>
+<span class="sd"> */</span>
+<span class="k">class</span> <span class="nc">Huitre</span>
+<span class="p">{</span>
+
+<span class="p">}</span>
+</pre></div>
+
+<h2>Usage</h2>
+
+<p>You may use the <code>json_schema.response.factory</code> to automatically link the generated schema to an object.</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">DefaultController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">indexAction</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">User</span><span class="p">();</span>
+        <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">age</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'json_schema.response.factory'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Will generate the following response:</p>
+
+<p>You can also access the json schema through <code>/schemas/{name}.json</code></p>
+
+<h2>Internals</h2>
+
+<p>It uses the Validator and Doctrine FormTypeGuesser to guess values of 'required', 'type', 'pattern', 'minLength' and 'maxLength'.</p>
+
+<p>For property that couldn't be guessed with these guessers, another handler take over from it.</p>
+
+<p>You can see all constraints that are handled in the <code>ExtraValidatorConstraintsHandler</code> class.</p>
+
+<p>You can also hardly specified the json schema constraints you want by using the annotations provided with this bundle.</p>
+
+<h2>Examples</h2>
+
+<h3>Entity</h3>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+
+<span class="k">namespace</span> <span class="nx">App\Entity</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Symfony\Component\Validator\Constraints</span> <span class="k">as</span> <span class="nx">Assert</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Doctrine\ORM\Mapping</span> <span class="k">as</span> <span class="nx">ORM</span><span class="p">;</span>
+
+<span class="sd">/**</span>
+<span class="sd"> * @ORM\Entity</span>
+<span class="sd"> **/</span>
+<span class="k">class</span> <span class="nc">User</span>
+<span class="p">{</span>
+    <span class="sd">/**</span>
+<span class="sd">     * @ORM\Id</span>
+<span class="sd">     * @ORM\Column(type="integer")</span>
+<span class="sd">     * @ORM\GeneratedValue(strategy="AUTO")</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$id</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @ORM\Column(type="string", nullable=false)</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$name</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @Assert\Type(type="string")</span>
+<span class="sd">     * @Assert\Email()</span>
+<span class="sd">     * @Assert\NotBlank()</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$email</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @Assert\Regex(pattern="/^[0-9]{5}$/")</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$zipCode</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @Assert\Length(min="2", max="50")</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$address</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @ORM\Column(type="integer")</span>
+<span class="sd">     * @Assert\Length(min="21")</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$age</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @Assert\Blank()</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$file</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @Assert\Choice(choices={"toto","tutu","tata"})</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$type</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @ORM\Column(type="decimal", nullable=true)</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$balance</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @Assert\Type(type="string")</span>
+<span class="sd">     * @Assert\Type(type="number")</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$height</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>Result</h3>
+
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="nt">"title"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span>
+    <span class="nt">"properties"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"id"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"required"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"integer"</span>
+        <span class="p">},</span>
+        <span class="nt">"name"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"required"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"string"</span>
+        <span class="p">},</span>
+        <span class="nt">"email"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"required"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"string"</span>
+        <span class="p">},</span>
+        <span class="nt">"zipCode"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"required"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">,</span>
+            <span class="nt">"pattern"</span><span class="p">:</span> <span class="s2">"[0-9]{5}"</span>
+        <span class="p">},</span>
+        <span class="nt">"address"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"required"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">,</span>
+            <span class="nt">"minLength"</span><span class="p">:</span> <span class="s2">"2"</span><span class="p">,</span>
+            <span class="nt">"maxLength"</span><span class="p">:</span> <span class="s2">"50"</span>
+        <span class="p">},</span>
+        <span class="nt">"age"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"required"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"integer"</span><span class="p">,</span>
+            <span class="nt">"minimum"</span><span class="p">:</span> <span class="s2">"21"</span>
+        <span class="p">},</span>
+        <span class="nt">"file"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"required"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"string"</span>
+        <span class="p">},</span>
+        <span class="nt">"type"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"required"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">,</span>
+            <span class="nt">"enum"</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">"toto"</span><span class="p">,</span>
+                <span class="s2">"tutu"</span><span class="p">,</span>
+                <span class="s2">"tata"</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="nt">"balance"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"required"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"number"</span>
+        <span class="p">},</span>
+        <span class="nt">"height"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"required"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">"type"</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">"string"</span><span class="p">,</span>
+                <span class="s2">"number"</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>Contributors</h2>
+
+<ul>
+<li>Gildas Quéméner <a href="https://github.com/gquemener">gquemener</a>
+</li>
+<li>Florian Klein <a href="https://github.com/docteurklein">docteurklein</a>
+</li>
+</ul>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
