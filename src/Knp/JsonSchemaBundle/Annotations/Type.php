@@ -4,7 +4,7 @@ namespace Knp\JsonSchemaBundle\Annotations;
 
 /**
  * @Annotation
- * @Target({"Property"})
+ * @Target({"PROPERTY"})
  */
 class Type
 {
