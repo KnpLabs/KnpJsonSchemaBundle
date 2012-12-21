@@ -3,11 +3,14 @@
 namespace Knp\JsonSchemaBundle\HttpFoundation;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Knp\JsonSchemaBundle\Model\Schema;
 
 class JsonSchemaResponse extends JsonResponse
 {
-    protected function update()
+    public function __construct(Schema $data)
     {
-        $this->headers->set('Content-Type', 'application/json+schema');
+        parent::__construct('', 200, ['Content-Type' => 'application/json+schema']);
+
+        $this->setData($data);
     }
 }

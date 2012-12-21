@@ -6,6 +6,14 @@ use PHPSpec2\ObjectBehavior;
 
 class JsonSchemaResponse extends ObjectBehavior
 {
+    /**
+     * @param Knp\JsonSchemaBundle\Model\Schema $schema
+     */
+    public function let($schema)
+    {
+        $this->beConstructedWith($schema);
+    }
+
     function it_should_be_a_json_response()
     {
         $this->shouldHaveType('Symfony\Component\HttpFoundation\JsonResponse');
