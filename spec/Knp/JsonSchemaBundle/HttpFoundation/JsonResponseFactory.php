@@ -24,7 +24,7 @@ class JsonResponseFactory extends ObjectBehavior
     )
     {
         $registry->getAlias(ANY_ARGUMENT)->willReturn('foo');
-        $router->generate('json_schema', ['alias' => 'foo'], true)->willReturn('http://localhost/schemas/foo.json');
+        $router->generate('show_json_schema', ['alias' => 'foo'], true)->willReturn('http://localhost/schemas/foo.json');
 
         $response = $this->create($data);
         $response->headers->get('Content-Type')->shouldBe('application/json');

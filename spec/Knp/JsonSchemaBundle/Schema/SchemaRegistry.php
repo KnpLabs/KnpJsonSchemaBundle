@@ -48,4 +48,12 @@ class SchemaRegistry extends ObjectBehavior
     {
         $this->shouldThrow(new \Exception('Namespace "App\\Entity\\Foo" is not registered.'))->duringGetAlias('App\\Entity\\Foo');
     }
+
+    function its_getAliases_should_return_only_registered_aliases()
+    {
+        $this->register('foo', 'App\\Entity\\Foo');
+        $this->register('bar', 'App\\Entity\\Bar');
+
+        $this->getAliases()->shouldReturn(['foo', 'bar']);
+    }
 }

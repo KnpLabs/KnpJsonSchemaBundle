@@ -63,4 +63,9 @@ class SchemaRegistry
     {
         return array_key_exists($namespace, array_flip($this->registry));
     }
+
+    public function getAliases()
+    {
+        return array_keys($this->registry);
+    }
 }
