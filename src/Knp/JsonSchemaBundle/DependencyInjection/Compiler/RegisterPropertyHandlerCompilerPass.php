@@ -32,8 +32,8 @@ class RegisterPropertyHandlerCompilerPass implements CompilerPassInterface
 
     private function getPriority(array $attributes = array())
     {
-        if (isset($attributes['priority'])) {
-            return $attributes['priority'];
+        if (isset($attributes[0]['priority'])) {
+            return $attributes[0]['priority'];
         }
 
         return 0;
