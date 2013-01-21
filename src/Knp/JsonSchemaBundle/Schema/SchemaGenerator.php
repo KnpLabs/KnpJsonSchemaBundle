@@ -2,33 +2,62 @@
 
 namespace Knp\JsonSchemaBundle\Schema;
 
+use Knp\JsonSchemaBundle\Reflection\ReflectionFactory;
+use Knp\JsonSchemaBundle\Schema\SchemaRegistry;
+use Knp\JsonSchemaBundle\Model\SchemaFactory;
 use Knp\JsonSchemaBundle\Model\Schema;
+use Knp\JsonSchemaBundle\Model\PropertyFactory;
 use Knp\JsonSchemaBundle\Model\Property;
+use Knp\JsonSchemaBundle\Property\PropertyHandlerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SchemaGenerator
 {
-    private $classMetadataFactory;
-    private $jsonValidator;
-    private $reflectionFactory;
+    protected $jsonValidator;
+    protected $reflectionFactory;
+    protected $schemaRegistry;
+    protected $schemaFactory;
+    protected $propertyFactory;
+    protected $propertyHandlers;
 
-    public function __construct(\JsonSchema\Validator $jsonValidator, SchemaBuilder $schemaBuilder, ReflectionFactory $reflectionFactory)
+    public function __construct(
+        \JsonSchema\Validator $jsonValidator,
+        UrlGeneratorInterface $urlGenerator,
+        ReflectionFactory $reflectionFactory,
+        SchemaRegistry $schemaRegistry,
+        SchemaFactory $schemaFactory,
+        PropertyFactory $propertyFactory
+    )
     {
-        $this->jsonValidator        = $jsonValidator;
-        $this->schemaBuilder        = $schemaBuilder;
-        $this->reflectionFactory    = $reflectionFactory;
+        $this->jsonValidator     = $jsonValidator;
+        $this->urlGenerator      = $urlGenerator;
+        $this->reflectionFactory = $reflectionFactory;
+        $this->schemaRegistry    = $schemaRegistry;
+        $this->schemaFactory     = $schemaFactory;
+        $this->propertyFactory   = $propertyFactory;
+        $this->propertyHandlers  = new \SplPriorityQueue;
     }
 
-    public function generate($className)
+    public function generate($alias)
     {
-        $refl = $this->reflectionFactory->create($className);
-        $this->schemaBuilder->setName(strtolower($refl->getShortName()));
+        $className = $this->schemaRegistry->getNamespace($alias);
+        $refl      = $this->reflectionFactory->create($className);
+        $schema    = $this->schemaFactory->createSchema(ucfirst($alias));
+
+        $schema->setId($this->urlGenerator->generate('show_json_schema', ['alias' => $alias], true) . '#');
+        $schema->setSchema(Schema::SCHEMA_V3);
+        $schema->setType(Schema::TYPE_OBJECT);
 
         foreach ($refl->getProperties() as $property) {
-            $this->schemaBuilder->addProperty($className, $property->name);
+            $property = $this->propertyFactory->createProperty($property->name);
+            $this->applyPropertyHandlers($className, $property);
+            $schema->addProperty($property);
         }
 
-        if (false === $this->validateSchema($schema = $this->schemaBuilder->getSchema())) {
-            $message = "Generated schema is invalid. The following problem(s) were detected:\n";
+        if (false === $this->validateSchema($schema)) {
+            $message = "Generated schema is invalid. Please report on" .
+                "https://github.com/KnpLabs/KnpJsonSchemaBundle/issues/new.\n" .
+                "The following problem(s) were detected:\n";
             foreach ($this->jsonValidator->getErrors() as $error) {
                 $message .= sprintf("[%s] %s\n", $error['property'], $error['message']);
             }
@@ -37,6 +66,16 @@ class SchemaGenerator
         }
 
         return $schema;
+    }
+
+    public function registerPropertyHandler(PropertyHandlerInterface $handler, $priority)
+    {
+        $this->propertyHandlers->insert($handler, $priority);
+    }
+
+    public function getPropertyHandlers()
+    {
+        return array_values(iterator_to_array(clone $this->propertyHandlers));
     }
 
     /**
@@ -54,5 +93,12 @@ class SchemaGenerator
         );
 
         return $this->jsonValidator->isValid();
+    }
+
+    private function applyPropertyHandlers($className, Property $property)
+    {
+        foreach ($this->getPropertyHandlers() as $handler) {
+            $handler->handle($className, $property);
+        }
     }
 }

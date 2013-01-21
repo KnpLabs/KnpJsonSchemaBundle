@@ -3,8 +3,8 @@
 namespace Knp\JsonSchemaBundle\Property;
 
 use Knp\JsonSchemaBundle\Model\Property;
+use Knp\JsonSchemaBundle\Reflection\ReflectionFactory;
 use Doctrine\Common\Annotations\Reader;
-use Knp\JsonSchemaBundle\Schema\ReflectionFactory;
 
 class JsonSchemaAnnotationHandler implements PropertyHandlerInterface
 {

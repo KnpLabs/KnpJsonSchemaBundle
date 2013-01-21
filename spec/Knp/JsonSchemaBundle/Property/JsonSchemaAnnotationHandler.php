@@ -9,11 +9,11 @@ use PHPSpec2\ObjectBehavior;
 class JsonSchemaAnnotationHandler extends ObjectBehavior
 {
     /**
-     * @param Doctrine\Common\Annotations\Reader $reader
-     * @param Knp\JsonSchemaBundle\Schema\ReflectionFactory $reflectionFactory
-     * @param Knp\JsonSchemaBundle\Model\Property $property
-     * @param ReflectionClass $refClass
-     * @param ReflectionProperty $refProperty
+     * @param Doctrine\Common\Annotations\Reader                $reader
+     * @param Knp\JsonSchemaBundle\Reflection\ReflectionFactory $reflectionFactory
+     * @param Knp\JsonSchemaBundle\Model\Property               $property
+     * @param ReflectionClass                                   $refClass
+     * @param ReflectionProperty                                $refProperty
      */
     function let($reader, $reflectionFactory, $property, $refClass, $refProperty)
     {

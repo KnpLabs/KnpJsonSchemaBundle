@@ -10,16 +10,16 @@ class RegisterPropertyHandlerCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('json_schema.builder')) {
+        if (!$container->hasDefinition('json_schema.generator')) {
             return;
         }
 
         $definition = $container->getDefinition(
-            'json_schema.builder'
+            'json_schema.generator'
         );
 
         $taggedServices = $container->findTaggedServiceIds(
-            'json_schema.builder.handler'
+            'json_schema.property.handler'
         );
 
         foreach ($taggedServices as $id => $attributes) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Knp\JsonSchemaBundle\Schema;
+namespace Knp\JsonSchemaBundle\Reflection;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
