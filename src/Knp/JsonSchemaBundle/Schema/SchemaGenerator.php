@@ -89,7 +89,7 @@ class SchemaGenerator
     {
         $this->jsonValidator->check(
             json_decode(json_encode($schema)),
-            json_decode(file_get_contents(__DIR__.'/../Resources/config/schema'))
+            json_decode(file_get_contents($schema->getSchema()))
         );
 
         return $this->jsonValidator->isValid();

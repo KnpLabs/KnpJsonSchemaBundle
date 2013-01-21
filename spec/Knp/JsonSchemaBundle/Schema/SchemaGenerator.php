@@ -47,6 +47,7 @@ class SchemaGenerator extends ObjectBehavior
         $refClass->getProperties()->willReturn([$refProperty]);
         $propertyFactory->createProperty('name')->willReturn($property);
         $urlGenerator->generate('show_json_schema', ['alias' => 'bar'], true)->willReturn('some url');
+        $schema->getSchema()->willReturn(\Knp\JsonSchemaBundle\Model\Schema::SCHEMA_V3);
 
         $handler1->handle('App\\Foo\\Bar', $property)->shouldBeCalled();
         $handler2->handle('App\\Foo\\Bar', $property)->shouldBeCalled();
