@@ -4,10 +4,15 @@ namespace Knp\JsonSchemaBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use Knp\JsonSchemaBundle\DependencyInjection\ReferenceFactory;
 
-class RegisterPropertyHandlerCompilerPass implements CompilerPassInterface
+class RegisterPropertyHandlersPass implements CompilerPassInterface
 {
+    public function __construct(ReferenceFactory $referenceFactory = null)
+    {
+        $this->referenceFactory = $referenceFactory ?: new ReferenceFactory();
+    }
+
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition('json_schema.generator')) {
@@ -25,7 +30,7 @@ class RegisterPropertyHandlerCompilerPass implements CompilerPassInterface
         foreach ($taggedServices as $id => $attributes) {
             $definition->addMethodCall(
                 'registerPropertyHandler',
-                array(new Reference($id), $this->getPriority($attributes))
+                array($this->referenceFactory->createReference($id), $this->getPriority($attributes))
             );
         }
     }

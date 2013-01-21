@@ -10,6 +10,6 @@ class KnpJsonSchemaBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new Compiler\RegisterPropertyHandlerCompilerPass());
+        $container->addCompilerPass(new Compiler\RegisterPropertyHandlersPass());
     }
 }

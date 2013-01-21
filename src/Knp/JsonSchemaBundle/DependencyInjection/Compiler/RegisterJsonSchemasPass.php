@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
-class RegisterJsonSchemaCompilerPass implements CompilerPassInterface
+class RegisterJsonSchemasPass implements CompilerPassInterface
 {
     protected $bundle;
 
@@ -21,7 +21,7 @@ class RegisterJsonSchemaCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         if (
-            !$container->has('json_schema.registry') ||
+            !$container->hasDefinition('json_schema.registry') ||
             !$container->has('doctrine.annotations.cached_reader') ||
             !$container->has('json_schema.reflection_factory')
         ) {
