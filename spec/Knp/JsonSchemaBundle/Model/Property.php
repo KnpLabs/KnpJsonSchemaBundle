@@ -109,25 +109,25 @@ class Property extends ObjectBehavior
     function it_should_serialize_type_as_string_if_it_has_single_value()
     {
         $this->addType('a type');
-        $this->jsonSerialize()->shouldBe(['required' => false, 'type' => 'a type']);
+        $this->jsonSerialize()->shouldBe(['type' => 'a type']);
     }
 
     function it_should_serialize_type_as_array_if_it_has_multiple_values()
     {
         $this->addType('a type');
         $this->addType('another type');
-        $this->jsonSerialize()->shouldBe(['required' => false, 'type' => ['a type', 'another type']]);
+        $this->jsonSerialize()->shouldBe(['type' => ['a type', 'another type']]);
     }
 
-    function it_should_only_serialize_non_null_properties_only()
+    function it_should_only_serialize_non_null_properties()
     {
-        $this->jsonSerialize()->shouldBe(['required' => false]);
+        $this->jsonSerialize()->shouldBe([]);
     }
 
     function it_should_serialize_enumeration_if_there_is_one()
     {
         $this->setEnumeration(['a','simple','list','of','choice']);
-        $this->jsonSerialize()->shouldBe(['required' => false, 'enum' => ['a','simple','list','of','choice']]);
+        $this->jsonSerialize()->shouldBe(['enum' => ['a','simple','list','of','choice']]);
     }
 
     function it_should_serialize_minimum_maximum_and_exclusive_constraints_if_type_is_number()
@@ -138,7 +138,6 @@ class Property extends ObjectBehavior
             ->setMaximum(15)
         ;
         $this->jsonSerialize()->shouldBe([
-            'required'         => false,
             'type'             => 'number',
             'minimum'          => 10,
             'exclusiveMinimum' => false,
@@ -155,7 +154,6 @@ class Property extends ObjectBehavior
             ->setMaximum(15)
         ;
         $this->jsonSerialize()->shouldBe([
-            'required'         => false,
             'type'             => 'integer',
             'minimum'          => 10,
             'exclusiveMinimum' => false,
@@ -172,7 +170,6 @@ class Property extends ObjectBehavior
             ->setMaximum(15)
         ;
         $this->jsonSerialize()->shouldBe([
-            'required'  => false,
             'type'      => 'string',
             'minLength' => 10,
             'maxLength' => 15,
@@ -184,7 +181,6 @@ class Property extends ObjectBehavior
         $this->setDisallowed(["boolean", "number", ["type" => "string", "format" => "email"]]);
 
         $this->jsonSerialize()->shouldBe([
-            'required' => false,
             'disallow' => [
                 'boolean',
                 'number',

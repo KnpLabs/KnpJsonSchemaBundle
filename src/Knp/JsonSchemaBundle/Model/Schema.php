@@ -65,12 +65,22 @@ class Schema implements \JsonSerializable
 
     public function jsonSerialize()
     {
-        return [
+        $serialized = [
             'title'      => $this->title,
             'type'       => $this->type,
             '$schema'    => $this->schema,
             'id'         => $this->id,
             'properties' => $this->properties,
         ];
+
+        $requiredProperties = array_keys(array_filter($this->properties, function($property) {
+            return $property->isRequired();
+        }));
+
+        if (count($requiredProperties) > 0) {
+            $serialized['required'] = $requiredProperties;
+        }
+
+        return $serialized;
     }
 }

@@ -196,8 +196,7 @@ class Property implements \JsonSerializable
 
     public function jsonSerialize()
     {
-        $serialized['required'] =  $this->required;
-
+        $serialized = [];
         if (count($this->types)) {
             if (count($this->types) === 1) {
                 $serialized['type'] = $this->types[0];

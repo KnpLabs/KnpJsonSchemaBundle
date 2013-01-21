@@ -33,6 +33,7 @@ class Schema extends ObjectBehavior
     function it_should_be_serializable($property1)
     {
         $property1->getName()->willReturn('prop1');
+        $property1->isRequired()->willReturn(true);
         $property1->jsonSerialize()->willReturn([]);
 
         $this->setTitle('some schema');
@@ -50,6 +51,7 @@ class Schema extends ObjectBehavior
                 'properties' => [
                     'prop1' => $property1
                 ],
+                'required' => ['prop1'],
             ]
         );
     }
