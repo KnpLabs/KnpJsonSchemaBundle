@@ -5,6 +5,7 @@ namespace Knp\JsonSchemaBundle\HttpFoundation;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Knp\JsonSchemaBundle\Schema\SchemaRegistry;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class JsonResponseFactory
 {
@@ -14,19 +15,18 @@ class JsonResponseFactory
         $this->router   = $router;
     }
 
-    public function create($data)
+    public function create($data, $alias = null, $route = null)
     {
-        $headers = [];
-
         try {
-            $alias = $this->registry->getAlias(get_class($data));
-            $headers['Link'] = sprintf(
-                '<%s>; rel="describedBy"',
-                $this->router->generate('show_json_schema', ['alias' => $alias], true)
-            );
-        } catch (\Exception $e) {
+            $alias = $alias ?: $this->registry->getAlias(get_class($data));
+        } catch (\InvalidArgumentException $e) {
+            throw new NotFoundHttpException($e->getMessage(), $e);
         }
+        $route = sprintf('%s#', $route ?: $this->router->generate('show_json_schema', ['alias' => $alias], true));
 
-        return new JsonResponse($data, 200, $headers);
+        return new JsonResponse($data, 200, [
+            'Content-Type' => sprintf('application/%s+schema; profile=%s', $alias, $route),
+            'Link'         => sprintf('<%s>; rel="describedBy"', $route),
+        ]);
     }
 }

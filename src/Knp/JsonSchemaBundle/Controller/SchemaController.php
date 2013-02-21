@@ -3,8 +3,8 @@
 namespace Knp\JsonSchemaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Knp\JsonSchemaBundle\HttpFoundation\JsonSchemaResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Knp\JsonSchemaBundle\Model\Schema;
 
 class SchemaController extends Controller
 {
@@ -20,8 +20,9 @@ class SchemaController extends Controller
 
     public function showAction($alias)
     {
-        $schema = $this->get('json_schema.generator')->generate($alias);
+        $schema   = $this->get('json_schema.generator')->generate($alias);
+        $response = $this->get('json_schema.response.factory')->create($schema, 'json', Schema::SCHEMA_LATEST);
 
-        return new JsonSchemaResponse($schema, $alias, 'http://json-schema.org/schema');
+        return $response;
     }
 }
