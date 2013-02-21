@@ -9,7 +9,7 @@ class SchemaRegistry
     public function register($alias, $namespace)
     {
         if ($this->hasAlias($alias)) {
-            throw new \Exception(sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 'Alias "%s" is already used for namespace "%s".',
                 $alias,
                 $this->registry[$alias]
@@ -17,7 +17,7 @@ class SchemaRegistry
         }
 
         if ($this->hasNamespace($namespace)) {
-            throw new \Exception(sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 'Namespace "%s" is already registered with alias "%s".',
                 $namespace,
                 $this->getAlias($namespace)
@@ -35,7 +35,7 @@ class SchemaRegistry
     public function getNamespace($alias)
     {
         if (!$this->hasAlias($alias)) {
-            throw new \Exception(sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 'Alias "%s" is not registered.', $alias
             ));
         }
@@ -46,7 +46,7 @@ class SchemaRegistry
     public function getAlias($namespace)
     {
         if (!$this->hasNamespace($namespace)) {
-            throw new \Exception(sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 'Namespace "%s" is not registered.', $namespace
             ));
         }

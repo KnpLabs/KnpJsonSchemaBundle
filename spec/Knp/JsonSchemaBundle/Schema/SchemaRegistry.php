@@ -21,20 +21,20 @@ class SchemaRegistry extends ObjectBehavior
     function its_register_should_throw_exception_if_the_alias_is_already_registered()
     {
         $this->register('foo', 'App\\Entity\\Foo');
-        $e = new \Exception('Alias "foo" is already used for namespace "App\\Entity\\Foo".');
+        $e = new \InvalidArgumentException('Alias "foo" is already used for namespace "App\\Entity\\Foo".');
         $this->shouldThrow($e)->duringRegister('foo', 'App\\Model\\Bar');
     }
 
     function its_register_should_throw_exception_if_the_namespace_is_already_registered()
     {
         $this->register('bar', 'App\\Entity\\Foo');
-        $e = new \Exception('Namespace "App\\Entity\\Foo" is already registered with alias "bar".');
+        $e = new \InvalidArgumentException('Namespace "App\\Entity\\Foo" is already registered with alias "bar".');
         $this->shouldThrow($e)->duringRegister('foo', 'App\\Entity\\Foo');
     }
 
     function its_getNamespace_should_throw_exception_if_the_alias_does_not_exist()
     {
-        $this->shouldThrow(new \Exception('Alias "bar" is not registered.'))->duringGetNamespace('bar');
+        $this->shouldThrow(new \InvalidArgumentException('Alias "bar" is not registered.'))->duringGetNamespace('bar');
     }
 
     function it_should_get_alias_for_a_specified_namespace()
@@ -46,7 +46,7 @@ class SchemaRegistry extends ObjectBehavior
 
     function its_getAlias_should_throw_exception_if_the_namespace_does_not_exist()
     {
-        $this->shouldThrow(new \Exception('Namespace "App\\Entity\\Foo" is not registered.'))->duringGetAlias('App\\Entity\\Foo');
+        $this->shouldThrow(new \InvalidArgumentException('Namespace "App\\Entity\\Foo" is not registered.'))->duringGetAlias('App\\Entity\\Foo');
     }
 
     function its_getAliases_should_return_only_registered_aliases()
