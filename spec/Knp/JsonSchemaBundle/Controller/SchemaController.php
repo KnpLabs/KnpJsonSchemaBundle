@@ -51,7 +51,7 @@ class SchemaController extends ObjectBehavior
     )
     {
         $generator->generate('foo')->willReturn($schema);
-        $factory->create($schema, 'json', Schema::SCHEMA_LATEST)->willReturn($response);
+        $factory->create($schema, 'schema', Schema::SCHEMA_LATEST)->willReturn($response);
 
         $this->showAction('foo')->shouldReturn($response);
     }

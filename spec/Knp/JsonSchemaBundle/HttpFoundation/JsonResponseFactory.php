@@ -26,7 +26,7 @@ class JsonResponseFactory extends ObjectBehavior
         $router->generate('show_json_schema', ['alias' => 'foo'], true)->willReturn('http://localhost/schemas/foo.json');
 
         $response = $this->create($data);
-        $response->headers->get('Content-Type')->shouldBe('application/foo+schema; profile=http://localhost/schemas/foo.json#');
+        $response->headers->get('Content-Type')->shouldBe('application/foo+json; profile=http://localhost/schemas/foo.json#');
         $response->headers->get('Link')->shouldBe('<http://localhost/schemas/foo.json#>; rel="describedBy"');
         $response->shouldHaveType('Symfony\Component\HttpFoundation\JsonResponse');
     }

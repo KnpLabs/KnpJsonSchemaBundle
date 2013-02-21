@@ -25,7 +25,7 @@ class JsonResponseFactory
         $route = sprintf('%s#', $route ?: $this->router->generate('show_json_schema', ['alias' => $alias], true));
 
         return new JsonResponse($data, 200, [
-            'Content-Type' => sprintf('application/%s+schema; profile=%s', $alias, $route),
+            'Content-Type' => sprintf('application/%s+json; profile=%s', $alias, $route),
             'Link'         => sprintf('<%s>; rel="describedBy"', $route),
         ]);
     }

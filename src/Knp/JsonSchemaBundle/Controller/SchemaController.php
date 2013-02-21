@@ -21,7 +21,7 @@ class SchemaController extends Controller
     public function showAction($alias)
     {
         $schema   = $this->get('json_schema.generator')->generate($alias);
-        $response = $this->get('json_schema.response.factory')->create($schema, 'json', Schema::SCHEMA_LATEST);
+        $response = $this->get('json_schema.response.factory')->create($schema, 'schema', Schema::SCHEMA_LATEST);
 
         return $response;
     }
