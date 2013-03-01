@@ -91,7 +91,36 @@ class RegisterJsonSchemasPass extends ObjectBehavior
         $schema->name = 'foo';
         $reader->getClassAnnotations($refClass)->willReturn([$schema]);
 
+        $refClass->getName()->willReturn('App\\Entity\\Bar');
+
+        $registry->addMethodCall('register', ['foo', 'App\\Entity\\Bar'])->shouldBeCalled();
+
+        $this->process($container);
+    }
+
+    /**
+     * @param Knp\JsonSchemaBundle\Annotations\Schema                $schema
+     * @param ReflectionClass                                        $refClass
+     * @param Doctrine\Common\Annotations\Reader                     $reader
+     * @param Symfony\Component\DependencyInjection\Definition       $registry
+     * @param Knp\JsonSchemaBundle\Schema\ReflectionFactory          $factory
+     * @param Symfony\Component\DependencyInjection\ContainerBuilder $container
+     */
+    function it_should_use_short_class_name_as_alias_if_annotation_name_is_not_set(
+        $reader, $registry, $factory, $container, $schema, $refClass
+    )
+    {
+        $container->hasDefinition(ANY_ARGUMENT)->willReturn(true);
+        $container->getDefinition('json_schema.registry')->willReturn($registry);
+        $container->get('doctrine.annotations.cached_reader')->willReturn($reader);
+        $container->get('json_schema.reflection_factory')->willReturn($factory);
+        $factory->createFromDirectory(ANY_ARGUMENTS)->willReturn([$refClass]);
+
+        $schema->name = null;
+        $reader->getClassAnnotations($refClass)->willReturn([$schema]);
+
         $refClass->getName()->willReturn('App\\Entity\\Foo');
+        $refClass->getShortName()->willReturn('Foo');
 
         $registry->addMethodCall('register', ['foo', 'App\\Entity\\Foo'])->shouldBeCalled();
 
