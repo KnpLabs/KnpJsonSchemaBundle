@@ -2,9 +2,9 @@
 
 namespace spec\Knp\JsonSchemaBundle\HttpFoundation;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class JsonResponseFactory extends ObjectBehavior
+class JsonResponseFactorySpec extends ObjectBehavior
 
 {
     /**

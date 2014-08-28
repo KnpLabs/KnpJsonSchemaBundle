@@ -4,9 +4,9 @@ namespace spec\Knp\JsonSchemaBundle\Property;
 
 use Knp\JsonSchemaBundle\Model\Property;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class JsonSchemaAnnotationHandler extends ObjectBehavior
+class JsonSchemaAnnotationHandlerSpec extends ObjectBehavior
 {
     /**
      * @param Doctrine\Common\Annotations\Reader                $reader

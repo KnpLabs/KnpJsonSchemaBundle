@@ -2,9 +2,9 @@
 
 namespace spec\Knp\JsonSchemaBundle\Model;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class Property extends ObjectBehavior
+class PropertySpec extends ObjectBehavior
 {
     function it_should_be_initializable()
     {

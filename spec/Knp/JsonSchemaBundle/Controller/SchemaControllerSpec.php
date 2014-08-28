@@ -2,9 +2,9 @@
 
 namespace spec\Knp\JsonSchemaBundle\Controller;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class SchemaController extends ObjectBehavior
+class SchemaControllerSpec extends ObjectBehavior
 {
     /**
      * @param Symfony\Component\DependencyInjection\ContainerInterface $container

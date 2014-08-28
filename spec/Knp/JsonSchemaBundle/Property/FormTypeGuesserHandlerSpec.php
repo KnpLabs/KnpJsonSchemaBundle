@@ -2,10 +2,10 @@
 
 namespace spec\Knp\JsonSchemaBundle\Property;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 use Knp\JsonSchemaBundle\Model\Property;
 
-class FormTypeGuesserHandler extends ObjectBehavior
+class FormTypeGuesserHandlerSpec extends ObjectBehavior
 {
     /**
      * @param Symfony\Component\Form\FormTypeGuesserInterface $guesser

@@ -2,9 +2,9 @@
 
 namespace spec\Knp\JsonSchemaBundle\Schema;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class SchemaRegistry extends ObjectBehavior
+class SchemaRegistrySpec extends ObjectBehavior
 {
     function it_should_register_a_new_namespace_with_its_alias_to_its_repository()
     {

@@ -2,9 +2,9 @@
 
 namespace spec\Knp\JsonSchemaBundle\DependencyInjection\Compiler;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class RegisterPropertyHandlersPass extends ObjectBehavior
+class RegisterPropertyHandlersPassSpec extends ObjectBehavior
 {
     /**
      * @param Knp\JsonSchemaBundle\DependencyInjection\ReferenceFactory $referenceFactory

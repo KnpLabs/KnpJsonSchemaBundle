@@ -1,9 +1,9 @@
 <?php
 namespace spec\Knp\JsonSchemaBundle\Schema;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class SchemaGenerator extends ObjectBehavior
+class SchemaGeneratorSpec extends ObjectBehavior
 {
     /**
      * @param JsonSchema\Validator                                      $jsonValidator

@@ -4,9 +4,9 @@ namespace spec\Knp\JsonSchemaBundle\Property;
 
 use Knp\JsonSchemaBundle\Model\Property;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class ExtraValidatorConstraintsHandler extends ObjectBehavior
+class ExtraValidatorConstraintsHandlerSpec extends ObjectBehavior
 {
     /**
      * @param Symfony\Component\Validator\MetadataFactoryInterface $classMetadataFactory

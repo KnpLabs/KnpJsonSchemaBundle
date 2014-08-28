@@ -2,9 +2,9 @@
 
 namespace spec\Knp\JsonSchemaBundle\HttpFoundation;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class JsonSchemaResponse extends ObjectBehavior
+class JsonSchemaResponseSpec extends ObjectBehavior
 {
     /**
      * @param Knp\JsonSchemaBundle\Model\Schema $schema
