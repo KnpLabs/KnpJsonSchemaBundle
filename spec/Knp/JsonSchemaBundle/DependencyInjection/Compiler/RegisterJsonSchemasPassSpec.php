@@ -74,7 +74,7 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
      * @param ReflectionClass                                        $refClass
      * @param Doctrine\Common\Annotations\Reader                     $reader
      * @param Symfony\Component\DependencyInjection\Definition       $registry
-     * @param Knp\JsonSchemaBundle\Schema\ReflectionFactory          $factory
+     * @param Knp\JsonSchemaBundle\Reflection\ReflectionFactory          $factory
      * @param Symfony\Component\DependencyInjection\ContainerBuilder $container
      */
     function it_should_use_Schema_annotation_data_to_register_the_class_in_the_schema_registry(
@@ -103,7 +103,7 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
      * @param ReflectionClass                                        $refClass
      * @param Doctrine\Common\Annotations\Reader                     $reader
      * @param Symfony\Component\DependencyInjection\Definition       $registry
-     * @param Knp\JsonSchemaBundle\Schema\ReflectionFactory          $factory
+     * @param Knp\JsonSchemaBundle\Reflection\ReflectionFactory          $factory
      * @param Symfony\Component\DependencyInjection\ContainerBuilder $container
      */
     function it_should_use_short_class_name_as_alias_if_annotation_name_is_not_set(
