@@ -9,7 +9,7 @@ class JsonSchemaResponse extends JsonResponse
     public function __construct($data, $alias, $route)
     {
         parent::__construct('', 200, [
-            'Content-Type' => sprintf('application/%s+schema', $alias),
+            'Content-Type' => sprintf('application/%s+json', $alias),
             'Link'         => sprintf('<%s>; rel="describedBy"', $route),
         ]);
 
