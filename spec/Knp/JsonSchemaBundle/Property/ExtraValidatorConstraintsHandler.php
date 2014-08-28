@@ -9,7 +9,7 @@ use PHPSpec2\ObjectBehavior;
 class ExtraValidatorConstraintsHandler extends ObjectBehavior
 {
     /**
-     * @param Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface $classMetadataFactory
+     * @param Symfony\Component\Validator\MetadataFactoryInterface $classMetadataFactory
      * @param Symfony\Component\Validator\Mapping\ClassMetadata $classMetadata
      * @param Symfony\Component\Validator\Mapping\PropertyMetadata $propertyMetadata
      * @param Knp\JsonSchemaBundle\Model\Property $property
@@ -19,7 +19,7 @@ class ExtraValidatorConstraintsHandler extends ObjectBehavior
         $this->beConstructedWith($classMetadataFactory);
         $propertyMetadata->name    = 'some property';
         $classMetadata->properties = [$propertyMetadata];
-        $classMetadataFactory->getClassMetadata(ANY_ARGUMENT)->willReturn($classMetadata);
+        $classMetadataFactory->getMetadataFor(ANY_ARGUMENT)->willReturn($classMetadata);
         $property->getName()->willReturn('some property');
     }
 
