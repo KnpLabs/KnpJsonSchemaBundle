@@ -21,7 +21,7 @@ class JsonSchemaResponseSpec extends ObjectBehavior
 
     function its_content_type_should_be_the_json_schema_mimetype()
     {
-        $this->headers->get('Content-Type')->shouldReturn('application/palourde+schema');
+        $this->headers->get('Content-Type')->shouldReturn('application/palourde+json');
     }
 
     function its_should_be_described_by_the_core_json_schema()

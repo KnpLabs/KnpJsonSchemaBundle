@@ -13,16 +13,14 @@ class FormTypeGuesserHandlerSpec extends ObjectBehavior
      * @param Symfony\Component\Form\Guess\TypeGuess $typeGuess
      * @param Symfony\Component\Form\Guess\ValueGuess $requiredGuess
      * @param Symfony\Component\Form\Guess\ValueGuess $patternGuess
-     * @param Symfony\Component\Form\Guess\ValueGuess $minLengthGuess
      * @param Symfony\Component\Form\Guess\ValueGuess $maxLengthGuess
      */
-    function let($guesser, $property, $typeGuess, $requiredGuess, $patternGuess, $minLengthGuess, $maxLengthGuess)
+    function let($guesser, $property, $typeGuess, $requiredGuess, $patternGuess, $maxLengthGuess)
     {
         $this->beConstructedWith($guesser);
         $guesser->guessType(\Prophecy\Argument::any())->shouldBeCalled()->willReturn($typeGuess);
         $guesser->guessRequired(\Prophecy\Argument::any())->shouldBeCalled()->willReturn($requiredGuess);
         $guesser->guessPattern(\Prophecy\Argument::any())->shouldBeCalled()->willReturn($patternGuess);
-        $guesser->guessMinLength(\Prophecy\Argument::any())->shouldBeCalled()->willReturn($minLengthGuess);
         $guesser->guessMaxLength(\Prophecy\Argument::any())->shouldBeCalled()->willReturn($maxLengthGuess);
     }
 
@@ -190,14 +188,6 @@ class FormTypeGuesserHandlerSpec extends ObjectBehavior
     {
         $patternGuess->getValue()->willReturn('/^[a-z]{5}$/');
         $property->setPattern('/^[a-z]{5}$/')->shouldBeCalled();
-
-        $this->handle('my\class\namespace', $property);
-    }
-
-    function it_should_set_a_minimum_if_guessed_minimum_length_is_not_null($guesser, $property, $minLengthGuess)
-    {
-        $minLengthGuess->getValue()->willReturn(10);
-        $property->setMinimum(10)->shouldBeCalled();
 
         $this->handle('my\class\namespace', $property);
     }
