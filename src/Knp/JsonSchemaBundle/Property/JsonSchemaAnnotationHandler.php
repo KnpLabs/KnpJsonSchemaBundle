@@ -34,6 +34,12 @@ class JsonSchemaAnnotationHandler implements PropertyHandlerInterface
                     $property->addType($type);
                 }
             }
+            if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\Title) {
+                $property->setTitle($constraint->name);
+            }
+            if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\Description) {
+                $property->setDescription($constraint->name);
+            }
         }
     }
 

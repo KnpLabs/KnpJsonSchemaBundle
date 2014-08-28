@@ -29,6 +29,8 @@ class Property implements \JsonSerializable
     const FORMAT_HOSTNAME    = 'host-name';
 
     protected $name;
+    protected $title;
+    protected $description;
     protected $required = false;
     protected $types = [];
     protected $pattern;
@@ -52,6 +54,28 @@ class Property implements \JsonSerializable
     public function getName()
     {
         return $this->name;
+    }
+
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     public function setRequired($required)
@@ -239,6 +263,14 @@ class Property implements \JsonSerializable
 
         if ($this->disallowed) {
             $serialized['disallow'] = $this->disallowed;
+        }
+
+        if ($this->title) {
+            $serialized['title'] = $this->title;
+        }
+
+        if ($this->description) {
+            $serialized['description'] = $this->description;
         }
 
         return $serialized;
