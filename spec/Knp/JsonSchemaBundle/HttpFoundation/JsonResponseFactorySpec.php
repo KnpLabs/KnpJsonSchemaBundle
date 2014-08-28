@@ -23,7 +23,7 @@ class JsonResponseFactorySpec extends ObjectBehavior
         $registry, $router, $data
     )
     {
-        $registry->getAlias(ANY_ARGUMENT)->willReturn('foo');
+        $registry->getAlias(\Prophecy\Argument::any())->willReturn('foo');
         $router->generate('show_json_schema', ['alias' => 'foo'], true)->willReturn('http://localhost/schemas/foo.json');
 
         $response = $this->create($data);

@@ -81,12 +81,12 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
         $reader, $registry, $factory, $container, $schema, $refClass
     )
     {
-        $container->hasDefinition(ANY_ARGUMENT)->willReturn(true);
+        $container->hasDefinition(\Prophecy\Argument::any())->willReturn(true);
         $container->getDefinition('json_schema.registry')->willReturn($registry);
         $container->get('doctrine.annotations.cached_reader')->willReturn($reader);
         $container->get('json_schema.reflection_factory')->willReturn($factory);
 
-        $factory->createFromDirectory(ANY_ARGUMENTS)->willReturn([$refClass]);
+        $factory->createFromDirectory(\Prophecy\Argument::any())->willReturn([$refClass]);
 
         $schema->name = 'foo';
         $reader->getClassAnnotations($refClass)->willReturn([$schema]);
@@ -110,11 +110,11 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
         $reader, $registry, $factory, $container, $schema, $refClass
     )
     {
-        $container->hasDefinition(ANY_ARGUMENT)->willReturn(true);
+        $container->hasDefinition(\Prophecy\Argument::any())->willReturn(true);
         $container->getDefinition('json_schema.registry')->willReturn($registry);
         $container->get('doctrine.annotations.cached_reader')->willReturn($reader);
         $container->get('json_schema.reflection_factory')->willReturn($factory);
-        $factory->createFromDirectory(ANY_ARGUMENTS)->willReturn([$refClass]);
+        $factory->createFromDirectory(\Prophecy\Argument::any())->willReturn([$refClass]);
 
         $schema->name = null;
         $reader->getClassAnnotations($refClass)->willReturn([$schema]);

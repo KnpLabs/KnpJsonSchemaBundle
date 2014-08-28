@@ -19,8 +19,8 @@ class JsonSchemaAnnotationHandlerSpec extends ObjectBehavior
     {
         $this->beConstructedWith($reader, $reflectionFactory);
 
-        $reflectionFactory->create(ANY_ARGUMENT)->willReturn($refClass);
-        $refClass->getProperty(ANY_ARGUMENTS)->willReturn($refProperty);
+        $reflectionFactory->create(\Prophecy\Argument::any())->willReturn($refClass);
+        $refClass->getProperty(\Prophecy\Argument::any())->willReturn($refProperty);
     }
 
     /**

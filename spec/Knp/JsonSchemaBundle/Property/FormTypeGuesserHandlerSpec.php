@@ -19,11 +19,11 @@ class FormTypeGuesserHandlerSpec extends ObjectBehavior
     function let($guesser, $property, $typeGuess, $requiredGuess, $patternGuess, $minLengthGuess, $maxLengthGuess)
     {
         $this->beConstructedWith($guesser);
-        $guesser->guessType(ANY_ARGUMENTS)->shouldBeCalled()->willReturn($typeGuess);
-        $guesser->guessRequired(ANY_ARGUMENTS)->shouldBeCalled()->willReturn($requiredGuess);
-        $guesser->guessPattern(ANY_ARGUMENTS)->shouldBeCalled()->willReturn($patternGuess);
-        $guesser->guessMinLength(ANY_ARGUMENTS)->shouldBeCalled()->willReturn($minLengthGuess);
-        $guesser->guessMaxLength(ANY_ARGUMENTS)->shouldBeCalled()->willReturn($maxLengthGuess);
+        $guesser->guessType(\Prophecy\Argument::any())->shouldBeCalled()->willReturn($typeGuess);
+        $guesser->guessRequired(\Prophecy\Argument::any())->shouldBeCalled()->willReturn($requiredGuess);
+        $guesser->guessPattern(\Prophecy\Argument::any())->shouldBeCalled()->willReturn($patternGuess);
+        $guesser->guessMinLength(\Prophecy\Argument::any())->shouldBeCalled()->willReturn($minLengthGuess);
+        $guesser->guessMaxLength(\Prophecy\Argument::any())->shouldBeCalled()->willReturn($maxLengthGuess);
     }
 
     function it_should_add_json_type_object_if_guessed_type_is_entity($guesser, $property, $typeGuess)

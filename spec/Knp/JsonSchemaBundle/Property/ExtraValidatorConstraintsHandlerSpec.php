@@ -19,7 +19,7 @@ class ExtraValidatorConstraintsHandlerSpec extends ObjectBehavior
         $this->beConstructedWith($classMetadataFactory);
         $propertyMetadata->name    = 'some property';
         $classMetadata->properties = [$propertyMetadata];
-        $classMetadataFactory->getMetadataFor(ANY_ARGUMENT)->willReturn($classMetadata);
+        $classMetadataFactory->getMetadataFor(\Prophecy\Argument::any())->willReturn($classMetadata);
         $property->getName()->willReturn('some property');
     }
 
