@@ -30,10 +30,6 @@ class FormTypeGuesserHandler implements PropertyHandlerInterface
             $property->setPattern($pattern->getValue());
         }
 
-        if ($minimum = $this->guesser->guessMinLength($className, $property->getName())) {
-            $property->setMinimum($minimum->getValue());
-        }
-
         if ($maximum = $this->guesser->guessMaxLength($className, $property->getName())) {
             $property->setMaximum($maximum->getValue());
         }
