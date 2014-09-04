@@ -25,6 +25,5 @@
     },
     "autoload": {
         "psr-0": { "Knp\\JsonSchemaBundle": "src/" }
-    },
-    "target-dir": "Knp/JsonSchemaBundle"
+    }
 }
