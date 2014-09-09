@@ -2,6 +2,7 @@
 
 namespace Knp\JsonSchemaBundle\Property;
 
+use Doctrine\Common\Inflector\Inflector;
 use Knp\JsonSchemaBundle\Model\Property;
 use Symfony\Component\Form\Guess\TypeGuess;
 use Symfony\Component\Form\FormTypeGuesserInterface;
@@ -32,6 +33,11 @@ class FormTypeGuesserHandler implements PropertyHandlerInterface
 
         if ($maximum = $this->guesser->guessMaxLength($className, $property->getName())) {
             $property->setMaximum($maximum->getValue());
+        }
+
+        if ($property->getTitle() == null) {
+            $title = ucwords(str_replace('_', ' ', Inflector::tableize($property->getName())));
+            $property->setTitle($title);
         }
     }
 

@@ -30,7 +30,9 @@ class JsonSchemaAnnotationHandler implements PropertyHandlerInterface
                 $property->setDisallowed($constraint->disallowed);
             }
             if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\Type) {
-                foreach ($constraint->types as $type) {
+                $types = (array) $constraint->type;
+
+                foreach ($types as $type) {
                     $property->addType($type);
                 }
             }
@@ -39,6 +41,9 @@ class JsonSchemaAnnotationHandler implements PropertyHandlerInterface
             }
             if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\Description) {
                 $property->setDescription($constraint->name);
+            }
+            if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\Ignore) {
+                $property->setIgnored(true);
             }
         }
     }

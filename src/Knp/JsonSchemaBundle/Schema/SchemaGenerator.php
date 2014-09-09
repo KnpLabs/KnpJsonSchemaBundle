@@ -51,7 +51,10 @@ class SchemaGenerator
         foreach ($refl->getProperties() as $property) {
             $property = $this->propertyFactory->createProperty($property->name);
             $this->applyPropertyHandlers($className, $property);
-            $schema->addProperty($property);
+
+            if (!$property->isIgnored()) {
+                $schema->addProperty($property);
+            }
         }
 
         if (false === $this->validateSchema($schema)) {

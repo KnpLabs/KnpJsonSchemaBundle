@@ -32,7 +32,7 @@ class Property implements \JsonSerializable
     protected $title;
     protected $description;
     protected $required = false;
-    protected $types = [];
+    protected $type = [];
     protected $pattern;
     protected $enumeration = [];
     protected $minimum;
@@ -41,6 +41,7 @@ class Property implements \JsonSerializable
     protected $exclusiveMaximum = false;
     protected $format;
     protected $disallowed = [];
+    protected $ignored = false;
 
     public function setName($name)
     {
@@ -94,16 +95,22 @@ class Property implements \JsonSerializable
 
     public function addType($type)
     {
-        if (!in_array($type, $this->types)) {
-            $this->types[] = $type;
+        if (!in_array($type, $this->type) && !is_null($type)) {
+            $this->type[] = $type;
         }
 
         return $this;
     }
 
-    public function getTypes()
+    public function setType($type)
     {
-        return $this->types;
+        $this->type = (array) $type;
+        return $this;
+    }
+
+    public function getType()
+    {
+        return $this->type;
     }
 
     public function setPattern($pattern)
@@ -218,14 +225,25 @@ class Property implements \JsonSerializable
         return $this->disallowed;
     }
 
+    public function isIgnored()
+    {
+        return $this->ignored;
+    }
+
+    public function setIgnored($ignored)
+    {
+        $this->ignored = $ignored;
+        return $this;
+    }
+
     public function jsonSerialize()
     {
         $serialized = [];
-        if (count($this->types)) {
-            if (count($this->types) === 1) {
-                $serialized['type'] = $this->types[0];
+        if (!empty($this->type)) {
+            if (count($this->type) === 1) {
+                $serialized['type'] = $this->type[0];
             } else {
-                $serialized['type'] = $this->types;
+                $serialized['type'] = $this->type;
             }
         }
 
@@ -237,7 +255,7 @@ class Property implements \JsonSerializable
             $serialized['enum'] = $this->enumeration;
         }
 
-        if (count(array_intersect($this->types, [self::TYPE_NUMBER, self::TYPE_INTEGER])) >= 1) {
+        if (count(array_intersect($this->type, [self::TYPE_NUMBER, self::TYPE_INTEGER])) >= 1) {
             if ($this->minimum) {
                 $serialized['minimum']          = $this->minimum;
                 $serialized['exclusiveMinimum'] = $this->exclusiveMinimum;
@@ -248,7 +266,7 @@ class Property implements \JsonSerializable
             }
         }
 
-        if (count(array_intersect($this->types, [self::TYPE_STRING])) >= 1) {
+        if (count(array_intersect($this->type, [self::TYPE_STRING])) >= 1) {
             if ($this->minimum) {
                 $serialized['minLength'] = $this->minimum;
             }
