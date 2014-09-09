@@ -20,8 +20,14 @@ class JsonSchemaAnnotationHandler implements PropertyHandlerInterface
     public function handle($className, Property $property)
     {
         foreach ($this->getJsonSchemaConstraintsForProperty($className, $property) as $constraint) {
+            if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\Minimum) {
+                $property->setMinimum($constraint->minimum);
+            }
             if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\ExclusiveMinimum) {
                 $property->setExclusiveMinimum(true);
+            }
+            if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\Maximum) {
+                $property->setMaximum($constraint->maximum);
             }
             if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\ExclusiveMaximum) {
                 $property->setExclusiveMaximum(true);
@@ -47,6 +53,9 @@ class JsonSchemaAnnotationHandler implements PropertyHandlerInterface
             }
             if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\Options) {
                 $property->setOptions($constraint->options);
+            }
+            if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\Enum) {
+                $property->setEnum($constraint->enum);
             }
             if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\Ignore) {
                 $property->setIgnored(true);

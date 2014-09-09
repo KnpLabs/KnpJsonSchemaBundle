@@ -41,6 +41,7 @@ class Property implements \JsonSerializable
     protected $exclusiveMaximum = false;
     protected $format;
     protected $options;
+    protected $enum;
     protected $disallowed = [];
     protected $ignored = false;
 
@@ -144,9 +145,7 @@ class Property implements \JsonSerializable
 
     public function setMinimum($minimum)
     {
-        if (!$this->minimum) {
-            $this->minimum = $minimum;
-        }
+        $this->minimum = $minimum;
 
         return $this;
     }
@@ -158,9 +157,7 @@ class Property implements \JsonSerializable
 
     public function setMaximum($maximum)
     {
-        if (!$this->maximum) {
-            $this->maximum = $maximum;
-        }
+        $this->maximum = $maximum;
 
         return $this;
     }
@@ -222,6 +219,17 @@ class Property implements \JsonSerializable
     public function getOptions()
     {
         return $this->options;
+    }
+
+    public function setEnum(array $enum)
+    {
+        $this->enum = $enum;
+        return $this;
+    }
+
+    public function getEnum()
+    {
+        return $this->enum;
     }
 
     public function setDisallowed(array $disallowed)
@@ -294,6 +302,10 @@ class Property implements \JsonSerializable
 
         if ($this->options) {
             $serialized['options'] = $this->options;
+        }
+
+        if ($this->enum) {
+            $serialized['enum'] = $this->enum;
         }
 
         if ($this->disallowed) {
