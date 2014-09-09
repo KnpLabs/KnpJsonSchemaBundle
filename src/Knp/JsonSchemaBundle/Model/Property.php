@@ -6,27 +6,27 @@ use Symfony\Component\Validator\Constraint;
 
 class Property implements \JsonSerializable
 {
-    const TYPE_STRING        = 'string';
-    const TYPE_NUMBER        = 'number';
-    const TYPE_INTEGER       = 'integer';
-    const TYPE_BOOLEAN       = 'boolean';
-    const TYPE_OBJECT        = 'object';
-    const TYPE_ARRAY         = 'array';
-    const TYPE_NULL          = 'null';
-    const TYPE_ANY           = 'any';
-    const FORMAT_DATETIME    = 'date-time';
-    const FORMAT_DATE        = 'date';
-    const FORMAT_TIME        = 'time';
+    const TYPE_STRING = 'string';
+    const TYPE_NUMBER = 'number';
+    const TYPE_INTEGER = 'integer';
+    const TYPE_BOOLEAN = 'boolean';
+    const TYPE_OBJECT = 'object';
+    const TYPE_ARRAY = 'array';
+    const TYPE_NULL = 'null';
+    const TYPE_ANY = 'any';
+    const FORMAT_DATETIME = 'date-time';
+    const FORMAT_DATE = 'date';
+    const FORMAT_TIME = 'time';
     const FORMAT_UTCMILLISEC = 'utc-millisec';
-    const FORMAT_REGEX       = 'regex';
-    const FORMAT_COLOR       = 'color';
-    const FORMAT_STYLE       = 'style';
-    const FORMAT_PHONE       = 'phone';
-    const FORMAT_URI         = 'uri';
-    const FORMAT_EMAIL       = 'email';
-    const FORMAT_IPADDRESS   = 'ip-address';
-    const FORMAT_IPV6        = 'ipv6';
-    const FORMAT_HOSTNAME    = 'host-name';
+    const FORMAT_REGEX = 'regex';
+    const FORMAT_COLOR = 'color';
+    const FORMAT_STYLE = 'style';
+    const FORMAT_PHONE = 'phone';
+    const FORMAT_URI = 'uri';
+    const FORMAT_EMAIL = 'email';
+    const FORMAT_IPADDRESS = 'ip-address';
+    const FORMAT_IPV6 = 'ipv6';
+    const FORMAT_HOSTNAME = 'host-name';
 
     protected $name;
     protected $title;
@@ -40,6 +40,7 @@ class Property implements \JsonSerializable
     protected $exclusiveMinimum = false;
     protected $exclusiveMaximum = false;
     protected $format;
+    protected $options;
     protected $disallowed = [];
     protected $ignored = false;
 
@@ -104,7 +105,7 @@ class Property implements \JsonSerializable
 
     public function setType($type)
     {
-        $this->type = (array) $type;
+        $this->type = (array)$type;
         return $this;
     }
 
@@ -209,6 +210,18 @@ class Property implements \JsonSerializable
     public function getFormat()
     {
         return $this->format;
+    }
+
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    public function getOptions()
+    {
+        return $this->options;
     }
 
     public function setDisallowed(array $disallowed)
