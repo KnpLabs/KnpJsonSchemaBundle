@@ -292,6 +292,10 @@ class Property implements \JsonSerializable
             $serialized['format'] = $this->format;
         }
 
+        if ($this->options) {
+            $serialized['options'] = $this->options;
+        }
+
         if ($this->disallowed) {
             $serialized['disallow'] = $this->disallowed;
         }
