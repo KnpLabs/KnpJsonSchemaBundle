@@ -27,10 +27,6 @@ class RegisterPropertyHandlersPass implements CompilerPassInterface
             'json_schema.property.handler'
         );
 
-        uasort($taggedServices, function($a, $b) use($container) {
-            return $a[0]['priority'] > $b[0]['priority'];
-        });
-
         foreach ($taggedServices as $id => $attributes) {
             $definition->addMethodCall(
                 'registerPropertyHandler',

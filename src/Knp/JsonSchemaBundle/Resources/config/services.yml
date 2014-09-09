@@ -69,7 +69,7 @@ services:
             - @doctrine.annotations.cached_reader
             - @json_schema.reflection_factory
         tags:
-            - { name: json_schema.property.handler, priority: 20 }
+            - { name: json_schema.property.handler, priority: 0 }
 
     json_schema.property.handler.chained_guesser:
         public: false
@@ -85,7 +85,7 @@ services:
         arguments:
             - @validator.mapping.class_metadata_factory
         tags:
-            - { name: json_schema.property.handler, priority: 0 }
+            - { name: json_schema.property.handler, priority: 20 }
 
     form.chain.guesser:
         public: false
