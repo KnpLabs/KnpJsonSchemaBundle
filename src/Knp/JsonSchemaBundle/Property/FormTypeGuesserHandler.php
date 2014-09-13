@@ -57,6 +57,7 @@ class FormTypeGuesserHandler implements PropertyHandlerInterface
             case 'date':
             case 'datetime':
             case 'text':
+            case 'textarea':
             case 'country':
             case 'email':
             case 'file':
