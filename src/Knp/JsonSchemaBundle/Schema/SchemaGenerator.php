@@ -36,10 +36,13 @@ class SchemaGenerator
         $this->schemaFactory     = $schemaFactory;
         $this->propertyFactory   = $propertyFactory;
         $this->propertyHandlers  = new \SplPriorityQueue;
+        $this->aliasList         = new \SplDoublyLinkedList;
     }
 
     public function generate($alias)
     {
+        $this->aliases[] = $alias;
+
         $className = $this->schemaRegistry->getNamespace($alias);
         $refl      = $this->reflectionFactory->create($className);
         $schema    = $this->schemaFactory->createSchema(ucfirst($alias));
@@ -55,10 +58,17 @@ class SchemaGenerator
             if (!$property->isIgnored()) {
                 $schema->addProperty($property);
 
-                if ($property->hasType(Property::TYPE_OBJECT) && $property->getObject()) {
+                if ($property->hasType(Property::TYPE_OBJECT) &&
+                    $property->getObject() &&
+                    // Make sure that we're not creating a reference to the parent schema of the property
+                    $property->getObject() != prev($this->aliases)) {
+
                     $property->setSchema(
-                        $x = $this->generate($property->getObject())
+                        $this->generate($property->getObject())
                     );
+
+                    // Fast forward from our prev() call earlier so the pointer is in the right place
+                    next($this->aliases);
                 }
             }
         }
