@@ -13,6 +13,10 @@ class JsonSchemaResponse extends JsonResponse
             'Link'         => sprintf('<%s>; rel="describedBy"', $route),
         ]);
 
+        // Add pretty printing to the default encoding options supplied by
+        // symfony's JsonResponse
+        $this->encodingOptions = $this->encodingOptions | JSON_PRETTY_PRINT;
+
         $this->setData($data);
     }
 }
