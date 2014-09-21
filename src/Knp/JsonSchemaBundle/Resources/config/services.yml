@@ -76,6 +76,7 @@ services:
         class: %json_schema.property.handler.form_type_guesser_handler.class%
         arguments:
             - @form.chain.guesser
+            - @json_schema.registry
         tags:
             - { name: json_schema.property.handler, priority: 10 }
 

@@ -2,6 +2,7 @@
 
 namespace Knp\JsonSchemaBundle\Model;
 
+use Knp\JsonSchemaBundle\Model\Schema;
 use Symfony\Component\Validator\Constraint;
 
 class Property implements \JsonSerializable
@@ -44,6 +45,9 @@ class Property implements \JsonSerializable
     protected $enum;
     protected $disallowed = [];
     protected $ignored = false;
+    protected $object;
+    protected $multiple;
+    protected $schema;
 
     public function setName($name)
     {
@@ -93,6 +97,11 @@ class Property implements \JsonSerializable
     public function isRequired()
     {
         return $this->required;
+    }
+
+    public function hasType($type)
+    {
+        return (!is_null($type) && in_array($type, $this->type));
     }
 
     public function addType($type)
@@ -257,6 +266,42 @@ class Property implements \JsonSerializable
         return $this;
     }
 
+    public function setObject($object)
+    {
+        $this->object = $object;
+        return $this;
+    }
+
+    public function getObject()
+    {
+        return $this->object;
+    }
+
+    public function setMultiple($multiple)
+    {
+        $this->multiple = $multiple;
+        return $this;
+    }
+
+    public function getMultiple()
+    {
+        return $this->multiple;
+    }
+
+    public function setSchema(Schema $schema)
+    {
+        $this->schema = $schema;
+        return $this;
+    }
+
+    /**
+     * @return Schema
+     */
+    public function getSchema()
+    {
+        return $this->schema;
+    }
+
     public function jsonSerialize()
     {
         $serialized = [];
@@ -318,6 +363,18 @@ class Property implements \JsonSerializable
 
         if ($this->description) {
             $serialized['description'] = $this->description;
+        }
+
+        if ($this->schema && $this->hasType(self::TYPE_OBJECT)) {
+            $schema = $this->schema->jsonSerialize();
+            unset($schema['$schema'], $schema['id']);
+
+            if ($this->multiple) {
+                $serialized['type'] = 'array';
+                $serialized['items'] = $schema;
+            } else {
+                $serialized = $serialized + $schema;
+            }
         }
 
         return $serialized;

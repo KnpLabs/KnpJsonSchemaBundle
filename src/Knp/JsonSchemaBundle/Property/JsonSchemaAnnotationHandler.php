@@ -57,6 +57,10 @@ class JsonSchemaAnnotationHandler implements PropertyHandlerInterface
             if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\Ignore) {
                 $property->setIgnored(true);
             }
+            if ($constraint instanceof \Knp\JsonSchemaBundle\Annotations\Object) {
+                $property->setObject($constraint->alias);
+                $property->setMultiple($constraint->multiple);
+            }
         }
     }
 

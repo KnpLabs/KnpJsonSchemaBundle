@@ -54,12 +54,12 @@ class SchemaRegistry
         return array_flip($this->registry)[$namespace];
     }
 
-    private function hasAlias($alias)
+    public function hasAlias($alias)
     {
         return array_key_exists($alias, $this->registry);
     }
 
-    private function hasNamespace($namespace)
+    public function hasNamespace($namespace)
     {
         return array_key_exists($namespace, array_flip($this->registry));
     }

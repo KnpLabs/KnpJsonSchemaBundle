@@ -54,6 +54,12 @@ class SchemaGenerator
 
             if (!$property->isIgnored()) {
                 $schema->addProperty($property);
+
+                if ($property->hasType(Property::TYPE_OBJECT) && $property->getObject()) {
+                    $property->setSchema(
+                        $x = $this->generate($property->getObject())
+                    );
+                }
             }
         }
 
