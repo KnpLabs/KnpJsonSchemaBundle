@@ -55,21 +55,19 @@ class SchemaGenerator
             $property = $this->propertyFactory->createProperty($property->name);
             $this->applyPropertyHandlers($className, $property);
 
-            if (!$property->isIgnored()) {
-                $schema->addProperty($property);
-
-                if ($property->hasType(Property::TYPE_OBJECT) &&
-                    $property->getObject() &&
-                    // Make sure that we're not creating a reference to the parent schema of the property
-                    $property->getObject() != prev($this->aliases)) {
-
+            if (!$property->isIgnored() && $property->hasType(Property::TYPE_OBJECT) && $property->getObject()) {
+                // Make sure that we're not creating a reference to the parent schema of the property
+                if (!in_array($property->getObject(), $this->aliases)) {
                     $property->setSchema(
                         $this->generate($property->getObject())
                     );
-
-                    // Fast forward from our prev() call earlier so the pointer is in the right place
-                    next($this->aliases);
+                } else {
+                    $property->setIgnored(true);
                 }
+            }
+
+            if (!$property->isIgnored()) {
+                $schema->addProperty($property);
             }
         }
 
