@@ -22,14 +22,14 @@ class RegisterJsonSchemasPass implements CompilerPassInterface
     {
         if (
             !$container->hasDefinition('json_schema.registry') ||
-            !$container->has('doctrine.annotations.cached_reader') ||
+            !$container->has('annotation_reader') ||
             !$container->has('json_schema.reflection_factory')
         ) {
             return;
         }
 
         $registry = $container->getDefinition('json_schema.registry');
-        $reader   = $container->get('doctrine.annotations.cached_reader');
+        $reader   = $container->get('annotation_reader');
         $factory  = $container->get('json_schema.reflection_factory');
 
         $refClasses = $factory->createFromDirectory(

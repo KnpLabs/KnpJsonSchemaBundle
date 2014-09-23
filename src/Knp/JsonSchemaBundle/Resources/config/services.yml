@@ -9,9 +9,6 @@ parameters:
     json_schema.factory.schema.class:                                       "Knp\\JsonSchemaBundle\\Model\\SchemaFactory"
     json_schema.factory.property.class:                                     "Knp\\JsonSchemaBundle\\Model\\PropertyFactory"
     json_schema.validator.class:                                            "JsonSchema\\Validator"
-    doctrine.annotations.reader.class:                                      "Doctrine\\Common\\Annotations\\AnnotationReader"
-    doctrine.annotations.cached_reader.class:                               "Doctrine\\Common\\Annotations\\CachedReader"
-    doctrine.common.apc_cache.class:                                        "Doctrine\\Common\\Cache\\ApcCache"
     form.chain.guesser.class:                                               "Symfony\\Component\\Form\\FormTypeGuesserChain"
 
 services:
@@ -41,14 +38,14 @@ services:
         public: false
         class: %json_schema.reflection_factory.class%
         arguments:
-            - @finder
-            - @filesystem
+            - @json_schema.finder
+            - @json_schema.filesystem
 
-    finder:
+    json_schema.finder:
         public: false
         class: "Symfony\\Component\\Finder\\Finder"
 
-    filesystem:
+    json_schema.filesystem:
         public: false
         class: "Symfony\\Component\\Filesystem\\Filesystem"
 
@@ -66,7 +63,7 @@ services:
         public: false
         class: %json_schema.property.handler.annotation.class%
         arguments:
-            - @doctrine.annotations.cached_reader
+            - @annotation_reader
             - @json_schema.reflection_factory
         tags:
             - { name: json_schema.property.handler, priority: 0 }
@@ -93,19 +90,3 @@ services:
         class: %form.chain.guesser.class%
         arguments:
             - [@form.type_guesser.validator, @form.type_guesser.doctrine]
-
-    doctrine.annotations.cached_reader:
-        public: false
-        class: %doctrine.annotations.cached_reader.class%
-        arguments:
-            - @doctrine.annotations.reader
-            - @doctrine.common.apc_cache
-            - true
-
-    doctrine.annotations.reader:
-        public: false
-        class: %doctrine.annotations.reader.class%
-
-    doctrine.common.apc_cache:
-        public: false
-        class: %doctrine.common.apc_cache.class%
