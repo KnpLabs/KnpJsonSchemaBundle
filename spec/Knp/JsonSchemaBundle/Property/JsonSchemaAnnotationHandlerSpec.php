@@ -3,8 +3,8 @@
 namespace spec\Knp\JsonSchemaBundle\Property;
 
 use Knp\JsonSchemaBundle\Model\Property;
-
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class JsonSchemaAnnotationHandlerSpec extends ObjectBehavior
 {
@@ -19,8 +19,8 @@ class JsonSchemaAnnotationHandlerSpec extends ObjectBehavior
     {
         $this->beConstructedWith($reader, $reflectionFactory);
 
-        $reflectionFactory->create(\Prophecy\Argument::any())->willReturn($refClass);
-        $refClass->getProperty(\Prophecy\Argument::any())->willReturn($refProperty);
+        $reflectionFactory->create(Argument::any())->willReturn($refClass);
+        $refClass->getProperty(Argument::any())->willReturn($refProperty);
     }
 
     /**

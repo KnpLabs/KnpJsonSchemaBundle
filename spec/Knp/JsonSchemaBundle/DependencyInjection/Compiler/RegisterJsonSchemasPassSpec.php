@@ -3,6 +3,7 @@
 namespace spec\Knp\JsonSchemaBundle\DependencyInjection\Compiler;
 
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class RegisterJsonSchemasPassSpec extends ObjectBehavior
 {
@@ -81,14 +82,14 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
         $reader, $registry, $factory, $container, $schema, $refClass
     )
     {
-        $container->hasDefinition(\Prophecy\Argument::any())->willReturn(true);
+        $container->hasDefinition(Argument::any())->willReturn(true);
         $container->getDefinition('json_schema.registry')->willReturn($registry);
         $container->has('annotation_reader')->willReturn(true);
         $container->get('annotation_reader')->willReturn($reader);
         $container->has("json_schema.reflection_factory")->willReturn(true);
         $container->get('json_schema.reflection_factory')->willReturn($factory);
 
-        $factory->createFromDirectory(\Prophecy\Argument::any(), \Prophecy\Argument::any())->willReturn([$refClass]);
+        $factory->createFromDirectory(Argument::any(), Argument::any())->willReturn([$refClass]);
 
         $schema->name = 'foo';
         $reader->getClassAnnotations($refClass)->willReturn([$schema]);
@@ -112,13 +113,13 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
         $reader, $registry, $factory, $container, $schema, $refClass
     )
     {
-        $container->hasDefinition(\Prophecy\Argument::any())->willReturn(true);
+        $container->hasDefinition(Argument::any())->willReturn(true);
         $container->getDefinition('json_schema.registry')->willReturn($registry);
         $container->has('annotation_reader')->willReturn(true);
         $container->get('annotation_reader')->willReturn($reader);
         $container->has('json_schema.reflection_factory')->willReturn(true);
         $container->get('json_schema.reflection_factory')->willReturn($factory);
-        $factory->createFromDirectory(\Prophecy\Argument::any(), \Prophecy\Argument::any())->willReturn([$refClass]);
+        $factory->createFromDirectory(Argument::any(), Argument::any())->willReturn([$refClass]);
 
         $schema->name = null;
         $reader->getClassAnnotations($refClass)->willReturn([$schema]);

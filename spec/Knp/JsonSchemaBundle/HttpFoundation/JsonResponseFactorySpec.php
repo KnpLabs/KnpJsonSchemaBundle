@@ -3,6 +3,7 @@
 namespace spec\Knp\JsonSchemaBundle\HttpFoundation;
 
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class JsonResponseFactorySpec extends ObjectBehavior
 
@@ -23,7 +24,7 @@ class JsonResponseFactorySpec extends ObjectBehavior
         $registry, $router, $data
     )
     {
-        $registry->getAlias(\Prophecy\Argument::any())->willReturn('foo');
+        $registry->getAlias(Argument::any())->willReturn('foo');
         $router->generate('show_json_schema', ['alias' => 'foo'], true)->willReturn('http://localhost/schemas/foo.json');
 
         $response = $this->create($data);

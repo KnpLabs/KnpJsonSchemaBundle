@@ -2,8 +2,9 @@
 
 namespace spec\Knp\JsonSchemaBundle\Property;
 
-use PhpSpec\ObjectBehavior;
 use Knp\JsonSchemaBundle\Model\Property;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class FormTypeGuesserHandlerSpec extends ObjectBehavior
 {
@@ -19,10 +20,10 @@ class FormTypeGuesserHandlerSpec extends ObjectBehavior
     function let($guesser, $schemaRegistry, $property, $typeGuess, $requiredGuess, $patternGuess, $maxLengthGuess)
     {
         $this->beConstructedWith($guesser, $schemaRegistry);
-        $guesser->guessType(\Prophecy\Argument::any(), null)->shouldBeCalled()->willReturn($typeGuess);
-        $guesser->guessRequired(\Prophecy\Argument::any(), null)->shouldBeCalled()->willReturn($requiredGuess);
-        $guesser->guessPattern(\Prophecy\Argument::any(), null)->shouldBeCalled()->willReturn($patternGuess);
-        $guesser->guessMaxLength(\Prophecy\Argument::any(), null)->shouldBeCalled()->willReturn($maxLengthGuess);
+        $guesser->guessType(Argument::any(), null)->shouldBeCalled()->willReturn($typeGuess);
+        $guesser->guessRequired(Argument::any(), null)->shouldBeCalled()->willReturn($requiredGuess);
+        $guesser->guessPattern(Argument::any(), null)->shouldBeCalled()->willReturn($patternGuess);
+        $guesser->guessMaxLength(Argument::any(), null)->shouldBeCalled()->willReturn($maxLengthGuess);
     }
 
     function it_should_add_json_type_object_if_guessed_type_is_entity($guesser, $property, $typeGuess)

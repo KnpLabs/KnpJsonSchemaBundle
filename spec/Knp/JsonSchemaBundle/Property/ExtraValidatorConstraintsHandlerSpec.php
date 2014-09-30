@@ -3,8 +3,8 @@
 namespace spec\Knp\JsonSchemaBundle\Property;
 
 use Knp\JsonSchemaBundle\Model\Property;
-
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class ExtraValidatorConstraintsHandlerSpec extends ObjectBehavior
 {
@@ -19,7 +19,7 @@ class ExtraValidatorConstraintsHandlerSpec extends ObjectBehavior
         $this->beConstructedWith($classMetadataFactory);
         $propertyMetadata->name    = 'some property';
         $classMetadata->properties = [$propertyMetadata];
-        $classMetadataFactory->getMetadataFor(\Prophecy\Argument::any())->willReturn($classMetadata);
+        $classMetadataFactory->getMetadataFor(Argument::any())->willReturn($classMetadata);
         $property->getName()->willReturn('some property');
     }
 

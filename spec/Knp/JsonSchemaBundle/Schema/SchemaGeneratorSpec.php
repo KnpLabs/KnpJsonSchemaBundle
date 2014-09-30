@@ -2,6 +2,7 @@
 namespace spec\Knp\JsonSchemaBundle\Schema;
 
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class SchemaGeneratorSpec extends ObjectBehavior
 {
@@ -39,7 +40,7 @@ class SchemaGeneratorSpec extends ObjectBehavior
         $handler1, $handler2, $handler3, $refClass, $refProperty, $schema, $property
     )
     {
-        $jsonValidator->check(\Prophecy\Argument::any(), \Prophecy\Argument::any())->shouldBeCalled();
+        $jsonValidator->check(Argument::any(), Argument::any())->shouldBeCalled();
         $jsonValidator->isValid()->willReturn(true);
         $schemaRegistry->getNamespace('bar')->willReturn('App\\Foo\\Bar');
         $reflectionFactory->create('App\\Foo\\Bar')->willReturn($refClass);
