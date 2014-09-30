@@ -18,7 +18,7 @@
         "justinrainbow/json-schema":    ">=1.2.2"
     },
     "require-dev": {
-        "phpspec/phpspec":              ">=2.0"
+        "phpspec/phpspec":              "~2.0"
     },
     "config": {
         "bin-dir": "bin"
