@@ -40,14 +40,14 @@ class PropertySpec extends ObjectBehavior
     {
         $this->addType('the type');
         $this->addType('another type');
-        $this->getTypes()->shouldBe(['the type', 'another type']);
+        $this->getType()->shouldBe(['the type', 'another type']);
     }
 
     function its_addType_should_not_add_type_if_it_already_has_it()
     {
         $this->addType('the type');
         $this->addType('the type');
-        $this->getTypes()->shouldBe(['the type']);
+        $this->getType()->shouldBe(['the type']);
     }
 
     function it_should_have_a_write_once_pattern_property()
@@ -68,14 +68,14 @@ class PropertySpec extends ObjectBehavior
     {
         $this->setMinimum(2);
         $this->setMinimum(5);
-        $this->getMinimum()->shouldBe(2);
+        $this->getMinimum()->shouldBe(5);
     }
 
     function it_should_have_a_write_once_maximum_property()
     {
         $this->setMaximum(5);
         $this->setMaximum(2);
-        $this->getMaximum()->shouldBe(5);
+        $this->getMaximum()->shouldBe(2);
     }
 
     function it_should_have_a_write_once_exclusiveMinimum_property()

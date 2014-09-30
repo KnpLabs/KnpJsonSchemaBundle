@@ -43,6 +43,7 @@ class RegisterPropertyHandlersPassSpec extends ObjectBehavior
         $referenceFactory, $container, $generatorDef, $handlerRef1, $handlerRef2
     )
     {
+        $container->hasDefinition('json_schema.generator')->willReturn(true);
         $container->has('json_schema.generator')->willReturn(true);
         $container->getDefinition('json_schema.generator')->willReturn($generatorDef);
         $container->findTaggedServiceIds('json_schema.property.handler')->willReturn([

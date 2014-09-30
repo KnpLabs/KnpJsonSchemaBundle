@@ -90,6 +90,11 @@ class SchemaGenerator
         $this->propertyHandlers->insert($handler, $priority);
     }
 
+    public function getPropertyHandlers()
+    {
+        return array_values(iterator_to_array(clone $this->propertyHandlers));
+    }
+
     /**
      * Validate a schema against the meta-schema provided by http://json-schema.org/schema
      *

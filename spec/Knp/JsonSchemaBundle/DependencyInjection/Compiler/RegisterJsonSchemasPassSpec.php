@@ -30,7 +30,7 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
     {
         $container->hasDefinition('json_schema.registry')->willReturn(false);
         $container->has('json_schema.reflection_factory')->willReturn(true);
-        $container->has('doctrine.annotations.cached_reader')->willReturn(true);
+        $container->has('annotation_reader')->willReturn(true);
 
         $container->getDefinition('json_schema.registry')->shouldNotBeCalled();
 
@@ -46,7 +46,7 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
     {
         $container->hasDefinition('json_schema.registry')->willReturn(true);
         $container->has('json_schema.reflection_factory')->willReturn(false);
-        $container->has('doctrine.annotations.cached_reader')->willReturn(true);
+        $container->has('annotation_reader')->willReturn(true);
 
         $container->getDefinition('json_schema.registry')->shouldNotBeCalled();
 
@@ -62,7 +62,7 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
     {
         $container->hasDefinition('json_schema.registry')->willReturn(true);
         $container->has('json_schema.reflection_factory')->willReturn(true);
-        $container->has('doctrine.annotations.cached_reader')->willReturn(false);
+        $container->has('annotation_reader')->willReturn(false);
 
         $container->getDefinition('json_schema.registry')->shouldNotBeCalled();
 
@@ -83,10 +83,12 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
     {
         $container->hasDefinition(\Prophecy\Argument::any())->willReturn(true);
         $container->getDefinition('json_schema.registry')->willReturn($registry);
-        $container->get('doctrine.annotations.cached_reader')->willReturn($reader);
+        $container->has('annotation_reader')->willReturn(true);
+        $container->get('annotation_reader')->willReturn($reader);
+        $container->has("json_schema.reflection_factory")->willReturn(true);
         $container->get('json_schema.reflection_factory')->willReturn($factory);
 
-        $factory->createFromDirectory(\Prophecy\Argument::any())->willReturn([$refClass]);
+        $factory->createFromDirectory(\Prophecy\Argument::any(), \Prophecy\Argument::any())->willReturn([$refClass]);
 
         $schema->name = 'foo';
         $reader->getClassAnnotations($refClass)->willReturn([$schema]);
@@ -112,9 +114,11 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
     {
         $container->hasDefinition(\Prophecy\Argument::any())->willReturn(true);
         $container->getDefinition('json_schema.registry')->willReturn($registry);
-        $container->get('doctrine.annotations.cached_reader')->willReturn($reader);
+        $container->has('annotation_reader')->willReturn(true);
+        $container->get('annotation_reader')->willReturn($reader);
+        $container->has('json_schema.reflection_factory')->willReturn(true);
         $container->get('json_schema.reflection_factory')->willReturn($factory);
-        $factory->createFromDirectory(\Prophecy\Argument::any())->willReturn([$refClass]);
+        $factory->createFromDirectory(\Prophecy\Argument::any(), \Prophecy\Argument::any())->willReturn([$refClass]);
 
         $schema->name = null;
         $reader->getClassAnnotations($refClass)->willReturn([$schema]);

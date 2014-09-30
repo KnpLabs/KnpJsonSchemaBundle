@@ -23,7 +23,6 @@ class ExtraValidatorConstraintsHandlerSpec extends ObjectBehavior
         $property->getName()->willReturn('some property');
     }
 
-
     /**
      * @param Symfony\Component\Validator\Constraints\Choice $choiceConstraint
      */
@@ -46,6 +45,7 @@ class ExtraValidatorConstraintsHandlerSpec extends ObjectBehavior
         $lengthConstraint->min         = 15;
 
         $property->setMinimum(15)->shouldBeCalled();
+        $property->setMaximum(null)->shouldBeCalled();
 
         $this->handle('some class', $property);
     }
@@ -58,6 +58,7 @@ class ExtraValidatorConstraintsHandlerSpec extends ObjectBehavior
         $propertyMetadata->constraints = [$lengthConstraint];
         $lengthConstraint->max         = 42;
 
+        $property->setMinimum(null)->shouldBeCalled();
         $property->setMaximum(42)->shouldBeCalled();
 
         $this->handle('some class', $property);
@@ -72,7 +73,7 @@ class ExtraValidatorConstraintsHandlerSpec extends ObjectBehavior
         $propertyMetadata->constraints = [$typeNumberConstraint];
         $typeNumberConstraint->type    = 'number';
 
-        $property->getTypes()->willReturn(['string']);
+        $property->getType()->willReturn(['string']);
 
         $property->addType('number')->shouldBeCalled();
 

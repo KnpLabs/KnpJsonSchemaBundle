@@ -29,6 +29,7 @@ class JsonSchemaAnnotationHandlerSpec extends ObjectBehavior
     function it_should_set_minimumExcluded_if_annotation_has_been_set($reader, $property, $refProperty, $constraint)
     {
         $reader->getPropertyAnnotations($refProperty)->willReturn([$constraint]);
+        $property->getName()->shouldBeCalled();
         $property->setExclusiveMinimum(true)->shouldBeCalled();
 
         $this->handle('some class', $property);
@@ -40,6 +41,7 @@ class JsonSchemaAnnotationHandlerSpec extends ObjectBehavior
     function it_should_set_maximumExcluded_if_annotation_has_been_set($reader, $property, $refProperty, $constraint)
     {
         $reader->getPropertyAnnotations($refProperty)->willReturn([$constraint]);
+        $property->getName()->shouldBeCalled();
         $property->setExclusiveMaximum(true)->shouldBeCalled();
 
         $this->handle('some class', $property);
@@ -55,6 +57,7 @@ class JsonSchemaAnnotationHandlerSpec extends ObjectBehavior
         $disallowed             = ["boolean", "number", ["type" => "string", "format" => "email"]];
         $constraint->disallowed = $disallowed;
 
+        $property->getName()->shouldBeCalled();
         $property->setDisallowed($disallowed)->shouldBeCalled();
 
         $this->handle('some class', $property);
@@ -67,11 +70,10 @@ class JsonSchemaAnnotationHandlerSpec extends ObjectBehavior
     {
         $reader->getPropertyAnnotations($refProperty)->willReturn([$constraint]);
 
-        $types             = ['boolean', 'string'];
-        $constraint->types = $types;
+        $constraint->type = ['boolean', 'string'];
 
-        $property->addType('boolean')->shouldBeCalled();
-        $property->addType('string')->shouldBeCalled();
+        $property->getName()->shouldBeCalled();
+        $property->setType(['boolean', 'string'])->shouldBeCalled();
 
         $this->handle('some class', $property);
     }

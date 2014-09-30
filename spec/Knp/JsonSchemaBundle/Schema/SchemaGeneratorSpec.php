@@ -39,6 +39,7 @@ class SchemaGeneratorSpec extends ObjectBehavior
         $handler1, $handler2, $handler3, $refClass, $refProperty, $schema, $property
     )
     {
+        $jsonValidator->check(\Prophecy\Argument::any(), \Prophecy\Argument::any())->shouldBeCalled();
         $jsonValidator->isValid()->willReturn(true);
         $schemaRegistry->getNamespace('bar')->willReturn('App\\Foo\\Bar');
         $reflectionFactory->create('App\\Foo\\Bar')->willReturn($refClass);
@@ -48,6 +49,7 @@ class SchemaGeneratorSpec extends ObjectBehavior
         $propertyFactory->createProperty('name')->willReturn($property);
         $urlGenerator->generate('show_json_schema', ['alias' => 'bar'], true)->willReturn('some url');
         $schema->getSchema()->willReturn(\Knp\JsonSchemaBundle\Model\Schema::SCHEMA_V3);
+        $schema->jsonSerialize()->shouldBeCalled();
 
         $handler1->handle('App\\Foo\\Bar', $property)->shouldBeCalled();
         $handler2->handle('App\\Foo\\Bar', $property)->shouldBeCalled();
