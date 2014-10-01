@@ -8,7 +8,7 @@ use Prophecy\Argument;
 class RegisterJsonSchemasPassSpec extends ObjectBehavior
 {
     /**
-     * @param Symfony\Component\HttpKernel\Bundle\BundleInterface $bundle
+     * @param \Symfony\Component\HttpKernel\Bundle\BundleInterface $bundle
      */
     public function let($bundle)
     {
@@ -17,15 +17,15 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
         $bundle->getNamespace()->willReturn('bundle namespace');
     }
 
-    function it_should_be_a_compiler_pass()
+    function it_is_a_compiler_pass()
     {
         $this->shouldHaveType('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
     }
 
     /**
-     * @param Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      */
-    function it_should_do_nothing_if_schema_registry_is_unavailable(
+    function it_does_nothing_if_schema_registry_is_unavailable(
         $container
     )
     {
@@ -39,9 +39,9 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
     }
 
     /**
-     * @param Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      */
-    function it_should_do_nothing_if_reflection_factory_is_unavailable(
+    function it_does_nothing_if_reflection_factory_is_unavailable(
         $container
     )
     {
@@ -55,9 +55,9 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
     }
 
     /**
-     * @param Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      */
-    function it_should_do_nothing_if_annotation_reader_is_unavailable(
+    function it_does_nothing_if_annotation_reader_is_unavailable(
         $container
     )
     {
@@ -71,14 +71,14 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
     }
 
     /**
-     * @param Knp\JsonSchemaBundle\Annotations\Schema                $schema
-     * @param ReflectionClass                                        $refClass
-     * @param Doctrine\Common\Annotations\Reader                     $reader
-     * @param Symfony\Component\DependencyInjection\Definition       $registry
-     * @param Knp\JsonSchemaBundle\Reflection\ReflectionFactory          $factory
-     * @param Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param \Knp\JsonSchemaBundle\Annotations\Schema                $schema
+     * @param \ReflectionClass                                        $refClass
+     * @param \Doctrine\Common\Annotations\Reader                     $reader
+     * @param \Symfony\Component\DependencyInjection\Definition       $registry
+     * @param \Knp\JsonSchemaBundle\Reflection\ReflectionFactory          $factory
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      */
-    function it_should_use_Schema_annotation_data_to_register_the_class_in_the_schema_registry(
+    function it_uses_Schema_annotation_data_to_register_the_class_in_the_schema_registry(
         $reader, $registry, $factory, $container, $schema, $refClass
     )
     {
@@ -102,14 +102,14 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
     }
 
     /**
-     * @param Knp\JsonSchemaBundle\Annotations\Schema                $schema
-     * @param ReflectionClass                                        $refClass
-     * @param Doctrine\Common\Annotations\Reader                     $reader
-     * @param Symfony\Component\DependencyInjection\Definition       $registry
-     * @param Knp\JsonSchemaBundle\Reflection\ReflectionFactory          $factory
-     * @param Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param \Knp\JsonSchemaBundle\Annotations\Schema                $schema
+     * @param \ReflectionClass                                        $refClass
+     * @param \Doctrine\Common\Annotations\Reader                     $reader
+     * @param \Symfony\Component\DependencyInjection\Definition       $registry
+     * @param \Knp\JsonSchemaBundle\Reflection\ReflectionFactory          $factory
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      */
-    function it_should_use_short_class_name_as_alias_if_annotation_name_is_not_set(
+    function it_uses_short_class_name_as_alias_if_annotation_name_is_not_set(
         $reader, $registry, $factory, $container, $schema, $refClass
     )
     {

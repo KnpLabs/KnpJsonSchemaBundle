@@ -7,22 +7,22 @@ use PhpSpec\ObjectBehavior;
 class RegisterPropertyHandlersPassSpec extends ObjectBehavior
 {
     /**
-     * @param Knp\JsonSchemaBundle\DependencyInjection\ReferenceFactory $referenceFactory
+     * @param \Knp\JsonSchemaBundle\DependencyInjection\ReferenceFactory $referenceFactory
      */
     function let($referenceFactory)
     {
         $this->beConstructedWith($referenceFactory);
     }
 
-    function it_should_be_a_compiler_pass()
+    function it_is_a_compiler_pass()
     {
         $this->shouldHaveType('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
     }
 
     /**
-     * @param Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      */
-    function it_should_do_nothing_if_schema_generator_is_unavailable(
+    function it_does_nothing_if_schema_generator_is_unavailable(
         $container
     )
     {
@@ -34,12 +34,12 @@ class RegisterPropertyHandlersPassSpec extends ObjectBehavior
     }
 
     /**
-     * @param Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param Symfony\Component\DependencyInjection\Definition       $generatorDef
-     * @param Symfony\Component\DependencyInjection\Reference        $handlerRef1
-     * @param Symfony\Component\DependencyInjection\Reference        $handlerRef2
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param \Symfony\Component\DependencyInjection\Definition       $generatorDef
+     * @param \Symfony\Component\DependencyInjection\Reference        $handlerRef1
+     * @param \Symfony\Component\DependencyInjection\Reference        $handlerRef2
      */
-    function it_should_register_tagged_propery_handlers(
+    function it_registers_tagged_propery_handlers(
         $referenceFactory, $container, $generatorDef, $handlerRef1, $handlerRef2
     )
     {
@@ -58,5 +58,4 @@ class RegisterPropertyHandlersPassSpec extends ObjectBehavior
 
         $this->process($container);
     }
-
 }

@@ -65,10 +65,10 @@ class ExtraValidatorConstraintsHandlerSpec extends ObjectBehavior
     }
 
     /**
-     * @param Symfony\Component\Validator\Constraints\Type $typeNumberConstraint
-     * @param Symfony\Component\Validator\Constraints\Type $typeStringConstraint
+     * @param \Symfony\Component\Validator\Constraints\Type $typeNumberConstraint
+     * @param \Symfony\Component\Validator\Constraints\Type $typeStringConstraint
      */
-    function it_should_add_type_if_property_as_a_type_constraint_that_is_not_already_added($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $typeNumberConstraint, $typeStringConstraint)
+    function it_adds_type_if_property_as_a_type_constraint_that_is_not_already_added($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $typeNumberConstraint, $typeStringConstraint)
     {
         $propertyMetadata->constraints = [$typeNumberConstraint];
         $typeNumberConstraint->type    = 'number';
@@ -81,9 +81,9 @@ class ExtraValidatorConstraintsHandlerSpec extends ObjectBehavior
     }
 
     /**
-     * @param Symfony\Component\Validator\Constraints\Date $constraint
+     * @param \Symfony\Component\Validator\Constraints\Date $constraint
      */
-    function it_should_add_date_format_if_property_as_a_date_constraint($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
+    function it_adds_date_format_if_property_as_a_date_constraint($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
     {
         $propertyMetadata->constraints = [$constraint];
         $property->setFormat(Property::FORMAT_DATE)->shouldBeCalled();
@@ -92,9 +92,9 @@ class ExtraValidatorConstraintsHandlerSpec extends ObjectBehavior
     }
 
     /**
-     * @param Symfony\Component\Validator\Constraints\DateTime $constraint
+     * @param \Symfony\Component\Validator\Constraints\DateTime $constraint
      */
-    function it_should_add_date_time_format_if_property_as_a_datetime_constraint($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
+    function it_adds_date_time_format_if_property_as_a_datetime_constraint($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
     {
         $propertyMetadata->constraints = [$constraint];
         $property->setFormat(Property::FORMAT_DATETIME)->shouldBeCalled();
@@ -103,9 +103,9 @@ class ExtraValidatorConstraintsHandlerSpec extends ObjectBehavior
     }
 
     /**
-     * @param Symfony\Component\Validator\Constraints\Time $constraint
+     * @param \Symfony\Component\Validator\Constraints\Time $constraint
      */
-    function it_should_add_time_format_if_property_as_a_time_constraint($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
+    function it_adds_time_format_if_property_as_a_time_constraint($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
     {
         $propertyMetadata->constraints = [$constraint];
         $property->setFormat(Property::FORMAT_TIME)->shouldBeCalled();
@@ -114,9 +114,9 @@ class ExtraValidatorConstraintsHandlerSpec extends ObjectBehavior
     }
 
     /**
-     * @param Symfony\Component\Validator\Constraints\Email $constraint
+     * @param \Symfony\Component\Validator\Constraints\Email $constraint
      */
-    function it_should_add_email_format_if_property_as_an_email_constraint($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
+    function it_adds_email_format_if_property_as_an_email_constraint($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
     {
         $propertyMetadata->constraints = [$constraint];
         $property->setFormat(Property::FORMAT_EMAIL)->shouldBeCalled();
@@ -125,9 +125,9 @@ class ExtraValidatorConstraintsHandlerSpec extends ObjectBehavior
     }
 
     /**
-     * @param Symfony\Component\Validator\Constraints\Ip $constraint
+     * @param \Symfony\Component\Validator\Constraints\Ip $constraint
      */
-    function it_should_add_ipv6_format_if_property_as_an_ip_constraint_with_version_6($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
+    function it_adds_ipv6_format_if_property_as_an_ip_constraint_with_version_6($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
     {
         $propertyMetadata->constraints = [$constraint];
         $constraint->version = '6';
@@ -137,9 +137,9 @@ class ExtraValidatorConstraintsHandlerSpec extends ObjectBehavior
     }
 
     /**
-     * @param Symfony\Component\Validator\Constraints\Ip $constraint
+     * @param \Symfony\Component\Validator\Constraints\Ip $constraint
      */
-    function it_should_add_ip_address_format_if_property_as_an_ip_constraint_with_version_4($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
+    function it_adds_ip_address_format_if_property_as_an_ip_constraint_with_version_4($classMetadataFactory, $classMetadata, $propertyMetadata, $property, $constraint)
     {
         $propertyMetadata->constraints = [$constraint];
         $constraint->version = '4';

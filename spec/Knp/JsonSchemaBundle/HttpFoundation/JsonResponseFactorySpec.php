@@ -9,8 +9,8 @@ class JsonResponseFactorySpec extends ObjectBehavior
 
 {
     /**
-     * @param Knp\JsonSchemaBundle\Schema\SchemaRegistry $registry
-     * @param Symfony\Component\Routing\RouterInterface  $router
+     * @param \Knp\JsonSchemaBundle\Schema\SchemaRegistry $registry
+     * @param \Symfony\Component\Routing\RouterInterface  $router
      */
     function let($registry, $router)
     {
@@ -18,9 +18,9 @@ class JsonResponseFactorySpec extends ObjectBehavior
     }
 
     /**
-     * @param stdClass $data
+     * @param \stdClass $data
      */
-    function it_should_create_a_json_response_and_associate_a_json_schema_if_available(
+    function it_creates_a_json_response_and_associate_a_json_schema_if_available(
         $registry, $router, $data
     )
     {
