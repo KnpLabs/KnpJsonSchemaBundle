@@ -19,6 +19,7 @@ class SchemaGenerator
     protected $schemaFactory;
     protected $propertyFactory;
     protected $propertyHandlers;
+    protected $aliases = [];
 
     public function __construct(
         \JsonSchema\Validator $jsonValidator,
@@ -27,8 +28,7 @@ class SchemaGenerator
         SchemaRegistry $schemaRegistry,
         SchemaFactory $schemaFactory,
         PropertyFactory $propertyFactory
-    )
-    {
+    ) {
         $this->jsonValidator     = $jsonValidator;
         $this->urlGenerator      = $urlGenerator;
         $this->reflectionFactory = $reflectionFactory;
@@ -36,7 +36,6 @@ class SchemaGenerator
         $this->schemaFactory     = $schemaFactory;
         $this->propertyFactory   = $propertyFactory;
         $this->propertyHandlers  = new \SplPriorityQueue;
-        $this->aliasList         = new \SplDoublyLinkedList;
     }
 
     public function generate($alias)
@@ -116,7 +115,7 @@ class SchemaGenerator
     {
         $propertyHandlers = clone $this->propertyHandlers;
 
-        while($propertyHandlers->valid()) {
+        while ($propertyHandlers->valid()) {
             $handler = $propertyHandlers->current();
 
             $handler->handle($className, $property);

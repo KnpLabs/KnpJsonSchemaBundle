@@ -36,7 +36,8 @@ class SchemaRegistry
     {
         if (!$this->hasAlias($alias)) {
             throw new \Exception(sprintf(
-                'Alias "%s" is not registered.', $alias
+                'Alias "%s" is not registered.',
+                $alias
             ));
         }
 
@@ -47,7 +48,8 @@ class SchemaRegistry
     {
         if (!$this->hasNamespace($namespace)) {
             throw new \Exception(sprintf(
-                'Namespace "%s" is not registered.', $namespace
+                'Namespace "%s" is not registered.',
+                $namespace
             ));
         }
 
