@@ -36,7 +36,8 @@ class SchemaRegistry
     {
         if (!$this->hasAlias($alias)) {
             throw new \Exception(sprintf(
-                'Alias "%s" is not registered.', $alias
+                'Alias "%s" is not registered.',
+                $alias
             ));
         }
 
@@ -47,19 +48,20 @@ class SchemaRegistry
     {
         if (!$this->hasNamespace($namespace)) {
             throw new \Exception(sprintf(
-                'Namespace "%s" is not registered.', $namespace
+                'Namespace "%s" is not registered.',
+                $namespace
             ));
         }
 
         return array_flip($this->registry)[$namespace];
     }
 
-    private function hasAlias($alias)
+    public function hasAlias($alias)
     {
         return array_key_exists($alias, $this->registry);
     }
 
-    private function hasNamespace($namespace)
+    public function hasNamespace($namespace)
     {
         return array_key_exists($namespace, array_flip($this->registry));
     }

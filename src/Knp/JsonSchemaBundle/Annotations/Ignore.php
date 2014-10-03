@@ -6,7 +6,8 @@ namespace Knp\JsonSchemaBundle\Annotations;
  * @Annotation
  * @Target({"PROPERTY"})
  */
-class Type
+class Ignore
 {
-    public $type;
+    /** @var boolean */
+    public $ignored = true;
 }

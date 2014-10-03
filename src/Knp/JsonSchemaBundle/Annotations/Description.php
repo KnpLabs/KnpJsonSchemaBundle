@@ -6,7 +6,8 @@ namespace Knp\JsonSchemaBundle\Annotations;
  * @Annotation
  * @Target({"PROPERTY"})
  */
-class Type
+class Description
 {
-    public $type;
+    /** @var string */
+    public $name;
 }

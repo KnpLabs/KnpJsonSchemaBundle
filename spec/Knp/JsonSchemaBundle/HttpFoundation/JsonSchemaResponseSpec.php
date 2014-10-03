@@ -2,29 +2,29 @@
 
 namespace spec\Knp\JsonSchemaBundle\HttpFoundation;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class JsonSchemaResponse extends ObjectBehavior
+class JsonSchemaResponseSpec extends ObjectBehavior
 {
     /**
-     * @param Knp\JsonSchemaBundle\Model\Schema $schema
+     * @param \Knp\JsonSchemaBundle\Model\Schema $schema
      */
     public function let($schema)
     {
         $this->beConstructedWith($schema, 'palourde', 'the/schema/route');
     }
 
-    function it_should_be_a_json_response()
+    function it_is_a_json_response()
     {
         $this->shouldHaveType('Symfony\Component\HttpFoundation\JsonResponse');
     }
 
-    function its_content_type_should_be_the_json_schema_mimetype()
+    function its_content_type_is_the_json_schema_mimetype()
     {
-        $this->headers->get('Content-Type')->shouldReturn('application/palourde+schema');
+        $this->headers->get('Content-Type')->shouldReturn('application/palourde+json');
     }
 
-    function its_should_be_described_by_the_core_json_schema()
+    function its_described_by_the_core_json_schema()
     {
         $this->headers->get('Link')->shouldReturn('<the/schema/route>; rel="describedBy"');
     }

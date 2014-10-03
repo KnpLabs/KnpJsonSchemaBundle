@@ -2,35 +2,38 @@
 
 namespace Knp\JsonSchemaBundle\Model;
 
+use Knp\JsonSchemaBundle\Model\Schema;
 use Symfony\Component\Validator\Constraint;
 
 class Property implements \JsonSerializable
 {
-    const TYPE_STRING        = 'string';
-    const TYPE_NUMBER        = 'number';
-    const TYPE_INTEGER       = 'integer';
-    const TYPE_BOOLEAN       = 'boolean';
-    const TYPE_OBJECT        = 'object';
-    const TYPE_ARRAY         = 'array';
-    const TYPE_NULL          = 'null';
-    const TYPE_ANY           = 'any';
-    const FORMAT_DATETIME    = 'date-time';
-    const FORMAT_DATE        = 'date';
-    const FORMAT_TIME        = 'time';
+    const TYPE_STRING = 'string';
+    const TYPE_NUMBER = 'number';
+    const TYPE_INTEGER = 'integer';
+    const TYPE_BOOLEAN = 'boolean';
+    const TYPE_OBJECT = 'object';
+    const TYPE_ARRAY = 'array';
+    const TYPE_NULL = 'null';
+    const TYPE_ANY = 'any';
+    const FORMAT_DATETIME = 'date-time';
+    const FORMAT_DATE = 'date';
+    const FORMAT_TIME = 'time';
     const FORMAT_UTCMILLISEC = 'utc-millisec';
-    const FORMAT_REGEX       = 'regex';
-    const FORMAT_COLOR       = 'color';
-    const FORMAT_STYLE       = 'style';
-    const FORMAT_PHONE       = 'phone';
-    const FORMAT_URI         = 'uri';
-    const FORMAT_EMAIL       = 'email';
-    const FORMAT_IPADDRESS   = 'ip-address';
-    const FORMAT_IPV6        = 'ipv6';
-    const FORMAT_HOSTNAME    = 'host-name';
+    const FORMAT_REGEX = 'regex';
+    const FORMAT_COLOR = 'color';
+    const FORMAT_STYLE = 'style';
+    const FORMAT_PHONE = 'phone';
+    const FORMAT_URI = 'uri';
+    const FORMAT_EMAIL = 'email';
+    const FORMAT_IPADDRESS = 'ip-address';
+    const FORMAT_IPV6 = 'ipv6';
+    const FORMAT_HOSTNAME = 'host-name';
 
     protected $name;
+    protected $title;
+    protected $description;
     protected $required = false;
-    protected $types = [];
+    protected $type = [];
     protected $pattern;
     protected $enumeration = [];
     protected $minimum;
@@ -38,7 +41,13 @@ class Property implements \JsonSerializable
     protected $exclusiveMinimum = false;
     protected $exclusiveMaximum = false;
     protected $format;
+    protected $options;
+    protected $enum;
     protected $disallowed = [];
+    protected $ignored = false;
+    protected $object;
+    protected $multiple;
+    protected $schema;
 
     public function setName($name)
     {
@@ -52,6 +61,28 @@ class Property implements \JsonSerializable
     public function getName()
     {
         return $this->name;
+    }
+
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     public function setRequired($required)
@@ -68,18 +99,29 @@ class Property implements \JsonSerializable
         return $this->required;
     }
 
+    public function hasType($type)
+    {
+        return (!is_null($type) && in_array($type, $this->type));
+    }
+
     public function addType($type)
     {
-        if (!in_array($type, $this->types)) {
-            $this->types[] = $type;
+        if (!in_array($type, $this->type) && !is_null($type)) {
+            $this->type[] = $type;
         }
 
         return $this;
     }
 
-    public function getTypes()
+    public function setType($type)
     {
-        return $this->types;
+        $this->type = (array)$type;
+        return $this;
+    }
+
+    public function getType()
+    {
+        return $this->type;
     }
 
     public function setPattern($pattern)
@@ -112,9 +154,7 @@ class Property implements \JsonSerializable
 
     public function setMinimum($minimum)
     {
-        if (!$this->minimum) {
-            $this->minimum = $minimum;
-        }
+        $this->minimum = $minimum;
 
         return $this;
     }
@@ -126,9 +166,7 @@ class Property implements \JsonSerializable
 
     public function setMaximum($maximum)
     {
-        if (!$this->maximum) {
-            $this->maximum = $maximum;
-        }
+        $this->maximum = $maximum;
 
         return $this;
     }
@@ -180,6 +218,29 @@ class Property implements \JsonSerializable
         return $this->format;
     }
 
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    public function setEnum(array $enum)
+    {
+        $this->enum = $enum;
+        return $this;
+    }
+
+    public function getEnum()
+    {
+        return $this->enum;
+    }
+
     public function setDisallowed(array $disallowed)
     {
         if (!$this->disallowed) {
@@ -194,14 +255,61 @@ class Property implements \JsonSerializable
         return $this->disallowed;
     }
 
+    public function isIgnored()
+    {
+        return $this->ignored;
+    }
+
+    public function setIgnored($ignored)
+    {
+        $this->ignored = $ignored;
+        return $this;
+    }
+
+    public function setObject($object)
+    {
+        $this->object = $object;
+        return $this;
+    }
+
+    public function getObject()
+    {
+        return $this->object;
+    }
+
+    public function setMultiple($multiple)
+    {
+        $this->multiple = $multiple;
+        return $this;
+    }
+
+    public function getMultiple()
+    {
+        return $this->multiple;
+    }
+
+    public function setSchema(Schema $schema)
+    {
+        $this->schema = $schema;
+        return $this;
+    }
+
+    /**
+     * @return Schema
+     */
+    public function getSchema()
+    {
+        return $this->schema;
+    }
+
     public function jsonSerialize()
     {
         $serialized = [];
-        if (count($this->types)) {
-            if (count($this->types) === 1) {
-                $serialized['type'] = $this->types[0];
+        if (!empty($this->type)) {
+            if (count($this->type) === 1) {
+                $serialized['type'] = $this->type[0];
             } else {
-                $serialized['type'] = $this->types;
+                $serialized['type'] = $this->type;
             }
         }
 
@@ -213,7 +321,7 @@ class Property implements \JsonSerializable
             $serialized['enum'] = $this->enumeration;
         }
 
-        if (count(array_intersect($this->types, [self::TYPE_NUMBER, self::TYPE_INTEGER])) >= 1) {
+        if (count(array_intersect($this->type, [self::TYPE_NUMBER, self::TYPE_INTEGER])) >= 1) {
             if ($this->minimum) {
                 $serialized['minimum']          = $this->minimum;
                 $serialized['exclusiveMinimum'] = $this->exclusiveMinimum;
@@ -224,7 +332,7 @@ class Property implements \JsonSerializable
             }
         }
 
-        if (count(array_intersect($this->types, [self::TYPE_STRING])) >= 1) {
+        if (count(array_intersect($this->type, [self::TYPE_STRING])) >= 1) {
             if ($this->minimum) {
                 $serialized['minLength'] = $this->minimum;
             }
@@ -237,8 +345,36 @@ class Property implements \JsonSerializable
             $serialized['format'] = $this->format;
         }
 
+        if ($this->options) {
+            $serialized['options'] = $this->options;
+        }
+
+        if ($this->enum) {
+            $serialized['enum'] = $this->enum;
+        }
+
         if ($this->disallowed) {
             $serialized['disallow'] = $this->disallowed;
+        }
+
+        if ($this->title) {
+            $serialized['title'] = $this->title;
+        }
+
+        if ($this->description) {
+            $serialized['description'] = $this->description;
+        }
+
+        if ($this->schema && $this->hasType(self::TYPE_OBJECT)) {
+            $schema = $this->schema->jsonSerialize();
+            unset($schema['$schema'], $schema['id']);
+
+            if ($this->multiple) {
+                $serialized['type'] = 'array';
+                $serialized['items'] = $schema;
+            } else {
+                $serialized = $serialized + $schema;
+            }
         }
 
         return $serialized;

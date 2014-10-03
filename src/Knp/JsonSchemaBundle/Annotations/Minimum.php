@@ -6,7 +6,8 @@ namespace Knp\JsonSchemaBundle\Annotations;
  * @Annotation
  * @Target({"PROPERTY"})
  */
-class Type
+class Minimum
 {
-    public $type;
+    /** @var integer */
+    public $minimum;
 }

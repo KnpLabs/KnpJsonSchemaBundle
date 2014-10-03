@@ -2,13 +2,13 @@
 
 namespace spec\Knp\JsonSchemaBundle\Controller;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class SchemaController extends ObjectBehavior
+class SchemaControllerSpec extends ObjectBehavior
 {
     /**
-     * @param Symfony\Component\DependencyInjection\ContainerInterface $container
-     * @param Knp\JsonSchemaBundle\Schema\SchemaGenerator              $generator
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @param \Knp\JsonSchemaBundle\Schema\SchemaGenerator              $generator
      */
     function let($container, $generator, $registry)
     {
@@ -18,9 +18,9 @@ class SchemaController extends ObjectBehavior
     }
 
     /**
-     * @param Knp\JsonSchemaBundle\Model\Schema $schema
+     * @param \Knp\JsonSchemaBundle\Model\Schema $schema
      */
-    function its_showAction_should_display_a_json_schema_with_according_content_type(
+    function its_showAction_displays_a_json_schema_with_according_content_type(
         $generator, $registry, $schema
     )
     {

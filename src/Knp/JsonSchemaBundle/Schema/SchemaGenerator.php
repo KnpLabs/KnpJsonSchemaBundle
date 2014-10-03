@@ -19,6 +19,7 @@ class SchemaGenerator
     protected $schemaFactory;
     protected $propertyFactory;
     protected $propertyHandlers;
+    protected $aliases = [];
 
     public function __construct(
         \JsonSchema\Validator $jsonValidator,
@@ -27,8 +28,7 @@ class SchemaGenerator
         SchemaRegistry $schemaRegistry,
         SchemaFactory $schemaFactory,
         PropertyFactory $propertyFactory
-    )
-    {
+    ) {
         $this->jsonValidator     = $jsonValidator;
         $this->urlGenerator      = $urlGenerator;
         $this->reflectionFactory = $reflectionFactory;
@@ -40,6 +40,8 @@ class SchemaGenerator
 
     public function generate($alias)
     {
+        $this->aliases[] = $alias;
+
         $className = $this->schemaRegistry->getNamespace($alias);
         $refl      = $this->reflectionFactory->create($className);
         $schema    = $this->schemaFactory->createSchema(ucfirst($alias));
@@ -51,7 +53,21 @@ class SchemaGenerator
         foreach ($refl->getProperties() as $property) {
             $property = $this->propertyFactory->createProperty($property->name);
             $this->applyPropertyHandlers($className, $property);
-            $schema->addProperty($property);
+
+            if (!$property->isIgnored() && $property->hasType(Property::TYPE_OBJECT) && $property->getObject()) {
+                // Make sure that we're not creating a reference to the parent schema of the property
+                if (!in_array($property->getObject(), $this->aliases)) {
+                    $property->setSchema(
+                        $this->generate($property->getObject())
+                    );
+                } else {
+                    $property->setIgnored(true);
+                }
+            }
+
+            if (!$property->isIgnored()) {
+                $schema->addProperty($property);
+            }
         }
 
         if (false === $this->validateSchema($schema)) {
@@ -97,8 +113,14 @@ class SchemaGenerator
 
     private function applyPropertyHandlers($className, Property $property)
     {
-        foreach ($this->getPropertyHandlers() as $handler) {
+        $propertyHandlers = clone $this->propertyHandlers;
+
+        while ($propertyHandlers->valid()) {
+            $handler = $propertyHandlers->current();
+
             $handler->handle($className, $property);
+
+            $propertyHandlers->next();
         }
     }
 }
