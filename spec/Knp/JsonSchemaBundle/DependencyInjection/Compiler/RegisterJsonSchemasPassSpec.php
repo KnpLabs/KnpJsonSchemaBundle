@@ -103,16 +103,17 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
 
     /**
      * @param \Knp\JsonSchemaBundle\Annotations\Schema                $schema
-     * @param \ReflectionClass                                        $refClass
      * @param \Doctrine\Common\Annotations\Reader                     $reader
      * @param \Symfony\Component\DependencyInjection\Definition       $registry
      * @param \Knp\JsonSchemaBundle\Reflection\ReflectionFactory          $factory
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      */
     function it_uses_short_class_name_as_alias_if_annotation_name_is_not_set(
-        $reader, $registry, $factory, $container, $schema, $refClass
+        $reader, $registry, $factory, $container, $schema
     )
     {
+        $refClass = new \ReflectionClass('\Knp\JsonSchemaBundle\Model\Property');
+
         $container->hasDefinition(Argument::any())->willReturn(true);
         $container->getDefinition('json_schema.registry')->willReturn($registry);
         $container->has('annotation_reader')->willReturn(true);
@@ -124,10 +125,7 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
         $schema->name = null;
         $reader->getClassAnnotations($refClass)->willReturn([$schema]);
 
-        $refClass->getName()->willReturn('App\\Entity\\Foo');
-        $refClass->getShortName()->willReturn('Foo');
-
-        $registry->addMethodCall('register', ['foo', 'App\\Entity\\Foo'])->shouldBeCalled();
+        $registry->addMethodCall('register', ['property', 'Knp\JsonSchemaBundle\Model\Property'])->shouldBeCalled();
 
         $this->process($container);
     }
