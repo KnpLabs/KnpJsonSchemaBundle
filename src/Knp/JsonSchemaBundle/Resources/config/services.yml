@@ -1,19 +1,6 @@
-parameters:
-    json_schema.generator.class:                                            "Knp\\JsonSchemaBundle\\Schema\\SchemaGenerator"
-    json_schema.registry.class:                                             "Knp\\JsonSchemaBundle\\Schema\\SchemaRegistry"
-    json_schema.reflection_factory.class:                                   "Knp\\JsonSchemaBundle\\Reflection\\ReflectionFactory"
-    json_schema.property.handler.form_type_guesser_handler.class:           "Knp\\JsonSchemaBundle\\Property\\FormTypeGuesserHandler"
-    json_schema.property.handler.extra_validator_constraints_handler.class: "Knp\\JsonSchemaBundle\\Property\\ExtraValidatorConstraintsHandler"
-    json_schema.property.handler.annotation.class:                          "Knp\\JsonSchemaBundle\\Property\\JsonSchemaAnnotationHandler"
-    json_schema.response.factory.class:                                     "Knp\\JsonSchemaBundle\\HttpFoundation\\JsonResponseFactory"
-    json_schema.factory.schema.class:                                       "Knp\\JsonSchemaBundle\\Model\\SchemaFactory"
-    json_schema.factory.property.class:                                     "Knp\\JsonSchemaBundle\\Model\\PropertyFactory"
-    json_schema.validator.class:                                            "JsonSchema\\Validator"
-    form.chain.guesser.class:                                               "Symfony\\Component\\Form\\FormTypeGuesserChain"
-
 services:
     json_schema.generator:
-        class: %json_schema.generator.class%
+        class: Knp\JsonSchemaBundle\Schema\SchemaGenerator
         arguments:
             - @json_schema.validator
             - @router
@@ -24,44 +11,44 @@ services:
 
     json_schema.registry:
         public: false
-        class: %json_schema.registry.class%
+        class: Knp\JsonSchemaBundle\Schema\SchemaRegistry
 
     json_schema.factory.schema:
         public: false
-        class: %json_schema.factory.schema.class%
+        class: Knp\JsonSchemaBundle\Model\SchemaFactory
 
     json_schema.factory.property:
         public: false
-        class: %json_schema.factory.property.class%
+        class: Knp\JsonSchemaBundle\Model\PropertyFactory
 
     json_schema.reflection_factory:
         public: false
-        class: %json_schema.reflection_factory.class%
+        class: Knp\JsonSchemaBundle\Reflection\ReflectionFactory
         arguments:
             - @json_schema.finder
             - @json_schema.filesystem
 
     json_schema.finder:
         public: false
-        class: "Symfony\\Component\\Finder\\Finder"
+        class: Symfony\Component\Finder\Finder
 
     json_schema.filesystem:
         public: false
-        class: "Symfony\\Component\\Filesystem\\Filesystem"
+        class: Symfony\Component\Filesystem\Filesystem
 
     json_schema.validator:
         public: false
-        class: %json_schema.validator.class%
+        class: JsonSchema\Validator
 
     json_schema.response.factory:
-        class: %json_schema.response.factory.class%
+        class: Knp\JsonSchemaBundle\HttpFoundation\JsonResponseFactory
         arguments:
             - @json_schema.registry
             - @router
 
     json_schema.property.handler.annotation:
         public: false
-        class: %json_schema.property.handler.annotation.class%
+        class: Knp\JsonSchemaBundle\Property\JsonSchemaAnnotationHandler
         arguments:
             - @annotation_reader
             - @json_schema.reflection_factory
@@ -70,7 +57,7 @@ services:
 
     json_schema.property.handler.chained_guesser:
         public: false
-        class: %json_schema.property.handler.form_type_guesser_handler.class%
+        class: Knp\JsonSchemaBundle\Property\FormTypeGuesserHandler
         arguments:
             - @form.chain.guesser
             - @json_schema.registry
@@ -79,7 +66,7 @@ services:
 
     json_schema.property.handler.extra_validator_constraints_handler:
         public: false
-        class: %json_schema.property.handler.extra_validator_constraints_handler.class%
+        class: Knp\JsonSchemaBundle\Property\ExtraValidatorConstraintsHandler
         arguments:
             - @validator.mapping.class_metadata_factory
         tags:
@@ -87,6 +74,6 @@ services:
 
     form.chain.guesser:
         public: false
-        class: %form.chain.guesser.class%
+        class: Symfony\Component\Form\FormTypeGuesserChain
         arguments:
             - [@form.type_guesser.validator, @form.type_guesser.doctrine]
