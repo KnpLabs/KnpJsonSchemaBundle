@@ -33,9 +33,9 @@ class Property implements \JsonSerializable
     protected $title;
     protected $description;
     protected $required = false;
-    protected $type = [];
+    protected $type = array();
     protected $pattern;
-    protected $enumeration = [];
+    protected $enumeration = array();
     protected $minimum;
     protected $maximum;
     protected $exclusiveMinimum = false;
@@ -43,7 +43,7 @@ class Property implements \JsonSerializable
     protected $format;
     protected $options;
     protected $enum;
-    protected $disallowed = [];
+    protected $disallowed = array();
     protected $ignored = false;
     protected $object;
     protected $multiple;
@@ -304,7 +304,7 @@ class Property implements \JsonSerializable
 
     public function jsonSerialize()
     {
-        $serialized = [];
+        $serialized = array();
         if (!empty($this->type)) {
             if (count($this->type) === 1) {
                 $serialized['type'] = $this->type[0];
@@ -321,7 +321,7 @@ class Property implements \JsonSerializable
             $serialized['enum'] = $this->enumeration;
         }
 
-        if (count(array_intersect($this->type, [self::TYPE_NUMBER, self::TYPE_INTEGER])) >= 1) {
+        if (count(array_intersect($this->type, array(self::TYPE_NUMBER, self::TYPE_INTEGER))) >= 1) {
             if ($this->minimum) {
                 $serialized['minimum']          = $this->minimum;
                 $serialized['exclusiveMinimum'] = $this->exclusiveMinimum;
@@ -332,7 +332,7 @@ class Property implements \JsonSerializable
             }
         }
 
-        if (count(array_intersect($this->type, [self::TYPE_STRING])) >= 1) {
+        if (count(array_intersect($this->type, array(self::TYPE_STRING))) >= 1) {
             if ($this->minimum) {
                 $serialized['minLength'] = $this->minimum;
             }

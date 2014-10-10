@@ -24,7 +24,7 @@ class SchemaSpec extends ObjectBehavior
         $this->addProperty($property1);
         $this->addProperty($property2);
 
-        $this->getProperties()->shouldBe(['prop1' => $property1, 'prop2' => $property2]);
+        $this->getProperties()->shouldBe(array('prop1' => $property1, 'prop2' => $property2));
     }
 
     /**
@@ -34,7 +34,7 @@ class SchemaSpec extends ObjectBehavior
     {
         $property1->getName()->willReturn('prop1');
         $property1->isRequired()->willReturn(true);
-        $property1->jsonSerialize()->willReturn([]);
+        $property1->jsonSerialize()->willReturn(array());
 
         $this->setTitle('some schema');
         $this->setType('object');
@@ -43,16 +43,16 @@ class SchemaSpec extends ObjectBehavior
         $this->addProperty($property1);
 
         $this->jsonSerialize()->shouldBe(
-            [
+            array(
                 'title'      => 'some schema',
                 'type'       => 'object',
                 '$schema'    => 'http://json-schema.org/draft-04/schema#',
                 'id'         => 'http://example.com/schemas/user.json#',
-                'properties' => [
+                'properties' => array(
                     'prop1' => $property1
-                ],
-                'required' => ['prop1'],
-            ]
+                ),
+                'required' => array('prop1'),
+            )
         );
     }
 

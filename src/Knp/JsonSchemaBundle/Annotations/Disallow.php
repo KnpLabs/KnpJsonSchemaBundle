@@ -9,5 +9,5 @@ namespace Knp\JsonSchemaBundle\Annotations;
 class Disallow
 {
     /** @var array */
-    public $disallowed = [];
+    public $disallowed = array();
 }

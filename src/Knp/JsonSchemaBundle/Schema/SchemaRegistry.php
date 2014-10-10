@@ -4,7 +4,7 @@ namespace Knp\JsonSchemaBundle\Schema;
 
 class SchemaRegistry
 {
-    protected $registry = [];
+    protected $registry = array();
 
     public function register($alias, $namespace)
     {
@@ -53,7 +53,8 @@ class SchemaRegistry
             ));
         }
 
-        return array_flip($this->registry)[$namespace];
+        $aliases = array_flip($this->registry);
+        return $aliases[$namespace];
     }
 
     public function hasAlias($alias)

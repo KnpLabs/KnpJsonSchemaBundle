@@ -54,6 +54,6 @@ class SchemaRegistrySpec extends ObjectBehavior
         $this->register('foo', 'App\\Entity\\Foo');
         $this->register('bar', 'App\\Entity\\Bar');
 
-        $this->getAliases()->shouldReturn(['foo', 'bar']);
+        $this->getAliases()->shouldReturn(array('foo', 'bar'));
     }
 }

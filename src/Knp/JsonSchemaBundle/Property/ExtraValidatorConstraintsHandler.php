@@ -59,6 +59,6 @@ class ExtraValidatorConstraintsHandler implements PropertyHandlerInterface
             }
         }
 
-        return [];
+        return array();
     }
 }
