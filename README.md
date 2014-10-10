@@ -17,6 +17,6 @@ Documentation
 -------------
 [Read the documentation here](http://knplabs.github.com/KnpJsonSchemaBundle/)
 
-Licence
+License
 -------
-This bundle is under the [MIT Licence](https://github.com/KnpLabs/KnpJsonSchemaBundle/blob/master/LICENCE)
+This bundle is under the [MIT License](LICENSE)
