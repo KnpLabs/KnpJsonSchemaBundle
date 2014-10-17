@@ -89,14 +89,14 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
         $container->has("json_schema.reflection_factory")->willReturn(true);
         $container->get('json_schema.reflection_factory')->willReturn($factory);
 
-        $factory->createFromDirectory(Argument::any(), Argument::any())->willReturn([$refClass]);
+        $factory->createFromDirectory(Argument::any(), Argument::any())->willReturn(array($refClass));
 
         $schema->name = 'foo';
-        $reader->getClassAnnotations($refClass)->willReturn([$schema]);
+        $reader->getClassAnnotations($refClass)->willReturn(array($schema));
 
         $refClass->getName()->willReturn('App\\Entity\\Bar');
 
-        $registry->addMethodCall('register', ['foo', 'App\\Entity\\Bar'])->shouldBeCalled();
+        $registry->addMethodCall('register', array('foo', 'App\\Entity\\Bar'))->shouldBeCalled();
 
         $this->process($container);
     }
@@ -120,12 +120,12 @@ class RegisterJsonSchemasPassSpec extends ObjectBehavior
         $container->get('annotation_reader')->willReturn($reader);
         $container->has('json_schema.reflection_factory')->willReturn(true);
         $container->get('json_schema.reflection_factory')->willReturn($factory);
-        $factory->createFromDirectory(Argument::any(), Argument::any())->willReturn([$refClass]);
+        $factory->createFromDirectory(Argument::any(), Argument::any())->willReturn(array($refClass));
 
         $schema->name = null;
-        $reader->getClassAnnotations($refClass)->willReturn([$schema]);
+        $reader->getClassAnnotations($refClass)->willReturn(array($schema));
 
-        $registry->addMethodCall('register', ['property', 'Knp\JsonSchemaBundle\Model\Property'])->shouldBeCalled();
+        $registry->addMethodCall('register', array('property', 'Knp\JsonSchemaBundle\Model\Property'))->shouldBeCalled();
 
         $this->process($container);
     }

@@ -25,7 +25,7 @@ class JsonResponseFactorySpec extends ObjectBehavior
     )
     {
         $registry->getAlias(Argument::any())->willReturn('foo');
-        $router->generate('show_json_schema', ['alias' => 'foo'], true)->willReturn('http://localhost/schemas/foo.json');
+        $router->generate('show_json_schema', array('alias' => 'foo'), true)->willReturn('http://localhost/schemas/foo.json');
 
         $response = $this->create($data);
         $response->headers->get('Content-Type')->shouldBe('application/json');

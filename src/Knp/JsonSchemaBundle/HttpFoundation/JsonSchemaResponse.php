@@ -8,14 +8,16 @@ class JsonSchemaResponse extends JsonResponse
 {
     public function __construct($data, $alias, $route)
     {
-        parent::__construct('', 200, [
+        parent::__construct('', 200, array(
             'Content-Type' => sprintf('application/%s+json', $alias),
             'Link'         => sprintf('<%s>; rel="describedBy"', $route),
-        ]);
+        ));
 
         // Add pretty printing to the default encoding options supplied by
         // symfony's JsonResponse
-        $this->encodingOptions = $this->encodingOptions | JSON_PRETTY_PRINT;
+        if (defined('JSON_PRETTY_PRINT')) {
+            $this->encodingOptions = $this->encodingOptions | JSON_PRETTY_PRINT;
+        }
 
         $this->setData($data);
     }

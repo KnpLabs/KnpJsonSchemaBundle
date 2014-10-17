@@ -46,9 +46,9 @@ class SchemaGeneratorSpec extends ObjectBehavior
         $reflectionFactory->create('App\\Foo\\Bar')->willReturn($refClass);
         $schemaFactory->createSchema('Bar')->willReturn($schema);
         $refProperty->name = 'name';
-        $refClass->getProperties()->willReturn([$refProperty]);
+        $refClass->getProperties()->willReturn(array($refProperty));
         $propertyFactory->createProperty('name')->willReturn($property);
-        $urlGenerator->generate('show_json_schema', ['alias' => 'bar'], true)->willReturn('some url');
+        $urlGenerator->generate('show_json_schema', array('alias' => 'bar'), true)->willReturn('some url');
         $schema->getSchema()->willReturn(\Knp\JsonSchemaBundle\Model\Schema::SCHEMA_V3);
         $schema->jsonSerialize()->shouldBeCalled();
 
@@ -71,8 +71,6 @@ class SchemaGeneratorSpec extends ObjectBehavior
 
     function it_should_be_able_to_register_property_handlers_orderly($handler1, $handler2, $handler3)
     {
-        $this->getPropertyHandlers()->shouldBe([$handler1, $handler3, $handler2]);
+        $this->getPropertyHandlers()->shouldBe(array($handler1, $handler3, $handler2));
     }
-
 }
-

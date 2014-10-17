@@ -16,13 +16,13 @@ class JsonResponseFactory
 
     public function create($data)
     {
-        $headers = [];
+        $headers = array();
 
         try {
             $alias = $this->registry->getAlias(get_class($data));
             $headers['Link'] = sprintf(
                 '<%s>; rel="describedBy"',
-                $this->router->generate('show_json_schema', ['alias' => $alias], true)
+                $this->router->generate('show_json_schema', array('alias' => $alias), true)
             );
         } catch (\Exception $e) {
         }

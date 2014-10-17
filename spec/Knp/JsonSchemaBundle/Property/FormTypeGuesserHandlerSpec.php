@@ -2,7 +2,6 @@
 
 namespace spec\Knp\JsonSchemaBundle\Property;
 
-use Knp\JsonSchemaBundle\Model\Property;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -262,7 +261,7 @@ class FormTypeGuesserHandlerSpec extends ObjectBehavior
         $property->getName()->shouldBeCalled();
         $property->setPattern(null)->shouldBeCalled();
         $property->setRequired(null)->shouldBeCalled();
-        $property->setFormat(Property::FORMAT_DATETIME)->shouldBeCalled();
+        $property->setFormat(\Knp\JsonSchemaBundle\Model\Property::FORMAT_DATETIME)->shouldBeCalled();
 
         $this->handle('my\class\namespace', $property);
     }
@@ -277,7 +276,7 @@ class FormTypeGuesserHandlerSpec extends ObjectBehavior
         $property->getName()->shouldBeCalled();
         $property->setPattern(null)->shouldBeCalled();
         $property->setRequired(null)->shouldBeCalled();
-        $property->setFormat(Property::FORMAT_DATE)->shouldBeCalled();
+        $property->setFormat(\Knp\JsonSchemaBundle\Model\Property::FORMAT_DATE)->shouldBeCalled();
 
         $this->handle('my\class\namespace', $property);
     }
@@ -292,7 +291,7 @@ class FormTypeGuesserHandlerSpec extends ObjectBehavior
         $property->getName()->shouldBeCalled();
         $property->setPattern(null)->shouldBeCalled();
         $property->setRequired(null)->shouldBeCalled();
-        $property->setFormat(Property::FORMAT_TIME)->shouldBeCalled();
+        $property->setFormat(\Knp\JsonSchemaBundle\Model\Property::FORMAT_TIME)->shouldBeCalled();
 
         $this->handle('my\class\namespace', $property);
     }

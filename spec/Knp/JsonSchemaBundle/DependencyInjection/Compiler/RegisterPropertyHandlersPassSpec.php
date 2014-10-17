@@ -46,15 +46,15 @@ class RegisterPropertyHandlersPassSpec extends ObjectBehavior
         $container->hasDefinition('json_schema.generator')->willReturn(true);
         $container->has('json_schema.generator')->willReturn(true);
         $container->getDefinition('json_schema.generator')->willReturn($generatorDef);
-        $container->findTaggedServiceIds('json_schema.property.handler')->willReturn([
-            'json_schema.handler_1' => [ 0 => ['priority' => 10]],
-            'json_schema.handler_2' => [ 0 => ['priority' => 20]],
-        ]);
+        $container->findTaggedServiceIds('json_schema.property.handler')->willReturn(array(
+            'json_schema.handler_1' => array( 0 => array('priority' => 10)),
+            'json_schema.handler_2' => array( 0 => array('priority' => 20)),
+        ));
         $referenceFactory->createReference('json_schema.handler_1')->willReturn($handlerRef1);
         $referenceFactory->createReference('json_schema.handler_2')->willReturn($handlerRef2);
 
-        $generatorDef->addMethodCall('registerPropertyHandler', [$handlerRef1, 10])->shouldBeCalled();
-        $generatorDef->addMethodCall('registerPropertyHandler', [$handlerRef2, 20])->shouldBeCalled();
+        $generatorDef->addMethodCall('registerPropertyHandler', array($handlerRef1, 10))->shouldBeCalled();
+        $generatorDef->addMethodCall('registerPropertyHandler', array($handlerRef2, 20))->shouldBeCalled();
 
         $this->process($container);
     }

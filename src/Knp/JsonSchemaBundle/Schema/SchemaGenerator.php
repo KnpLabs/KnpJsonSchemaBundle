@@ -19,7 +19,7 @@ class SchemaGenerator
     protected $schemaFactory;
     protected $propertyFactory;
     protected $propertyHandlers;
-    protected $aliases = [];
+    protected $aliases = array();
 
     public function __construct(
         \JsonSchema\Validator $jsonValidator,
@@ -46,7 +46,7 @@ class SchemaGenerator
         $refl      = $this->reflectionFactory->create($className);
         $schema    = $this->schemaFactory->createSchema(ucfirst($alias));
 
-        $schema->setId($this->urlGenerator->generate('show_json_schema', ['alias' => $alias], true) . '#');
+        $schema->setId($this->urlGenerator->generate('show_json_schema', array('alias' => $alias), true) . '#');
         $schema->setSchema(Schema::SCHEMA_V3);
         $schema->setType(Schema::TYPE_OBJECT);
 
@@ -104,7 +104,7 @@ class SchemaGenerator
     private function validateSchema(Schema $schema)
     {
         $this->jsonValidator->check(
-            json_decode(json_encode($schema)),
+            json_decode(json_encode($schema->jsonSerialize())),
             json_decode(file_get_contents($schema->getSchema()))
         );
 

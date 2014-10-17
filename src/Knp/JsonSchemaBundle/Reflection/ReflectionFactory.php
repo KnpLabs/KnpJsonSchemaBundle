@@ -28,7 +28,7 @@ class ReflectionFactory
         $this->finder->name('*.php');
         $this->finder->in($directory);
 
-        $refClasses = [];
+        $refClasses = array();
 
         foreach ($this->finder->getIterator() as $name) {
             $baseName      = substr($name, strlen($directory)+1, -4);

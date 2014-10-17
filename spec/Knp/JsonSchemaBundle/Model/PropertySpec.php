@@ -6,11 +6,6 @@ use PhpSpec\ObjectBehavior;
 
 class PropertySpec extends ObjectBehavior
 {
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('JsonSerializable');
-    }
-
     function it_has_a_write_once_name_property()
     {
         $this->setName('a name');
@@ -40,14 +35,14 @@ class PropertySpec extends ObjectBehavior
     {
         $this->addType('the type');
         $this->addType('another type');
-        $this->getType()->shouldBe(['the type', 'another type']);
+        $this->getType()->shouldBe(array('the type', 'another type'));
     }
 
     function its_addType_will_not_add_type_if_it_already_has_it()
     {
         $this->addType('the type');
         $this->addType('the type');
-        $this->getType()->shouldBe(['the type']);
+        $this->getType()->shouldBe(array('the type'));
     }
 
     function it_has_a_write_once_pattern_property()
@@ -59,9 +54,9 @@ class PropertySpec extends ObjectBehavior
 
     function it_has_a_write_once_enumeration_property()
     {
-        $this->setEnumeration(['foo', 'bar', 'baz']);
-        $this->setEnumeration(['a', 'lo', 'ha']);
-        $this->getEnumeration()->shouldBe(['foo', 'bar', 'baz']);
+        $this->setEnumeration(array('foo', 'bar', 'baz'));
+        $this->setEnumeration(array('a', 'lo', 'ha'));
+        $this->getEnumeration()->shouldBe(array('foo', 'bar', 'baz'));
     }
 
     function it_has_a_write_once_minimum_property()
@@ -101,33 +96,33 @@ class PropertySpec extends ObjectBehavior
 
     function it_has_a_write_once_disallowed_property()
     {
-        $this->setDisallowed(['boolean', 'string']);
-        $this->setDisallowed(['number']);
-        $this->getDisallowed()->shouldBe(['boolean', 'string']);
+        $this->setDisallowed(array('boolean', 'string'));
+        $this->setDisallowed(array('number'));
+        $this->getDisallowed()->shouldBe(array('boolean', 'string'));
     }
 
     function it_serializes_type_as_a_string_if_it_has_single_value()
     {
         $this->addType('a type');
-        $this->jsonSerialize()->shouldBe(['type' => 'a type']);
+        $this->jsonSerialize()->shouldBe(array('type' => 'a type'));
     }
 
     function it_serializes_type_as_an_array_if_it_has_multiple_values()
     {
         $this->addType('a type');
         $this->addType('another type');
-        $this->jsonSerialize()->shouldBe(['type' => ['a type', 'another type']]);
+        $this->jsonSerialize()->shouldBe(array('type' => array('a type', 'another type')));
     }
 
     function it_only_serializes_non_null_properties()
     {
-        $this->jsonSerialize()->shouldBe([]);
+        $this->jsonSerialize()->shouldBe(array());
     }
 
     function it_serializse_enumeration_if_there_is_one()
     {
-        $this->setEnumeration(['a','simple','list','of','choice']);
-        $this->jsonSerialize()->shouldBe(['enum' => ['a','simple','list','of','choice']]);
+        $this->setEnumeration(array('a','simple','list','of','choice'));
+        $this->jsonSerialize()->shouldBe(array('enum' => array('a','simple','list','of','choice')));
     }
 
     function it_serializes_minimum_maximum_and_exclusive_constraints_if_type_is_number()
@@ -137,13 +132,13 @@ class PropertySpec extends ObjectBehavior
             ->setMinimum(10)
             ->setMaximum(15)
         ;
-        $this->jsonSerialize()->shouldBe([
+        $this->jsonSerialize()->shouldBe(array(
             'type'             => 'number',
             'minimum'          => 10,
             'exclusiveMinimum' => false,
             'maximum'          => 15,
             'exclusiveMaximum' => false,
-        ]);
+        ));
     }
 
     function it_serializes_minimum_maximum_exclusive_constraints_if_type_is_integer()
@@ -153,13 +148,13 @@ class PropertySpec extends ObjectBehavior
             ->setMinimum(10)
             ->setMaximum(15)
         ;
-        $this->jsonSerialize()->shouldBe([
+        $this->jsonSerialize()->shouldBe(array(
             'type'             => 'integer',
             'minimum'          => 10,
             'exclusiveMinimum' => false,
             'maximum'          => 15,
             'exclusiveMaximum' => false,
-        ]);
+        ));
     }
 
     function it_serializes_minLength_and_maxLength_if_type_is_string()
@@ -169,23 +164,23 @@ class PropertySpec extends ObjectBehavior
             ->setMinimum(10)
             ->setMaximum(15)
         ;
-        $this->jsonSerialize()->shouldBe([
+        $this->jsonSerialize()->shouldBe(array(
             'type'      => 'string',
             'minLength' => 10,
             'maxLength' => 15,
-        ]);
+        ));
     }
 
     function it_serializes_disallow_as_array_if_it_has_been_defined()
     {
-        $this->setDisallowed(["boolean", "number", ["type" => "string", "format" => "email"]]);
+        $this->setDisallowed(array("boolean", "number", array("type" => "string", "format" => "email")));
 
-        $this->jsonSerialize()->shouldBe([
-            'disallow' => [
+        $this->jsonSerialize()->shouldBe(array(
+            'disallow' => array(
                 'boolean',
                 'number',
-                ['type' => 'string', 'format' => 'email'],
-            ],
-        ]);
+                array('type' => 'string', 'format' => 'email'),
+            ),
+        ));
     }
 }
