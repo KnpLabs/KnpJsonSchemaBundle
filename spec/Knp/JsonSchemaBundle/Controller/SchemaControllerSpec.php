@@ -7,14 +7,13 @@ use PhpSpec\ObjectBehavior;
 class SchemaControllerSpec extends ObjectBehavior
 {
     /**
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @param \Knp\JsonSchemaBundle\Schema\SchemaRegistry               $registry
      * @param \Knp\JsonSchemaBundle\Schema\SchemaGenerator              $generator
+     * @param \Symfony\Component\Routing\Router                         $router
      */
-    function let($container, $generator, $registry)
+    function let($registry, $generator, $router)
     {
-        $container->get('json_schema.generator')->willReturn($generator);
-
-        $this->setContainer($container);
+        $this->beConstructedWith($registry, $generator, $router);
     }
 
     /**

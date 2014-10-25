@@ -1,4 +1,11 @@
 services:
+    json_schema.controller:
+        class: Knp\JsonSchemaBundle\Controller\SchemaController
+        arguments:
+            - @json_schema.registry
+            - @json_schema.generator
+            - @router
+
     json_schema.generator:
         class: Knp\JsonSchemaBundle\Schema\SchemaGenerator
         arguments:
