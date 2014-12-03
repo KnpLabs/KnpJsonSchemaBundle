@@ -83,4 +83,4 @@ services:
         public: false
         class: Symfony\Component\Form\FormTypeGuesserChain
         arguments:
-            - [@form.type_guesser.validator, @form.type_guesser.doctrine]
+            - [@form.type_guesser.validator, @json_schema.guesser]

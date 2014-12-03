@@ -11,11 +11,12 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 class RegisterJsonSchemasPass implements CompilerPassInterface
 {
-    protected $bundle;
+    protected $bundle, $directory;
 
-    public function __construct(BundleInterface $bundle)
+    public function __construct(BundleInterface $bundle, $directory = 'Entity')
     {
         $this->bundle = $bundle;
+        $this->directory = $directory;
     }
 
     public function process(ContainerBuilder $container)
@@ -33,8 +34,8 @@ class RegisterJsonSchemasPass implements CompilerPassInterface
         $factory  = $container->get('json_schema.reflection_factory');
 
         $refClasses = $factory->createFromDirectory(
-            $this->bundle->getPath().'/Entity',
-            $this->bundle->getNamespace().'\Entity'
+            $this->bundle->getPath().'/'.$this->directory,
+            $this->bundle->getNamespace().'\\'.$this->directory
         );
 
         foreach ($refClasses as $refClass) {
