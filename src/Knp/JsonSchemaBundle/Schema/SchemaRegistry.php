@@ -8,7 +8,7 @@ class SchemaRegistry
 
     public function register($alias, $namespace)
     {
-        if ($this->hasAlias($alias)) {
+        if ($this->hasAlias($alias) && $namespace !== $this->getNamespace($alias)) {
             throw new \Exception(sprintf(
                 'Alias "%s" is already used for namespace "%s".',
                 $alias,
@@ -16,7 +16,7 @@ class SchemaRegistry
             ));
         }
 
-        if ($this->hasNamespace($namespace)) {
+        if ($this->hasNamespace($namespace) && $alias !== $this->getAlias($namespace)) {
             throw new \Exception(sprintf(
                 'Namespace "%s" is already registered with alias "%s".',
                 $namespace,
