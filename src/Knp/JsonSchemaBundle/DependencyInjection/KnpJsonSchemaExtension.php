@@ -22,5 +22,6 @@ class KnpJsonSchemaExtension extends Extension
 
         $guesserService = $config['db_driver'] === 'orm' ? 'form.type_guesser.doctrine' : 'form.type_guesser.doctrine.mongodb';
         $container->setAlias('json_schema.guesser', $guesserService, false);
+        $container->setParameter('json_schema.mappings', $config['mappings']);
     }
 }
