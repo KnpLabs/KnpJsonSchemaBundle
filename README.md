@@ -11,7 +11,7 @@ This Symfony bundle offers support for creating [JSON Schema](http://json-schema
 
 > JSON Schema is a JSON media type for defining the structure of JSON data. JSON Schema provides a contract for what JSON data is required for a given application and how to interact with it. JSON Schema is intended to define validation, documentation, hyperlink navigation, and interaction control of JSON data.
 
-This bundle provides a service which allows you to generate JSON Schema based metadata of your entities, including it's schema definition and validation metadata.
+This bundle provides a service which allows you to generate JSON Schema based on the metadata for your entities, including it's schema and validation information.
 
 Documentation
 -------------
