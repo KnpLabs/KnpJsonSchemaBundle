@@ -16,5 +16,6 @@ class KnpJsonSchemaBundle extends Bundle
         }
 
         $container->addCompilerPass(new Compiler\RegisterPropertyHandlersPass());
+        $container->addCompilerPass(new Compiler\RegisterMappingsPass());
     }
 }

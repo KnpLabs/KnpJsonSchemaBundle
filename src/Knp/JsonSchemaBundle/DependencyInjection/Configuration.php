@@ -29,6 +29,15 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('The db driver %s is not supported. Please choose one of ' . implode(', ', $this->supportedDbDrivers))
                     ->end()
                 ->end()
+                ->arrayNode('mappings')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('dir')->end()
+                            ->scalarNode('prefix')->end()
+                            ->scalarNode('class')->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
         ;
 
