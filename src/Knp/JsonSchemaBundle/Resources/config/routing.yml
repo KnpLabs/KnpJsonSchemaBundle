@@ -1,7 +1,7 @@
 show_json_schema:
-    pattern: /schemas/{alias}.json
+    path: /schemas/{alias}.json
     defaults: { _controller: json_schema.controller:showAction }
 
 index_json_schema:
-    pattern: /schemas.json
+    path: /schemas.json
     defaults: { _controller: json_schema.controller:indexAction }
