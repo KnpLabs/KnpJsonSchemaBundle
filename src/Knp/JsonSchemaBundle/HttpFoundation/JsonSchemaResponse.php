@@ -15,7 +15,7 @@ class JsonSchemaResponse extends JsonResponse
 
         // Add pretty printing to the default encoding options supplied by
         // symfony's JsonResponse
-        if (defined('JSON_PRETTY_PRINT')) {
+        if (isset($this->encodingOptions) && defined('JSON_PRETTY_PRINT')) {
             $this->encodingOptions = $this->encodingOptions | JSON_PRETTY_PRINT;
         }
 
