@@ -20,7 +20,7 @@ services:
 
     json_schema.registry:
         public: false
-        shared: false
+        shared: true
         class: Knp\JsonSchemaBundle\Schema\SchemaRegistry
 
     json_schema.factory.schema:
