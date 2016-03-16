@@ -1,6 +1,7 @@
 services:
     json_schema.controller:
         class: Knp\JsonSchemaBundle\Controller\SchemaController
+        shared: false
         arguments:
             - @json_schema.registry
             - @json_schema.generator
@@ -8,6 +9,7 @@ services:
 
     json_schema.generator:
         class: Knp\JsonSchemaBundle\Schema\SchemaGenerator
+        shared: false
         arguments:
             - @json_schema.validator
             - @router
@@ -18,18 +20,22 @@ services:
 
     json_schema.registry:
         public: false
+        shared: false
         class: Knp\JsonSchemaBundle\Schema\SchemaRegistry
 
     json_schema.factory.schema:
         public: false
+        shared: false
         class: Knp\JsonSchemaBundle\Model\SchemaFactory
 
     json_schema.factory.property:
         public: false
+        shared: false
         class: Knp\JsonSchemaBundle\Model\PropertyFactory
 
     json_schema.reflection_factory:
         public: false
+        shared: false
         class: Knp\JsonSchemaBundle\Reflection\ReflectionFactory
         arguments:
             - @json_schema.finder
@@ -37,10 +43,12 @@ services:
 
     json_schema.finder:
         public: false
+        shared: false
         class: Symfony\Component\Finder\Finder
 
     json_schema.filesystem:
         public: false
+        shared: false
         class: Symfony\Component\Filesystem\Filesystem
 
     json_schema.validator:
@@ -49,12 +57,14 @@ services:
 
     json_schema.response.factory:
         class: Knp\JsonSchemaBundle\HttpFoundation\JsonResponseFactory
+        shared: false
         arguments:
             - @json_schema.registry
             - @router
 
     json_schema.property.handler.annotation:
         public: false
+        shared: false
         class: Knp\JsonSchemaBundle\Property\JsonSchemaAnnotationHandler
         arguments:
             - @annotation_reader
@@ -64,6 +74,7 @@ services:
 
     json_schema.property.handler.chained_guesser:
         public: false
+        shared: false
         class: Knp\JsonSchemaBundle\Property\FormTypeGuesserHandler
         arguments:
             - @form.chain.guesser
@@ -73,6 +84,7 @@ services:
 
     json_schema.property.handler.extra_validator_constraints_handler:
         public: false
+        shared: false
         class: Knp\JsonSchemaBundle\Property\ExtraValidatorConstraintsHandler
         arguments:
             - @validator.mapping.class_metadata_factory
@@ -81,6 +93,7 @@ services:
 
     form.chain.guesser:
         public: false
+        shared: false
         class: Symfony\Component\Form\FormTypeGuesserChain
         arguments:
             - [@form.type_guesser.validator, @json_schema.guesser]
